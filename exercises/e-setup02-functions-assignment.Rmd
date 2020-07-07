@@ -1,0 +1,79 @@
+---
+title: "Function Basics"
+# yaml-author
+date: 2020-05-03
+output: github_document
+time: 10
+reading: 10
+---
+
+*Purpose*: Functions are our primary tool in carying out data analysis with the
+`tidyverse`. It is unreasonable to expect yourself to memorize every function
+and all its details. To that end, we'll learn some basic _function literacy_ in
+R; how to inspect a function, look up its documentation, and find examples on a
+function's use.
+
+*Reading*: [Programming Basics](https://rstudio.cloud/learn/primers/1.2).
+*Topics*: `functions`, `arguments`
+*Reading Time*: ~ 10 minutes
+
+__q1__ How do you find help on a function? Get help on the built-in `rnorm` function.
+
+? mark in front of the function name, no parentheses
+
+```{r rnorm-help}
+?rnorm
+```
+
+__q2__ How do you show the source code for a function?
+
+type the function's name
+
+```{r rnorm-source}
+rnorm
+```
+
+__q3__ Using either the documentation or the source, determine the arguments for `rnorm`.
+
+Arguments
+
+x, q	
+vector of quantiles.
+
+p	
+vector of probabilities.
+
+n	
+number of observations. If length(n) > 1, the length is taken to be the number required.
+
+mean	
+vector of means.
+
+sd	
+vector of standard deviations.
+
+log, log.p	
+logical; if TRUE, probabilities p are given as log(p).
+
+lower.tail	
+logical; if TRUE (default), probabilities are P[X ≤ x] otherwise, P[X > x].
+
+
+__q4__ Scroll to the bottom of the help for the `library()` function. How do you
+list all available packages?
+
+```{r}
+?library
+```
+
+If library is called with no package or help argument, it lists all available packages in the libraries specified by lib.loc, and returns the corresponding information in an object of class "libraryIQR". (The structure of this class may change in future versions.) Use .packages(all = TRUE) to obtain just the names of all available packages, and installed.packages() for even more information.
+
+The __examples__ in the help documentation are often *extremely* helpful for
+learning how to use a function (or reminding yourself how its used)! Get used to
+checking the examples, as they're a great resource.
+
+<!-- include-exit-ticket -->
+# Exit Ticket
+<!-- -------------------------------------------------- -->
+
+Once you have completed this exercise, make sure to fill out the **exit ticket survey**, [linked here](https://docs.google.com/forms/d/e/1FAIpQLSeuq2LFIwWcm05e8-JU84A3irdEL7JkXhMq5Xtoalib36LFHw/viewform?usp=pp_url&entry.693978880=e-setup02-functions-assignment.Rmd).
