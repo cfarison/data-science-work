@@ -1,0 +1,35 @@
+|Filename                    | Day| Exercise Duration (minutes)| Day Duration (minutes)|
+|:---------------------------|---:|---------------------------:|----------------------:|
+|e-rep00-setup               |   0|                          10|                     50|
+|e-rep01-intro-git           |   0|                          20|                     50|
+|e-setup00-install           |   0|                          20|                     50|
+|e-rep02-create              |   1|                          15|                     55|
+|e-rep03-track               |   1|                          15|                     55|
+|e-setup01-packages          |   1|                           5|                     55|
+|e-setup02-functions         |   1|                          20|                     55|
+|e-comm00-style              |   2|                          20|                     60|
+|e-vis00-basics              |   2|                          40|                     60|
+|e-data00-basics             |   3|                           5|                     65|
+|e-setup03-docs              |   3|                          15|                     65|
+|e-setup04-rstudio-shortcuts |   3|                          15|                     65|
+|e-setup05-vectors           |   3|                          15|                     65|
+|e-setup06-types             |   3|                          15|                     65|
+|e-stat00-eda-basics         |   4|                          65|                     65|
+|e-data01-isolate            |   5|                          60|                     60|
+|e-vis01-bar-charts          |   6|                          60|                     60|
+|e-data02-derive             |   7|                          75|                     75|
+|e-vis02-histograms          |   8|                          50|                     50|
+|e-stat01-distributions      |   9|                          40|                     40|
+|e-data03-pivot-basics       |  10|                          50|                     50|
+|e-vis03-boxplots            |  11|                          40|                     40|
+|e-stat02-probability        |  12|                          40|                     40|
+|e-data04-separate-unite     |  13|                          50|                     50|
+|e-vis04-scatterplot         |  14|                          60|                     60|
+|e-stat03-descriptive        |  15|                          60|                     60|
+|e-data05-join               |  16|                          60|                     60|
+|e-vis05-lines               |  17|                          45|                     45|
+|e-stat04-population         |  18|                          48|                     48|
+|e-data06-strings            |  19|                          45|                     60|
+|e-stat05-moment             |  19|                          15|                     60|
+|e-comm01-story-basics       |  20|                          30|                     75|
+|e-stat06-clt                |  20|                          45|                     75|
