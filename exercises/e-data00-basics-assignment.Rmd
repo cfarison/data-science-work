@@ -37,16 +37,38 @@ Some nomenclature:
 __q1__ Load the `tidyverse` and inspect the `diamonds` dataset. What do the
 `cut`, `color`, and `clarity` variables mean?
 
+cut: quality of the cut (Fair, Good, Very Good, Premium, Ideal)
+color: diamond colour, from D (best) to J (worst)
+clarity: a measurement of how clear the diamond is (I1 (worst), SI2, SI1, VS2, VS1, VVS2, VVS1, IF (best))
+
 *Hint*: You can run `?diamonds` to get information on a built-in dataset.
 
 ```{r load-packages}
+library(tidyverse)
+head(diamonds)
 ```
 
 __q2__ Run `glimpse(diamonds)`; what variables does `diamonds` have?
+carat, cut, color, clarity, depth, table, price, x (length), y (width), z (depth)
+
+```{r}
+glimpse(diamonds)
+```
+
 
 
 __q3__ Run `summary(diamonds)`; what are the common values for each of the
 variables? How widely do each of the variables vary?
+Carat: 0.7 is common, varies widely from 0.2 to 5
+Cut: Ideal is  most common, but just as many are Premium or Very Good
+Color: G is most common, but it looks almost like a normal distribution
+Clarity: SI1 is most common, but they vary a fair bit
+Depth: Common value  is around 61, and this varies less widely, from 43 to 79
+Table: 57 is common, doesn't vary super widely, from 43 to 95 (more widely than depth)
+Price: Median is 2401 but these vary super widely, from 326 to 18823
+x(length): Median is 5, and may be fairly normally distributed
+y(width): Median is 5.7, but min is much closer to that than the max, so most are small but some can be quite large
+z(depth): Meedian is 3.5, min is close to that, max is very far from that, so most are small but can get quite large.
 
 *Hint*: The `Median` and `Mean` are common values, while `Min` and `Max` give us
 a sense of variation.
@@ -58,6 +80,7 @@ summary(diamonds)
 **Observations**:
 
 - (Write your observations here!)
+Price varies really widely, more than other things by far. The others that vary widely are carat and cut. So maybe these are correlated.
 
 You should always analyze your dataset in the simplest way possible, build
 hypotheses, and devise more specific analyses to probe those hypotheses. The
