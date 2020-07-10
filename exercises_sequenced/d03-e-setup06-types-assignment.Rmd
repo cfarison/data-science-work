@@ -1,4 +1,4 @@
----
+#---
 title: "Types"
 author: Zachary del Rosario
 date: 2020-06-26
@@ -32,12 +32,13 @@ __q1__ Describe what is wrong with the code below.
 airport <- "BOS"
 
 ## Check our airport value
-airport == ATL
+airport
 ```
-
 **Observations**:
 
-- Write your explanation here
+airport == ATL leads to Error: object 'ATL' not found
+To check our airport value, we can just type airport. We need to use the assignment to assign it. If there's an error in assignment, the variable will keep the previous value.
+
 
 # Casting
 <!-- -------------------------------------------------- -->
@@ -53,4 +54,7 @@ __q2__ Cast the following vector `v_string` to integers.
 
 ```{r q2-task}
 v_string <- c("00", "45", "90")
-v_integer <- NA_real_
+v_integer <- as.integer(v_string)
+v_integer
+typeof(v_integer)
+```
