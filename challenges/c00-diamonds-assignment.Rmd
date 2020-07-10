@@ -57,6 +57,8 @@ __q1__ Create a plot of `price` vs `carat` of the `diamonds` dataset below. Docu
 ```{r q1-task}
 ## TASK: Plot `price` vs `carat` below
 ## Your code here!
+ggplot(data = diamonds) +
+  geom_point(mapping = aes(x = carat, y = price))
 ```
 
 **Observations**:
@@ -68,11 +70,114 @@ __q2__ Create a visualization showing variables `carat`, `price`, and `cut` simu
 ```{r q2-task}
 ## TASK: Plot `price`, `carat`, and `cut` below
 ## Your code here!
+ggplot(data = diamonds) +
+  geom_point(mapping = aes(x = carat, y = price, color = cut))
 ```
 
-**Observations**:
+Hypotheses:
+- Up through 1 carat, price scales linearly with carat. Past 1 carat, all bets are off. 
 
-- (Write your observations here!)
+Observations:
+- Linear more like up to 0.7-0.9 carats, depending on cut. And fair isn't linearly related at all.
+
+How do I check if something is linear in R?
+
+geom_smooth(method='lm', formula= y~x)
+
+```{r q2-task}
+## TASK: Plot `price`, `carat`, and `cut` below
+diamonds %>% 
+  filter(carat < 1) %>%
+ggplot() +
+  geom_smooth(mapping = aes(x = carat, y = price, color = cut), method='lm', formula= y~x) +
+  geom_point(mapping = aes(x = carat, y = price, color = cut), alpha = 0.1)
+```
+```{r q2-task}
+## TASK: Plot `price`, `carat`, and `cut` below
+diamonds %>% 
+  filter(carat < 1) %>%
+ggplot() +
+  geom_boxplot(mapping = aes(x = carat, y = price, color = cut))
+```
+
+```{r q2-task}
+## TASK: Plot `price`, `carat`, and `cut` below
+diamonds %>% 
+ggplot() +
+  geom_smooth(mapping = aes(x = carat, y = price, color = cut), method='lm', formula= y~x)
+```
+
+```{r q2-task}
+## TASK: Plot `price`, `carat`, and `cut` below
+## Your code here!
+diamonds %>% 
+  filter(carat < 1) %>%
+ggplot() +
+  geom_smooth(mapping = aes(x = carat, y = price, color = cut))
+```
+```{r}
+diamonds %>% 
+ggplot() +
+  geom_smooth(mapping = aes(x = carat, y = price, color = cut))
+```
+Hypotheses:
+- Most diamonds are small, and small diamonds are less pricey and have better color.
+- Carat (weight) and volume are very closely linked.
+
+
+```{r}
+diamonds %>% 
+  mutate(volume = x * y * z) %>%
+  filter(volume < 500) %>%
+ggplot() +
+  geom_point(mapping = aes(x = volume, y = carat))
+```
+Why are there outliers? Why don't these correspond perfectly? Impurities? Seeing no correlation between outliers and a certain color or clarity.
+
+```{r}
+diamonds %>% 
+    mutate(volume = x * y * z) %>%
+  filter(volume < 500) %>%
+ggplot() +
+  geom_histogram(mapping = aes(x = volume), binwidth = 0.1)
+```
+```{r}
+diamonds %>% 
+ggplot() +
+  geom_histogram(mapping = aes(x = carat), binwidth = 0.1)
+```
+
+
+```{r}
+diamonds %>% 
+  mutate(volume = x * y * z) %>%
+  filter(volume < 500) %>%
+ggplot() +
+  geom_point(mapping = aes(x = volume, y = price, color = clarity))
+```
+```{r}
+diamonds %>% 
+  mutate(carat) %>%
+ggplot() +
+  geom_point(mapping = aes(x = carat, y = price, color = clarity))
+```
+
+Higher carat diamonds have higher minimum prices, but the maximum prices do not correlate with carat. They can be expensive at any size, but can't be cheap at any size.
+
+With the same carat, better clarity diamonds fetch higher prices.
+
+Large diamonds tend to have lower clarity.
+
+**Observations**:
+Volume and carat (weight) are very closely correlated, but there are outliers. I wonder if these are due to impurities. Outliers do not seem to correspond to worse color or lower clarity.
+
+Higher carat diamonds have higher minimum prices, but the maximum prices do not correlate with carat. They can be expensive at any size, but can't be cheap at any size.
+
+With the same carat, better clarity diamonds fetch higher prices.
+
+Large diamonds tend to have lower clarity.
+
+Up through 0.7 carat, price scales fairly linearly with carat, but after that they vary widely.
 
 # Communication
 <!-- -------------------------------------------------- -->
