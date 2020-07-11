@@ -167,3 +167,30 @@ dataset we built above!
 df_q4 <-
   flights %>%
 ## TODO: Use expand_grid to create a criteria dataframe
+
+df_q4
+```
+
+Use the following test to check your work:
+
+```{r q4-tests}
+## NOTE: No need to change this
+assertthat::assert_that(
+              all_equal(
+                df_q4,
+                df_q4 %>%
+                filter(
+                  month %in% c(8, 9),
+                  dest %in% c("SJC", "SFO", "OAK")
+                )
+              )
+            )
+
+print("Nice!")
+```
+
+<!-- include-exit-ticket -->
+# Exit Ticket
+<!-- -------------------------------------------------- -->
+
+Once you have completed this exercise, make sure to fill out the **exit ticket survey**, [linked here](https://docs.google.com/forms/d/e/1FAIpQLSeuq2LFIwWcm05e8-JU84A3irdEL7JkXhMq5Xtoalib36LFHw/viewform?usp=pp_url&entry.693978880=e-data05-join-assignment.Rmd).
