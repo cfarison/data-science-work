@@ -41,7 +41,7 @@ Unlike exercises, **challenges will be graded**. The following rubrics define ho
 
 All the deliverables stated in the rubrics above are due on the day of the class discussion of that exercise. See the [Syllabus](https://docs.google.com/document/d/1jJTh2DH8nVJd2eyMMoyNGroReo0BKcJrz1eONi3rPSc/edit?usp=sharing) for more information.
 
-```{r setup}
+```{r setup, include=FALSE}
 library(tidyverse)
 ```
 
@@ -55,10 +55,9 @@ __q1__ Create a plot of `price` vs `carat` of the `diamonds` dataset below. Docu
 *Hint*: We learned how to do this in `e-vis00-basics`!
 
 ```{r q1-task}
-## TASK: Plot `price` vs `carat` below
-## Your code here!
 ggplot(data = diamonds) +
-  geom_point(mapping = aes(x = carat, y = price))
+  geom_point(mapping = aes(x = carat, y = price)) +
+  ggtitle("Price vs Carat")
 ```
 
 **Observations**:
@@ -72,34 +71,37 @@ __q2__ Create a visualization showing variables `carat`, `price`, and `cut` simu
 ```{r}
 diamonds %>%
   ggplot() +
-  geom_point(mapping = aes(x = carat, y = price, color = cut))
+  geom_point(mapping = aes(x = carat, y = price, color = cut)) +
+  ggtitle("Price vs Carat, with color as Cut")
 ```
 
 **Observations**:
+
 With the same carat, poor cut diamonds tend to fetch lower prices. However, many ideal cut diamonds still fetch low prices, which can be seen more clearly in this zoomed in version of the graph.
 
 ```{r zoom in}
 diamonds %>%
   filter(carat < 1) %>%
   ggplot() +
-  geom_point(mapping = aes(x = carat, y = price, color = cut))
+  geom_point(mapping = aes(x = carat, y = price, color = cut)) +
+  ggtitle("Price vs Carat, with color as Cut, for Carat < 1")
 ```
 
 With the same carat, better clarity diamonds tend to fetch higher prices. Larger diamonds tend to have lower clarity, but can still fetch high prices.
 
 ```{r}
 diamonds %>% 
-  mutate(carat) %>%
 ggplot() +
-  geom_point(mapping = aes(x = carat, y = price, color = clarity))
+  geom_point(mapping = aes(x = carat, y = price, color = clarity)) +
+  ggtitle("Price vs Carat, with color as Clarity")
 ```
 
 Diamond color looks to be more strongly correlated with carat (better color for lower carat) than with price.
 ```{r}
 diamonds %>% 
-  mutate(carat) %>%
 ggplot() +
-  geom_point(mapping = aes(x = carat, y = price, color = color))
+  geom_point(mapping = aes(x = carat, y = price, color = color)) +
+  ggtitle("Price vs Carat, with color as Color")
 ```
 
 Most diamonds are less than 1.5 carats, so the sample size is smaller for diamonds larger than 1.5 carats and it is harder to draw conclusions. The 3rd quartile is 1.04, but the max is 5.01.
@@ -112,21 +114,25 @@ Most diamonds are in the top two clarity buckets.
 summary(diamonds)
 ```
 
-Since both better cut and better clarity seem to be correlated with price, I wonder if cut and clarity are correlated. It looks like most of the best clarity diamonds also have ideal cut, but poor clarity diamonds are distributed fairly evenly across different cuts. So they are correlated for the best diamonds, but not for worse diamonds.
+Since both better cut and better clarity seem to be correlated with higher price, I wonder if cut and clarity are correlated. It looks like most of the best clarity diamonds also have ideal cut, but poor clarity diamonds are distributed fairly evenly across different cuts. So better cut and better clarity seem to be correlated for the best diamonds, but not for worse diamonds.
 
 ```{r cut vs clarity}
 ggplot(diamonds, aes(cut, clarity)) +
-  geom_jitter(aes(color = cut), size = 0.5)
+  geom_jitter(aes(color = cut), size = 0.5) +
+  ggtitle("Frequency of each Clarity/Cut Combination")
 ```
-How does price vary for the best cut diamonds? For the best cut diamonds, price increases with carat, and the higher clarity diamonds fetch higher prices for a given carat.
+
+How does price vary for the best cut diamonds? For the best cut diamonds, price increases with carat, and the higher clarity diamonds tend to fetch higher prices for a given carat.
 
 ```{r}
 diamonds %>%
   filter(cut == "Ideal") %>%
   ggplot() +
-  geom_point(mapping = aes(x = carat, y = price, color = clarity))
+  geom_point(mapping = aes(x = carat, y = price, color = clarity)) +
+  ggtitle("Price vs Carat for Ideal Cut only")
 ```
-Carat seems to be the variable most strongly correlated with price. I wonder which secondary variable is more important to price, cut or clarity, but I'm not sure yet how to answer this question.
+
+Carat seems to be the variable most strongly correlated with price. Color does not seem to be correlated with price. Cut and clarity both seem to be somewhat correlated with price. I wonder which variable is more important to price, cut or clarity, but I'm not sure yet how to answer this question.
 
 # Communication
 <!-- -------------------------------------------------- -->
