@@ -27,8 +27,7 @@ library(tidyverse)
 __q1__ What single-letter `R` function do you use to create vectors with specific entries? Use that function to create a vector with the numbers `1, 2, 3` below.
 
 ```{r q1-task}
-## TODO: Assign the appropriate vector to vec_q1
-
+vec_q1 = c(1, 2, 3)
 vec_q1
 ```
 
@@ -45,7 +44,7 @@ __q2__ Did you know that you can use `c()` to *extend* a vector as well? Use thi
 
 ```{r q2-task}
 ## TODO: Assign the appropriate vector to vec_q2
-
+vec_q2 = c(vec_q1, 4)
 vec_q2
 ```
 
