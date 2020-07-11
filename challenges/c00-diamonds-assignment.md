@@ -99,7 +99,7 @@ diamonds %>%
   ggtitle("Price vs Carat, with color as Cut")
 ```
 
-![](c00-diamonds-assignment_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](c00-diamonds-assignment_files/figure-gfm/q2-task-1.png)<!-- -->
 
 **Observations**:
 
@@ -115,7 +115,7 @@ diamonds %>%
   ggtitle("Price vs Carat, with color as Cut, for Carat < 1")
 ```
 
-![](c00-diamonds-assignment_files/figure-gfm/zoom%20in-1.png)<!-- -->
+![](c00-diamonds-assignment_files/figure-gfm/price-vs-carat-cut-zoom-1.png)<!-- -->
 
 With the same carat, better clarity diamonds tend to fetch higher
 prices. Larger diamonds tend to have lower clarity, but can still fetch
@@ -128,7 +128,7 @@ ggplot() +
   ggtitle("Price vs Carat, with color as Clarity")
 ```
 
-![](c00-diamonds-assignment_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](c00-diamonds-assignment_files/figure-gfm/price-vs-carat-clarity-1.png)<!-- -->
 
 Diamond color looks to be more strongly correlated with carat (better
 color for lower carat) than with price.
@@ -140,7 +140,7 @@ ggplot() +
   ggtitle("Price vs Carat, with color as Color")
 ```
 
-![](c00-diamonds-assignment_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](c00-diamonds-assignment_files/figure-gfm/price-vs-carat-color-1.png)<!-- -->
 
 Most diamonds are less than 1.5 carats, so the sample size is smaller
 for diamonds larger than 1.5 carats and it is harder to draw
@@ -193,7 +193,7 @@ ggplot(diamonds, aes(cut, clarity)) +
   ggtitle("Frequency of each Clarity/Cut Combination")
 ```
 
-![](c00-diamonds-assignment_files/figure-gfm/cut%20vs%20clarity-1.png)<!-- -->
+![](c00-diamonds-assignment_files/figure-gfm/cut-vs-clarity-1.png)<!-- -->
 
 How does price vary for the best cut diamonds? For the best cut
 diamonds, price increases with carat, and the higher clarity diamonds
@@ -207,7 +207,7 @@ diamonds %>%
   ggtitle("Price vs Carat for Ideal Cut only")
 ```
 
-![](c00-diamonds-assignment_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](c00-diamonds-assignment_files/figure-gfm/price-vs-carat-ideal-cut-1.png)<!-- -->
 
 Carat seems to be the variable most strongly correlated with price.
 Color does not seem to be correlated with price. Cut and clarity both

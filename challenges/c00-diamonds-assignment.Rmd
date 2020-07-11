@@ -68,7 +68,7 @@ ggplot(data = diamonds) +
 
 __q2__ Create a visualization showing variables `carat`, `price`, and `cut` simultaneously. Experiment with which variable you assign to which aesthetic (`x`, `y`, etc.) to find an effective visual.
 
-```{r}
+```{r q2-task}
 diamonds %>%
   ggplot() +
   geom_point(mapping = aes(x = carat, y = price, color = cut)) +
@@ -79,7 +79,7 @@ diamonds %>%
 
 With the same carat, poor cut diamonds tend to fetch lower prices. However, many ideal cut diamonds still fetch low prices, which can be seen more clearly in this zoomed in version of the graph.
 
-```{r zoom in}
+```{r price-vs-carat-cut-zoom}
 diamonds %>%
   filter(carat < 1) %>%
   ggplot() +
@@ -89,7 +89,7 @@ diamonds %>%
 
 With the same carat, better clarity diamonds tend to fetch higher prices. Larger diamonds tend to have lower clarity, but can still fetch high prices.
 
-```{r}
+```{r price-vs-carat-clarity}
 diamonds %>% 
 ggplot() +
   geom_point(mapping = aes(x = carat, y = price, color = clarity)) +
@@ -97,7 +97,7 @@ ggplot() +
 ```
 
 Diamond color looks to be more strongly correlated with carat (better color for lower carat) than with price.
-```{r}
+```{r price-vs-carat-color}
 diamonds %>% 
 ggplot() +
   geom_point(mapping = aes(x = carat, y = price, color = color)) +
@@ -116,7 +116,7 @@ summary(diamonds)
 
 Since both better cut and better clarity seem to be correlated with higher price, I wonder if cut and clarity are correlated. It looks like most of the best clarity diamonds also have ideal cut, but poor clarity diamonds are distributed fairly evenly across different cuts. So better cut and better clarity seem to be correlated for the best diamonds, but not for worse diamonds.
 
-```{r cut vs clarity}
+```{r cut-vs-clarity}
 ggplot(diamonds, aes(cut, clarity)) +
   geom_jitter(aes(color = cut), size = 0.5) +
   ggtitle("Frequency of each Clarity/Cut Combination")
@@ -124,7 +124,7 @@ ggplot(diamonds, aes(cut, clarity)) +
 
 How does price vary for the best cut diamonds? For the best cut diamonds, price increases with carat, and the higher clarity diamonds tend to fetch higher prices for a given carat.
 
-```{r}
+```{r price-vs-carat-ideal-cut}
 diamonds %>%
   filter(cut == "Ideal") %>%
   ggplot() +
