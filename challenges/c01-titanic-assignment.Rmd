@@ -60,7 +60,12 @@ glimpse(df_titanic)
 
 **Observations**:
 
-- List the variables here
+Variables:
+- Class (string)
+- Sex (string)
+- Age (string)
+- Survived (string)
+- n (number)
 
 __q2__ Skim the [Wikipedia article](https://en.wikipedia.org/wiki/RMS_Titanic) on the RMS Titanic, and look for a total count of passengers. Compare against the total computed below. Are there any differences? Are those differences large or small? What might account for those differences?
 
