@@ -31,6 +31,7 @@ __q1__ Select all the variables whose name ends with `_time`.
 
 ```{r q1-task}
 ## df_q1 <- TODO: Your code goes here!
+df_q1 <- select(flights, ends_with("time"))
 df_q1
 ```
 
@@ -72,13 +73,17 @@ this fashion will help us see the values of particular columns.
 __q3__ Fix the following code. What is the mistake here? What is the code trying
 to accomplish?
 
+The code is trying to show data points where destination is Boston, but it tried to use = instead of ==.
+
 ```{r q3-task}
-## flights %>% filter(dest = "BOS") # Uncomment and run to see error
+flights %>% 
+  filter(dest == "BOS")
 ```
 
 The next error is *far more insidious*....
 
 __q4__ This code doesn't quite what the user intended. What went wrong?
+It looks for when the destination is equal to that variable, not the string "BOS".
 
 ```{r q4-task}
 BOS <- "LGA"
@@ -89,13 +94,19 @@ It will take practice to get used to when and when not to use quotations. Don't
 worry---we'll get lots of practice!
 
 This dataset is called `nycflights`; in what sense is it focused on New York
-city? Let's do a quick check to get an idea:
+city? Origin is JFK, LGA, or EWR for all flights.
+
+Let's do a quick check to get an idea:
 
 __q5__ Perform **two** filters; first
 
 ```{r q5-task}
 ## df_q5a <- dest is JFK, LGA, or EWR
+df_q5a <- flights %>% filter(dest %in% c("JFK", "LGA", "EWR"))
+df_q5a
 ## df_q5b <- origin is JFK, LGA, or EWR
+df_q5b <- flights %>% filter(origin %in% c("JFK", "LGA", "EWR"))
+df_q5b
 ```
 
 Use the following code to check your answer.
