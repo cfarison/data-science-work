@@ -144,7 +144,7 @@ ggplot() +
 
 Most diamonds are less than 1.5 carats, so the sample size is smaller
 for diamonds larger than 1.5 carats and it is harder to draw
-conclusions. The 3rd quartile is 1.04, but the max is 5.01.
+conclusions. The upper quartile is 1.04, but the max is 5.01.
 
 Ideal cut diamonds are the most common in this data set, with a high
 number of premium and very good as well.

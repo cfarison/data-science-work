@@ -71,7 +71,7 @@ diamonds %>%
 ```
 
 **Observations**:
-- Write your observations here!
+The hypothesis  is false - ideal cut diamonds are actually the most numerous.
 
 ### Hypothesis 2
 
@@ -88,7 +88,7 @@ diamonds %>%
 ```
 
 **Observations**:
-- Write your observations here!
+This graph does not help analyze the hypothesis. Price is continuous, but cut is discrete, so geom_point is not a useful type of graph.
 
 The following is a set of *boxplots*; the middle bar denotes the median, the
 boxes denote the *quartiles* (upper and lower "quarters" of the data), and the
@@ -103,7 +103,7 @@ diamonds %>%
 ```
 
 **Observations**:
-- Write your observations here!
+The mean price for ideal cut diamonds is actually lower than the mean price for other cut diamonds. The upper quartile for ideal cut diamonds is also lower than the upper quartile for other cuts of diamonds.
 
 ### Unraveling Hypothesis 2
 
@@ -111,6 +111,8 @@ Upon making the graph in __q2.2__, I was very surprised. So I did some reading
 on diamond cuts. It turns out that some gemcutters [sacrifice cut for
 carat](https://en.wikipedia.org/wiki/Diamond_(gemstone)#Cut). Could this effect
 explain the surprising pattern above?
+
+Higher price seems to be affected more by carat than by cut, and higher carat diamonds may have worse cut but still fetch higher prices.
 
 __q3__ Study the following graph; does it support a "carat over cut" hypothesis? How might this relate to price?
 
@@ -123,7 +125,7 @@ diamonds %>%
 ```
 
 **Observations**:
-- Write your observations here!
+Ideal cut diamonds tend to be the ones with lower carats, so yes.
 
 ### Footnotes
 
