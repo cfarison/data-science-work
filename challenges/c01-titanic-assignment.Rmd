@@ -1,7 +1,7 @@
 ---
 title: "RMS Titanic"
-author: "(Your name here)"
-date: 2020-
+author: "Charlie Farison"
+date: 2020-07-14
 output:
   github_document:
     toc: true
@@ -41,7 +41,7 @@ Unlike exercises, **challenges will be graded**. The following rubrics define ho
 
 All the deliverables stated in the rubrics above are due on the day of the class discussion of that exercise. See the [Syllabus](https://docs.google.com/document/d/1jJTh2DH8nVJd2eyMMoyNGroReo0BKcJrz1eONi3rPSc/edit?usp=sharing) for more information.
 
-```{r setup}
+```{r setup, include = false}
 library(tidyverse)
 
 df_titanic <- as_tibble(Titanic)
@@ -67,6 +67,8 @@ Variables:
 - Survived (string)
 - n (number)
 
+This data set is different from others I've analyzed, in that instead of one row per individual, it has one row showing a count of individuals that meet a set of categories.
+
 __q2__ Skim the [Wikipedia article](https://en.wikipedia.org/wiki/RMS_Titanic) on the RMS Titanic, and look for a total count of passengers. Compare against the total computed below. Are there any differences? Are those differences large or small? What might account for those differences?
 
 ```{r q2-summary}
@@ -77,7 +79,7 @@ df_titanic %>% summarize(total = sum(n))
 
 **Observations**:
 
-Wikipedia estimates 2224 total passengers. This dataset has 2201. Perhaps not all un-ticketed crew members were documented well.
+Wikipedia estimates 2224 total passengers. This dataset has 2201. Perhaps not all crew members were documented well, since they would not have needed to purchase tickets.
 
 __q3__ Create a plot showing the count of passengers who *did* survive, along with aesthetics for `Class` and `Sex`. Document your observations below.
 
@@ -85,19 +87,27 @@ __q3__ Create a plot showing the count of passengers who *did* survive, along wi
 
 ```{r q3-task}
 df_titanic %>%
-  filter(Survived == "Yes")
-```
-
-```{r q3-task}
-df_titanic %>%
   filter(Survived == "Yes") %>%
   ggplot() +
-  geom_point(mapping = aes(x = Class, y = n))
+  geom_point(mapping = aes(x = Sex, y = Class, size = n)) +
+  scale_size_area(max_size = 10) +
+  ggtitle("Survivors Mostly Male Crew Members")
 ```
 
 **Observations**:
 
-- Write your observations here
+- The largest number of survivors were male crew members, but that's possibly because they made up a large number of the proportion of total ship passengers.
+- The second largest number of survivors were female 1st class passengers, which may mean a very high proportion of them survived.
+
+```{r total-passengers}
+df_titanic %>%
+  ggplot() +
+  geom_point(mapping = aes(x = Sex, y = Class, size = n)) +
+  scale_size_area(max_size = 10) +
+  ggtitle("Total Passengers Predominantly Male Crew and 3rd Class")
+```
+- Total passengers were predominantly male crew and male 3rd class passengers.
+
 
 # Deeper Look
 <!-- -------------------------------------------------- -->
@@ -123,22 +133,55 @@ df_prop
 __q4__ Replicate your visual from q3, but display `Prop` in place of `n`. Document your observations, and note any new/different observations you make in comparison with q3.
 
 ```{r q4-task}
+library(viridis)
+df_prop %>%
+  filter(Survived == "Yes") %>%
+  ggplot() +
+  geom_point(mapping = aes(x = Sex, y = Class, color = Prop), size = 10) +
+  scale_size_area(max_size = 10) +
+  scale_color_viridis() +
+  ggtitle("Male Crew and 3rd Class Least Likely to Survive")
 ```
 
 **Observations**:
 
-- Write your observations here.
+- Male crew and male 3rd class passengers were least likely to survive, closely followed by male 2nd class passengers.
+- 1st class female passengers were most likely to survive, followed by 2nd class female passengers and female crew.
 
 __q5__ Create a plot showing the group-proportion of passengers who *did* survive, along with aesthetics for `Class`, `Sex`, *and* `Age`. Document your observations below.
 
 *Hint*: Don't forget that you can use `facet_grid` to help consider additional variables!
 
 ```{r q5-task}
+df_prop %>%
+  ggplot() +
+  geom_point(mapping = aes(x = Sex, y = Class, color = Prop), size = 10) +
+  scale_color_viridis() +
+  facet_wrap(~Age) +
+  ggtitle("Children's Safety Prioritized, with 1st Class Women Accompanying Them")
+```
+**Observations**:
+Children's survival was clearly prioritized, followed closely by 1st class women, who presumably accompanied the children in the lifeboats.
+
+```{r q5-task-version-2}
+df_prop %>%
+  ggplot() +
+  geom_point(mapping = aes(x = Age, y = Class, color = Prop), size = 10) +
+  scale_color_viridis() +
+  facet_wrap(~Sex) +
+  ggtitle("Male First Class Adults Less Likely to Survive Than Children")
+```
+1st class men were much less likely to survive than children and 1st class women. The chart below shows this claim more clearly.
+
+```{r male-children}
+df_prop %>%
+  filter(Class == "1st") %>%
+  ggplot() +
+  geom_point(mapping = aes(x = Age, y = Sex, color = Prop), size = 10) +
+  scale_color_viridis() +
+  ggtitle("Male First Class Adults Less Likely to Survive than Children")
 ```
 
-**Observations**:
-
-- Write your observations here.
 
 # Notes
 <!-- -------------------------------------------------- -->
