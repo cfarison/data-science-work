@@ -141,8 +141,12 @@ machine learning. (`end-rant`)
 __q6__ Sort the flights in *descending* order by their `air_time`. Bring
 `air_time, dest` to the front. What can you tell about the longest flights?
 
+Longest flights have a destination of HNL, Honolulu. This suggests that the only flights logged here are domestic, with destinations within the US.
+
 ```{r q6-task}
-## df_q6 <- TODO: Your code here!
+df_q6 <- flights %>% 
+  select(air_time, dest, everything()) %>%
+  arrange(desc(air_time))
 df_q6
 ```
 
