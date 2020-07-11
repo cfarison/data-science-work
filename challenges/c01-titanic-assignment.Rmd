@@ -77,14 +77,22 @@ df_titanic %>% summarize(total = sum(n))
 
 **Observations**:
 
-Wikipedia estimates 2224 total passengers. This dataset has 2201. Perhaps not all ticketed passengers were documented well.
+Wikipedia estimates 2224 total passengers. This dataset has 2201. Perhaps not all un-ticketed crew members were documented well.
 
 __q3__ Create a plot showing the count of passengers who *did* survive, along with aesthetics for `Class` and `Sex`. Document your observations below.
 
 *Note*: There are many ways to do this.
 
 ```{r q3-task}
-## TASK: Visualize counts against `Class` and `Sex`
+df_titanic %>%
+  filter(Survived == "Yes")
+```
+
+```{r q3-task}
+df_titanic %>%
+  filter(Survived == "Yes") %>%
+  ggplot() +
+  geom_point(mapping = aes(x = Class, y = n))
 ```
 
 **Observations**:
