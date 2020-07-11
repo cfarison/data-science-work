@@ -55,7 +55,7 @@ df_titanic <- as_tibble(Titanic)
 __q1__ Perform a glimpse of `df_titanic`. What variables are in this dataset?
 
 ```{r q1-task}
-## TASK: Perform a `glimpse` of df_titanic
+glimpse(df_titanic)
 ```
 
 **Observations**:
@@ -72,7 +72,7 @@ df_titanic %>% summarize(total = sum(n))
 
 **Observations**:
 
-- Write your observations here
+Wikipedia estimates 2224 total passengers. This dataset has 2201. Perhaps not all ticketed passengers were documented well.
 
 __q3__ Create a plot showing the count of passengers who *did* survive, along with aesthetics for `Class` and `Sex`. Document your observations below.
 
