@@ -116,11 +116,13 @@ summary(diamonds)
 
 Since both better cut and better clarity seem to be correlated with higher price, I wonder if cut and clarity are correlated. It looks like most of the best clarity diamonds also have ideal cut, but poor clarity diamonds are distributed fairly evenly across different cuts. So better cut and better clarity seem to be correlated for the best diamonds, but not for worse diamonds.
 
-```{r cut-vs-clarity}
+```{r cut-vs-clarity-count}
 ggplot(diamonds, aes(cut, clarity)) +
-  geom_jitter(aes(color = cut), size = 0.5) +
+  geom_count(aes(color = cut)) +
+  scale_size_area(max_size = 10) +
   ggtitle("Frequency of each Clarity/Cut Combination")
 ```
+
 
 How does price vary for the best cut diamonds? For the best cut diamonds, price increases with carat, and the higher clarity diamonds tend to fetch higher prices for a given carat.
 

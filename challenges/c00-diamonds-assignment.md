@@ -189,11 +189,12 @@ not for worse diamonds.
 
 ``` r
 ggplot(diamonds, aes(cut, clarity)) +
-  geom_jitter(aes(color = cut), size = 0.5) +
+  geom_count(aes(color = cut)) +
+  scale_size_area(max_size = 10) +
   ggtitle("Frequency of each Clarity/Cut Combination")
 ```
 
-![](c00-diamonds-assignment_files/figure-gfm/cut-vs-clarity-1.png)<!-- -->
+![](c00-diamonds-assignment_files/figure-gfm/cut-vs-clarity-count-1.png)<!-- -->
 
 How does price vary for the best cut diamonds? For the best cut
 diamonds, price increases with carat, and the higher clarity diamonds
