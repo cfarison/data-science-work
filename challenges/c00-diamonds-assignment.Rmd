@@ -1,7 +1,7 @@
 ---
 title: "Getting Started: Diamonds"
-author: "(Your name here)"
-date: 2020-
+author: "Charlie Farison"
+date: 2020-07-11
 output:
   github_document:
     toc: true
@@ -63,98 +63,30 @@ ggplot(data = diamonds) +
 
 **Observations**:
 
-- (Write your observations here!)
+- From 0 to 1 carat, price seems to be clearly positively correlated with carat.
+- Past 1 carat, diamond prices can be very high, so there are likely other key factors that contribute to price.
+- The minimum price for a diamond seems to increase based on carat, but the maximum price does not (past 1 carat).
 
 __q2__ Create a visualization showing variables `carat`, `price`, and `cut` simultaneously. Experiment with which variable you assign to which aesthetic (`x`, `y`, etc.) to find an effective visual.
 
-```{r q2-task}
-## TASK: Plot `price`, `carat`, and `cut` below
-## Your code here!
-ggplot(data = diamonds) +
+```{r}
+diamonds %>%
+  ggplot() +
   geom_point(mapping = aes(x = carat, y = price, color = cut))
 ```
 
-Hypotheses:
-- Up through 1 carat, price scales linearly with carat. Past 1 carat, all bets are off. 
+**Observations**:
+With the same carat, poor cut diamonds tend to fetch lower prices. However, many ideal cut diamonds still fetch low prices, which can be seen more clearly in this zoomed in version of the graph.
 
-Observations:
-- Linear more like up to 0.7-0.9 carats, depending on cut. And fair isn't linearly related at all.
-
-How do I check if something is linear in R?
-
-geom_smooth(method='lm', formula= y~x)
-
-```{r q2-task}
-## TASK: Plot `price`, `carat`, and `cut` below
-diamonds %>% 
+```{r zoom in}
+diamonds %>%
   filter(carat < 1) %>%
-ggplot() +
-  geom_smooth(mapping = aes(x = carat, y = price, color = cut), method='lm', formula= y~x) +
-  geom_point(mapping = aes(x = carat, y = price, color = cut), alpha = 0.1)
-```
-```{r q2-task}
-## TASK: Plot `price`, `carat`, and `cut` below
-diamonds %>% 
-  filter(carat < 1) %>%
-ggplot() +
-  geom_boxplot(mapping = aes(x = carat, y = price, color = cut))
+  ggplot() +
+  geom_point(mapping = aes(x = carat, y = price, color = cut))
 ```
 
-```{r q2-task}
-## TASK: Plot `price`, `carat`, and `cut` below
-diamonds %>% 
-ggplot() +
-  geom_smooth(mapping = aes(x = carat, y = price, color = cut), method='lm', formula= y~x)
-```
+With the same carat, better clarity diamonds tend to fetch higher prices. Larger diamonds tend to have lower clarity, but can still fetch high prices.
 
-```{r q2-task}
-## TASK: Plot `price`, `carat`, and `cut` below
-## Your code here!
-diamonds %>% 
-  filter(carat < 1) %>%
-ggplot() +
-  geom_smooth(mapping = aes(x = carat, y = price, color = cut))
-```
-```{r}
-diamonds %>% 
-ggplot() +
-  geom_smooth(mapping = aes(x = carat, y = price, color = cut))
-```
-Hypotheses:
-- Most diamonds are small, and small diamonds are less pricey and have better color.
-- Carat (weight) and volume are very closely linked.
-
-
-```{r}
-diamonds %>% 
-  mutate(volume = x * y * z) %>%
-  filter(volume < 500) %>%
-ggplot() +
-  geom_point(mapping = aes(x = volume, y = carat))
-```
-Why are there outliers? Why don't these correspond perfectly? Impurities? Seeing no correlation between outliers and a certain color or clarity.
-
-```{r}
-diamonds %>% 
-    mutate(volume = x * y * z) %>%
-  filter(volume < 500) %>%
-ggplot() +
-  geom_histogram(mapping = aes(x = volume), binwidth = 0.1)
-```
-```{r}
-diamonds %>% 
-ggplot() +
-  geom_histogram(mapping = aes(x = carat), binwidth = 0.1)
-```
-
-
-```{r}
-diamonds %>% 
-  mutate(volume = x * y * z) %>%
-  filter(volume < 500) %>%
-ggplot() +
-  geom_point(mapping = aes(x = volume, y = price, color = clarity))
-```
 ```{r}
 diamonds %>% 
   mutate(carat) %>%
@@ -162,22 +94,39 @@ ggplot() +
   geom_point(mapping = aes(x = carat, y = price, color = clarity))
 ```
 
-Higher carat diamonds have higher minimum prices, but the maximum prices do not correlate with carat. They can be expensive at any size, but can't be cheap at any size.
+Diamond color looks to be more strongly correlated with carat (better color for lower carat) than with price.
+```{r}
+diamonds %>% 
+  mutate(carat) %>%
+ggplot() +
+  geom_point(mapping = aes(x = carat, y = price, color = color))
+```
 
-With the same carat, better clarity diamonds fetch higher prices.
+Most diamonds are less than 1.5 carats, so the sample size is smaller for diamonds larger than 1.5 carats and it is harder to draw conclusions. The 3rd quartile is 1.04, but the max is 5.01.
 
-Large diamonds tend to have lower clarity.
+Ideal cut diamonds are the most common in this data set, with a high number of premium and very good as well.
 
-**Observations**:
-Volume and carat (weight) are very closely correlated, but there are outliers. I wonder if these are due to impurities. Outliers do not seem to correspond to worse color or lower clarity.
+Most diamonds are in the top two clarity buckets.
 
-Higher carat diamonds have higher minimum prices, but the maximum prices do not correlate with carat. They can be expensive at any size, but can't be cheap at any size.
+```{r}
+summary(diamonds)
+```
 
-With the same carat, better clarity diamonds fetch higher prices.
+Since both better cut and better clarity seem to be correlated with price, I wonder if cut and clarity are correlated. It looks like most of the best clarity diamonds also have ideal cut, but poor clarity diamonds are distributed fairly evenly across different cuts. So they are correlated for the best diamonds, but not for worse diamonds.
 
-Large diamonds tend to have lower clarity.
+```{r cut vs clarity}
+ggplot(diamonds, aes(cut, clarity)) +
+  geom_jitter(aes(color = cut), size = 0.5)
+```
+How does price vary for the best cut diamonds? For the best cut diamonds, price increases with carat, and the higher clarity diamonds fetch higher prices for a given carat.
 
-Up through 0.7 carat, price scales fairly linearly with carat, but after that they vary widely.
+```{r}
+diamonds %>%
+  filter(cut == "Ideal") %>%
+  ggplot() +
+  geom_point(mapping = aes(x = carat, y = price, color = clarity))
+```
+Carat seems to be the variable most strongly correlated with price. I wonder which secondary variable is more important to price, cut or clarity, but I'm not sure yet how to answer this question.
 
 # Communication
 <!-- -------------------------------------------------- -->
