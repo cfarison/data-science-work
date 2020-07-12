@@ -25,8 +25,8 @@ library(tidyverse)
 
 __q1__ Using the graphs generated in the chunks `q1-vis1` and `q1-vis2` below, answer:
 
-- Which `class` has the most vehicles?
-- Which `class` has the broadest distribution of `cty` values?
+- Which `class` has the most vehicles? Hard to tell, 2 classes share the same color...count graph would be the best though.
+- Which `class` has the broadest distribution of `cty` values? subcompact? density graph makes this  easier.
 - Which graph---`vis1` or `vis2`---best helps you answer each question?
 
 ```{r q1-vis1}
@@ -52,7 +52,8 @@ __q2__ Modify `q1-vis2` to use a `facet_wrap()` on the `class`. "Free" the verti
 ```{r q2-task}
 mpg %>%
   ggplot(aes(cty, color = class)) +
-  geom_density()
+  geom_density() +
+  facet_wrap(vars(class), scales = "free")
 ```
 
 In the reading, we learned that the "most important thing" to keep in mind with `geom_histogram()` and `geom_freqpoly()` is to _explore different binwidths_. We'll explore this idea in the next question.
@@ -73,7 +74,7 @@ diamonds %>%
 ```
 
 **Observations**
-- Write your observations here!
+- You really need a small binwidth like 0.01 to see the groupings at certain carat levels.
 
 <!-- include-exit-ticket -->
 # Exit Ticket
