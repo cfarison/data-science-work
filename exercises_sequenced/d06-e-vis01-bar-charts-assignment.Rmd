@@ -31,8 +31,9 @@ the same visual using `geom_col()`.
 
 ```{r q1-task}
 mpg %>%
-  ggplot(aes(trans)) +
-  geom_bar()
+  count(trans) %>%
+  ggplot() +
+  geom_col(aes(trans, n))
 ```
 
 The reading mentioned that when using `geom_col()` our x-y data should be
@@ -55,11 +56,12 @@ __q2__ The following code attempts to visualize `cty, hwy` from `mpg` using
 ```{r q2-task}
 mpg %>%
   ggplot(aes(x = cty, y = hwy)) +
-  geom_col()
+  geom_col(position = "dodge")
 ```
 
 **Observations**:
-- Write your observations here!
+- I see lines on the bar graph like it's a stacked bar graph, even though I didn't ask it to use a 3rd variable. From viewing the data as a table, I recall that each cty value could map to multiple hwy values. So maybe that's what it's trying to show, but it's not very effective.
+- If I change position to "dodge" or "fill", it still doesn't represent the data well. 
 
 A more standard way to visualize this kind of data is a *scatterplot*, which
 we'll study later. For now, here's an example of a more effective way to
@@ -85,7 +87,7 @@ mpg %>%
 ```
 
 **Observations**:
-- Write your observations here!
+- Suv is the most common class in this dataset, and 2seater is the least common. The order from least to most is 2seater, minivan, pickup, subcompact, midsize, compact, and suv.
 
 ```{r q4-v2}
 ## TODO: Run this code without changing, describe your observations on the data
@@ -95,12 +97,20 @@ mpg %>%
 ```
 
 **Observations**:
-- Write your observations here!
+- drv is the type of drive train, where f = front-wheel drive, r = rear wheel drive, 4 = 4wd.
+- 2 seaters have only rear wheel drive
+- minivans have only front wheel drive
+- pickup trucks have only 4 wheel drive
+- compact and midsize both have mostly front wheel drive and some 4 wheel drive
+- subcompact has mostly front wheel drive, but some rear wheel drive, and a small number of 4 wheel drive
+- suvs have mostly 4 wheel drive, with some rear wheel drive
 
 **Compare `v1` and `v2`**:
 
 - Which visualization---`v1` or `v2`---enabled you to make more observations?
 - What was the difference between `v1` and `v2`?
+
+- I am able to make many more observations with v2 than v1 because this graph helps me tell how a certain variable is affected by another one, by adding another variable to create a stacked bar chart.
 
 __q4__ The following code has a bug; it does not do what its author intended.
 Identify and fix the bug. What does the resulting graph tell you about the
@@ -111,13 +121,15 @@ do this in a future exercise.
 
 ```{r q4-task}
 mpg %>%
-  ggplot(aes(x = manufacturer, fill = class), position = "dodge") +
-  geom_bar() +
+  ggplot() +
+  geom_bar(mapping = aes(x = manufacturer, fill = class), position = "dodge") +
   theme(axis.text.x = element_text(angle = 270, vjust = 0.5, hjust = 0))
 ```
 
 **Observations**
-- Your observations here!
+- The error in placement of position within the mapping rather than outside the mapping meant it  got ignored.
+- Some manufacturers in this dataset support only 1 class of vehicle: honda, jeep, land rover, lincoln, mecury, and pontiac.
+- Other manufactuers in this dataset support 2 or 3. No manufacturers in this dataset support all 4 classes.
 
 __q5__ The following graph is hard to read. What other form of faceting would
 make the visual more convenient to read? Modify the code below with your
@@ -127,7 +139,7 @@ suggested improvement.
 mpg %>%
   ggplot(aes(x = cyl)) +
   geom_bar() +
-  facet_grid(~ manufacturer)
+  facet_wrap(~ manufacturer)
 ```
 
 <!-- include-exit-ticket -->
