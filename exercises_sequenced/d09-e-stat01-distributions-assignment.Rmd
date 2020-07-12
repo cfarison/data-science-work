@@ -63,7 +63,9 @@ __q1__ Modify the code below to evaluate a uniform distribution with `min = -1` 
 ```{r q1-task}
 ## TODO: Complete this code
 df_q1 <-
-  tibble(x = seq(-5, +5, length.out = 100))
+  tibble(x = seq(-5, +5, length.out = 100)) %>% 
+  mutate(d = dunif(x, min = -1, max = 1))
+df_q1
 ```
 
 Use the following test to check your answer.
@@ -150,11 +152,18 @@ df_q2 <- map_dfr(
     tibble(Z = rnorm(n = nsamp), n = nsamp)
   }
 )
+df_q2
 ## TODO: Create the figure
+  ## Plot a *distribution*
+df_q2 %>%
+  ggplot(aes(Z, color = n, group = n)) +
+  geom_density() +
+  scale_color_viridis()
+
 ```
 
 **Observations**
-- Write your observation about the densities and `n` here.
+- ??
 
 ## Random Seeds: Setting the State
 <!-- -------------------------------------------------- -->
