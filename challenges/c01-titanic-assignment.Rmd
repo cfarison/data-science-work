@@ -200,7 +200,7 @@ df_prop %>%
   ggplot() +
   geom_point(mapping = aes(x = Age, y = Class, color = Prop), size = 10) +
   scale_color_viridis() +
-  ggtitle("Women and Children First Didn't Prioritize 3rd Class Women")
+  ggtitle("'Women and Children First' Didn't Prioritize 3rd Class Women and Children")
 ```
 
 3rd class women survived much less well than 1st and 2nd class women and children.
