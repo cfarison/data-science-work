@@ -288,7 +288,7 @@ df_prop %>%
   ggplot() +
   geom_point(mapping = aes(x = Age, y = Class, color = Prop), size = 10) +
   scale_color_viridis() +
-  ggtitle("Women and Children First Didn't Prioritize 3rd Class Women")
+  ggtitle("'Women and Children First' Didn't Prioritize 3rd Class Women and Children")
 ```
 
 ![](c01-titanic-assignment_files/figure-gfm/3rd-class-women-1.png)<!-- -->
