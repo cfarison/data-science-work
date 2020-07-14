@@ -284,6 +284,7 @@ df_prop %>%
 df_prop %>%
   filter(Sex == "Female") %>%
   filter (Class != "Crew") %>%
+  mutate(Age = ifelse(Age == "Adult", "Women", "Girls")) %>%
   ggplot() +
   geom_point(mapping = aes(x = Age, y = Class, color = Prop), size = 10) +
   scale_color_viridis() +

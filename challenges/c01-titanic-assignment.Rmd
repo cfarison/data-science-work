@@ -191,10 +191,12 @@ df_prop %>%
   ggtitle("Male First Class Adults Less Likely to Survive than Children")
 ```
 
+
 ```{r 3rd-class-women}
 df_prop %>%
   filter(Sex == "Female") %>%
   filter (Class != "Crew") %>%
+  mutate(Age = ifelse(Age == "Adult", "Women", "Girls")) %>%
   ggplot() +
   geom_point(mapping = aes(x = Age, y = Class, color = Prop), size = 10) +
   scale_color_viridis() +
@@ -202,7 +204,6 @@ df_prop %>%
 ```
 
 3rd class women survived much less well than 1st and 2nd class women and children.
-
 
 # Could calculate total, look at proportion of total.
 
