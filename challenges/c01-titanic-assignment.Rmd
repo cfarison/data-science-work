@@ -94,6 +94,12 @@ df_titanic %>%
   scale_size_area(max_size = 10) +
   ggtitle("Survivors Mostly Male Crew Members")
 ```
+```{r}
+df_titanic %>%
+  filter(Survived == "Yes") %>%
+  ggplot() +
+    geom_col(aes(x = Sex, y = n, fill = Class))
+```
 
 **Observations**:
 
@@ -154,8 +160,9 @@ df_prop %>%
 
 **Observations**:
 
-- Male crew and male 3rd class passengers were least likely to survive, closely followed by male 2nd class passengers.
+- Male crew and overall 3rd class passengers were least likely to survive, closely followed by male 2nd class passengers.
 - 1st class female passengers were most likely to survive, followed by 2nd class female passengers and female crew.
+- 3rd class women were much less likely to survive than 1st and 2nd class women.
 
 __q5__ Create a plot showing the group-proportion of passengers who *did* survive, along with aesthetics for `Class`, `Sex`, *and* `Age`. Document your observations below.
 
@@ -184,6 +191,20 @@ df_prop %>%
   ggtitle("Male First Class Adults Less Likely to Survive than Children")
 ```
 
+```{r 3rd-class-women}
+df_prop %>%
+  filter(Sex == "Female") %>%
+  filter (Class != "Crew") %>%
+  ggplot() +
+  geom_point(mapping = aes(x = Age, y = Class, color = Prop), size = 10) +
+  scale_color_viridis() +
+  ggtitle("Women and Children First Didn't Prioritize 3rd Class Women")
+```
+
+3rd class women survived much less well than 1st and 2nd class women and children.
+
+
+# Could calculate total, look at proportion of total.
 
 # Notes
 <!-- -------------------------------------------------- -->
