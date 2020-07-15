@@ -9,8 +9,6 @@ Charlie Farison
       - [Due Date](#due-date)
   - [First Look](#first-look)
   - [Deeper Look](#deeper-look)
-  - [Could calculate total, look at proportion of
-    total.](#could-calculate-total-look-at-proportion-of-total.)
   - [Notes](#notes)
 
 *Purpose*: Most datasets have at least a few variables. Part of our task
@@ -280,6 +278,9 @@ df_prop %>%
 ```
 
 ![](c01-titanic-assignment_files/figure-gfm/male-children-1.png)<!-- -->
+
+**Observations**:
+
 1st class men were much less likely to survive than 1st class women and
 1st and 2nd class children.
 
@@ -296,10 +297,10 @@ df_prop %>%
 
 ![](c01-titanic-assignment_files/figure-gfm/3rd-class-women-1.png)<!-- -->
 
+**Observations**:
+
 3rd class women survived much less well than 1st and 2nd class women and
 children.
-
-# Could calculate total, look at proportion of total.
 
 # Notes
 
