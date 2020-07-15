@@ -98,7 +98,8 @@ df_titanic %>%
 df_titanic %>%
   filter(Survived == "Yes") %>%
   ggplot() +
-    geom_col(aes(x = Sex, y = n, fill = Class))
+    geom_col(aes(x = Sex, y = n, fill = Class)) +
+    ggtitle("Survivors Mostly Male Crew Members")
 ```
 
 **Observations**:
@@ -190,7 +191,7 @@ df_prop %>%
   scale_color_viridis() +
   ggtitle("Male First Class Adults Less Likely to Survive than Children")
 ```
-
+1st class men were much less likely to survive than 1st class women and 1st and 2nd class children.
 
 ```{r 3rd-class-women}
 df_prop %>%

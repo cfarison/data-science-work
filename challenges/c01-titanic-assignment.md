@@ -142,7 +142,8 @@ df_titanic %>%
 df_titanic %>%
   filter(Survived == "Yes") %>%
   ggplot() +
-    geom_col(aes(x = Sex, y = n, fill = Class))
+    geom_col(aes(x = Sex, y = n, fill = Class)) +
+    ggtitle("Survivors Mostly Male Crew Members")
 ```
 
 ![](c01-titanic-assignment_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
@@ -279,6 +280,8 @@ df_prop %>%
 ```
 
 ![](c01-titanic-assignment_files/figure-gfm/male-children-1.png)<!-- -->
+1st class men were much less likely to survive than 1st class women and
+1st and 2nd class children.
 
 ``` r
 df_prop %>%
