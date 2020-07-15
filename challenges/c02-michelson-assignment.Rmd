@@ -1,7 +1,7 @@
 ---
 title: "Michelson Speed-of-light Measurements"
-author: "(Your name here)"
-date: 2020-
+author: "Charlie Farison"
+date: 2020-07-15
 output:
   github_document:
     toc: true
@@ -101,16 +101,18 @@ Michelson *exactly*; why might this be?
 |            1 | 15 |   299810 |
 
 ```{r q1-task}
-## TODO: Compute summaries
-df_q1 <- NA
+df_q1 <- df_michelson %>%
+  group_by(Distinctness) %>%
+  summarise(n = n(), MeanVelocity = mean(Velocity))
 df_q1 %>%
   arrange(desc(Distinctness)) %>%
   knitr::kable()
 ```
 
 **Observations**:
-- Write your observations here!
-- Why might your table differ from Michelson's?
+- Most observations had distinctness level 2 or 3.
+- The mean was slightly lower for observations with poorer distinctness.
+- My table might differ from Michelson's because his values seem to be rounded to the nearest 10.
 
 The `Velocity` values in the dataset are the speed of light *in air*; Michelson
 introduced a couple of adjustments to estimate the speed of light in a vacuum.
@@ -124,8 +126,9 @@ __q2__ Create a new variable `VelocityVacuum` with the $+92$ km/s adjustment to
 
 ```{r q2-task}
 ## TODO: Adjust the data, assign to df_q2
-df_q2 <- NA
-
+df_q2 <- 
+  df_michelson %>%
+  mutate(VelocityVacuum = Velocity + 92)
 df_q2
 ```
 
