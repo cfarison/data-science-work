@@ -146,7 +146,7 @@ df_titanic %>%
     ggtitle("Survivors Mostly Male Crew Members")
 ```
 
-![](c01-titanic-assignment_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+![](c01-titanic-assignment_files/figure-gfm/q3-bar-1.png)<!-- -->
 
 **Observations**:
 

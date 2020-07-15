@@ -94,7 +94,7 @@ df_titanic %>%
   scale_size_area(max_size = 10) +
   ggtitle("Survivors Mostly Male Crew Members")
 ```
-```{r}
+```{r q3-bar}
 df_titanic %>%
   filter(Survived == "Yes") %>%
   ggplot() +
