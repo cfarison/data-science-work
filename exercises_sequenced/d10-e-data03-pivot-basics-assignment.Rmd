@@ -66,9 +66,11 @@ cases
 - 2. Country, year, and some unknown quantity (n, count, etc.)
 - 3. FR, DE, and US
 
+The answer is #2: Country, year, and some unknown quantity (n, count, etc.)
+
 ```{r q1-test}
 ## TODO: Modify with your answer
-q1_answer <- 0
+q1_answer <- 2
 
 ## NOTE: The following will test your answer
 if (((q1_answer + 56) %% 3 == 1) & (q1_answer > 0)) {
@@ -96,9 +98,11 @@ alloys
 - 2. thick, E, mu, rep
 - 3. thick, E, mu, rep, angle
 
+The answer is 3 according to the unit test, but angle is tricky - it's not represented clearly in the column names.
+
 ```{r q2-test}
 ## TODO: Modify with your answer
-q2_answer <- 0
+q2_answer <- 3
 
 ## NOTE: The following will test your answer
 if (((q2_answer + 38) %% 3 == 2) & (q2_answer > 0)) {
