@@ -110,9 +110,10 @@ df_q1 %>%
 ```
 
 **Observations**:
-- Most observations had distinctness level 2 or 3.
-- The mean was slightly lower for observations with poorer distinctness.
-- My table might differ from Michelson's because his values seem to be rounded to the nearest 10.
+
+* Most observations had distinctness level 2 or 3.
+* The mean was slightly lower for observations with poorer distinctness.
+* My table might differ from Michelson's because his values seem to be rounded to the nearest 10.
 
 The `Velocity` values in the dataset are the speed of light *in air*; Michelson
 introduced a couple of adjustments to estimate the speed of light in a vacuum.
@@ -130,6 +131,9 @@ df_q2 <-
   df_michelson %>%
   mutate(VelocityVacuum = Velocity + 92)
 df_q2
+df_q2 %>%
+  group_by(Distinctness) %>%
+  summarise(n = n(), MeanVacVelocity = mean(VelocityVacuum))
 ```
 
 As part of his study, Michelson assessed the various potential sources of error,
@@ -157,17 +161,129 @@ less than the true error?
 
 ```{r q3-task}
 ## TODO: Compare Michelson's estimate and error against the true value
-## Your code here!
+HighEstimate = LIGHTSPEED_MICHELSON + LIGHTSPEED_PM
+LowEstimate = LIGHTSPEED_MICHELSON - LIGHTSPEED_PM
+TrueValue = LIGHTSPEED_VACUUM
+Difference = TrueValue - LIGHTSPEED_MICHELSON
+
+HighEstimate
+LowEstimate
+TrueValue
+Difference
+LIGHTSPEED_PM
 ```
 
 **Observations**:
+
+* Michelson estimated his uncertainty as 51, but the real error was about 151 below the real value, so he underestimated the uncertainty.
 
 __q4__ You have access to a few other variables. Construct a few visualizations
 of `VelocityVacuum` against these other factors. Are there other patterns in the
 data that might help explain the difference between Michelson's estimate and
 `LIGHTSPEED_VACUUM`?
 
+```{r viridis, include = FALSE}
+library(viridis)
+```
 
+```{r visualization-temp}
+library(viridis)
+df_q2 %>%
+  ggplot() +
+  geom_point(mapping = aes(x = Date, y = Velocity, color = Temp)) +
+  geom_line(mapping = aes(x = Date, y = 299792.5)) +
+  scale_color_viridis() + 
+  ggtitle("Higher Temperature Readings Tend to Be Above the True Value")
+```
+
+**Observations**:
+
+* Higher temperature readings seem to be above the true value.
+
+```{r visualization-temp-high}
+df_q2 %>%
+  filter(Temp > 84) %>%
+  ggplot() +
+  geom_point(mapping = aes(x = Date, y = Velocity, color = Temp)) +
+  geom_line(mapping = aes(x = Date, y = 299792.5)) +
+  scale_color_viridis() +
+  ggtitle("Above a Temperature of 84, All Readings Are Above the Real Value")
+```
+
+**Observations**:
+
+* Above a temperature of 84, all readings are above the real value.
+
+```{r visualization-temp-lower}
+library(viridis)
+df_q2 %>%
+  filter(Temp < 84) %>%
+  ggplot() +
+  geom_point(mapping = aes(x = Date, y = Velocity, color = Temp)) +
+  geom_line(mapping = aes(x = Date, y = 299792.5)) +
+  scale_color_viridis() +
+  ggtitle("Excluding Temperatures Above 84, Readings are Closer to Real Value")
+```
+
+**Observations**:
+
+* Excluding observations above a temperature of 84, the readings seem much closer to the real value.
+
+```{r average}
+df_q2 %>%
+  summarise(Michelson_Estimate = mean(VelocityVacuum))
+```
+
+```{r high-temp}
+df_q2 %>%
+  filter(Temp < 84) %>%
+  summarise(Michelson_Estimate_Excluding_High_Temps = mean(VelocityVacuum))
+```
+
+**Observations**:
+
+* Excluding observations above a temperature of 84, the average only changes by 4 km/s, so excluding the highest temperature readings is not enough to estimate the speed of light with much less uncertainty.
+
+```{r visualization-distinct}
+library(viridis)
+df_q2 %>%
+  ggplot() +
+  geom_point(mapping = aes(x = Date, y = Velocity, color = Distinctness)) +
+  geom_line(mapping = aes(x = Date, y = 299792.5)) +
+  ggtitle("Most Observations Below the Real Value Had Better Distinctness")
+```
+
+**Observations**:
+
+* Most of the observations below the real value had better distinctness.
+
+```{r visualization-distinct-high}
+library(viridis)
+df_q2 %>%
+  filter(Distinctness == 3) %>%
+  ggplot() +
+  geom_point(mapping = aes(x = Date, y = Velocity, color = Distinctness)) +
+  geom_line(mapping = aes(x = Date, y = 299792.5)) +
+  ggtitle("Limiting Distinctness to 3, Most Observations Still Above Real Value")
+```
+
+**Observations**:
+
+* Even with distinctness limited to 3, most observations are above the real value.
+
+```{r high-distinctness}
+df_q2 %>%
+  filter(Distinctness == 3) %>%
+  summarise(Michelson_Estimate_High_Distinctness = mean(VelocityVacuum))
+```
+
+**Observations**:
+
+* Limiting results to ones with high distinctness actually increases the mean, away from the real value.
+
+**Summary of Observations**:
+
+* High temperature does seem to skew the average up, but only by 4. The increased uncertainty seems to have come from some variable other than temperature, distinctness, or date.
 
 ## Bibliography
 
