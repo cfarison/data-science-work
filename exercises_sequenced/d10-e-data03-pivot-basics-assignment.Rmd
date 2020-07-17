@@ -293,6 +293,7 @@ df_base <-
          2,      8,  "B",
          3,      7,  "C"
   )
+df_base
 ```
 
 We're going to play a game: I'm going to modify the data, and your job is to
@@ -311,7 +312,6 @@ df_q3 <-
     values_to = "value",
     cols = -key
   )
-df_q3
 ```
 
 Undo the modification using a single pivot. Don't worry about column order.
@@ -319,7 +319,11 @@ Undo the modification using a single pivot. Don't worry about column order.
 ```{r q3-task}
 df_q3_res <-
   df_q3 %>%
-## NOTE: Add your pivot here!
+    pivot_wider(
+    names_prefix = "X-",
+    names_from = id, # Cell entries to turn into new column names
+    values_from = value # Values to associate with the new column(s)
+  )
 
 df_q3_res
 all_equal(df_base, df_q3_res) # Checks equality; returns TRUE if equal
@@ -347,6 +351,12 @@ Check the documentation for `pivot_longer`.
 df_q4_res <-
   df_q4 %>%
 ## NOTE: Add your pivot here!
+  pivot_longer(
+    cols = -"X-1",
+    names_to = "key",
+    values_to = "X-0",
+    values_drop_na = TRUE,
+  )
 
 df_q4_res
 all_equal(df_base, df_q4_res) # Checks equality; returns TRUE if equal
@@ -373,7 +383,11 @@ Undo the modification using a single pivot. Don't worry about column order.
 df_q5_res <-
   df_q5 %>%
 ## NOTE: Add your pivot here!
-
+  pivot_longer(
+    cols = everything(),
+    names_to = c(".value", "key"),
+    names_sep = "_",
+  )
 df_q5_res
 all_equal(df_base, df_q5_res) # Checks equality; returns TRUE if equal
 ```
