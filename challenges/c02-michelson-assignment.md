@@ -268,8 +268,8 @@ LIGHTSPEED_PM
 
 **Observations**:
 
-  - Michelson estimated his uncertainty as 51, but the real error was
-    about 151 below the real value, so he underestimated the
+  - Michelson estimated his uncertainty as 51 km/s, but the real error
+    was about 151 km/s below the real value, so he underestimated the
     uncertainty.
 
 **q4** You have access to a few other variables. Construct a few
@@ -283,7 +283,7 @@ df_q2 %>%
   ggplot() +
   geom_point(mapping = aes(x = Date, y = VelocityVacuum, color = Distinctness)) +
   geom_line(mapping = aes(x = Date, y = 299792.5)) +
-  ggtitle("No Clear Trend for Distinctness")
+  ggtitle("No Clear Trend for Distinctness in (Corrected) Readings")
 ```
 
 ![](c02-michelson-assignment_files/figure-gfm/visualization-distinct-1.png)<!-- -->
@@ -305,7 +305,7 @@ df_q2 %>%
   geom_point(mapping = aes(x = Date, y = VelocityVacuum, color = Temp)) +
   geom_line(mapping = aes(x = Date, y = 299792.5)) +
   scale_color_viridis() + 
-  ggtitle("Most Readings Are Above the True Value")
+  ggtitle("Most (Corrected) Readings Are Above the True Value")
 ```
 
 ![](c02-michelson-assignment_files/figure-gfm/visualization-temp-1.png)<!-- -->
@@ -323,7 +323,7 @@ df_q2 %>%
   geom_point(mapping = aes(x = Date, y = VelocityVacuum, color = Temp)) +
   geom_line(mapping = aes(x = Date, y = 299792.5)) +
   scale_color_viridis() +
-  ggtitle("Above a Temperature of 71, All Readings Are Above the Real Value")
+  ggtitle("Above Temperature 71, All (Corrected) Readings Are Above the Real Value")
 ```
 
 ![](c02-michelson-assignment_files/figure-gfm/visualization-temp-high-1.png)<!-- -->
@@ -392,13 +392,51 @@ df_q2 %>%
     temperature may have helped get more accurate data. Doing a more
     rigorous temperature correction may have helped as well.
 
+<!-- end list -->
+
+``` r
+df_q2 %>%
+  ggplot() +
+  geom_point(mapping = aes(x = Date, y = Velocity, color = Temp)) +
+  geom_line(mapping = aes(x = Date, y = 299792.5)) +
+  scale_color_viridis() +
+  ggtitle("Even Before Correction, Most Readings Are Above the Real Value")
+```
+
+![](c02-michelson-assignment_files/figure-gfm/visualization-pre-correction-1.png)<!-- -->
+
+**Observations**:
+
+  - Even before the correction for measurement in air rather than
+    vacuum, most readings were above the real value.
+
+<!-- end list -->
+
+``` r
+df_q2 %>%
+  summarise(Uncorrected_Mean = mean(Velocity))
+```
+
+    ## # A tibble: 1 x 1
+    ##   Uncorrected_Mean
+    ##              <dbl>
+    ## 1          299852.
+
+**Observations**:
+
+  - Before correction for measurement in air, the mean is 299852.4 km/s.
+    This is only 59.9 km/s below the real value, and almost within
+    Michelson’s predicted uncertainty. But values were corrected for
+    measurement in air by adding 94 km/s, which skewed the estimate
+    high.
+
 **Summary of Observations**:
 
-  - High temperature does seem to skew the average up. Perhaps using a
+  - High temperature does seem to skew the mean up. Perhaps using a
     correction of temperature by point, rather than correcting all
-    values by adding +94 km/s based on the average temperature, would
-    have helped. Taking more readings at lower temperatures, below 71,
-    may also have helped.
+    values by adding +94 km/s based on the mean temperature, would have
+    helped. Taking more readings at lower temperatures, below 71, may
+    also have helped.
 
 ## Bibliography
 
