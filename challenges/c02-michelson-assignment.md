@@ -1,7 +1,7 @@
 Michelson Speed-of-light Measurements
 ================
 Charlie Farison
-2020-07-15
+2020-07-18
 
   - [Grading Rubric](#grading-rubric)
       - [Individual](#individual)
@@ -281,55 +281,35 @@ between Michelson’s estimate and `LIGHTSPEED_VACUUM`?
 library(viridis)
 df_q2 %>%
   ggplot() +
-  geom_point(mapping = aes(x = Date, y = Velocity, color = Temp)) +
+  geom_point(mapping = aes(x = Date, y = VelocityVacuum, color = Temp)) +
   geom_line(mapping = aes(x = Date, y = 299792.5)) +
   scale_color_viridis() + 
-  ggtitle("Higher Temperature Readings Tend to Be Above the True Value")
+  ggtitle("Most Readings Are Above the True Value")
 ```
 
 ![](c02-michelson-assignment_files/figure-gfm/visualization-temp-1.png)<!-- -->
 
 **Observations**:
 
-  - Higher temperature readings seem to be above the true value.
+  - The vast majority of readings seem to be above the true value.
 
 <!-- end list -->
 
 ``` r
 df_q2 %>%
-  filter(Temp > 84) %>%
+  filter(Temp > 71) %>%
   ggplot() +
-  geom_point(mapping = aes(x = Date, y = Velocity, color = Temp)) +
+  geom_point(mapping = aes(x = Date, y = VelocityVacuum, color = Temp)) +
   geom_line(mapping = aes(x = Date, y = 299792.5)) +
   scale_color_viridis() +
-  ggtitle("Above a Temperature of 84, All Readings Are Above the Real Value")
+  ggtitle("Above a Temperature of 71, All Readings Are Above the Real Value")
 ```
 
 ![](c02-michelson-assignment_files/figure-gfm/visualization-temp-high-1.png)<!-- -->
 
 **Observations**:
 
-  - Above a temperature of 84, all readings are above the real value.
-
-<!-- end list -->
-
-``` r
-library(viridis)
-df_q2 %>%
-  filter(Temp < 84) %>%
-  ggplot() +
-  geom_point(mapping = aes(x = Date, y = Velocity, color = Temp)) +
-  geom_line(mapping = aes(x = Date, y = 299792.5)) +
-  scale_color_viridis() +
-  ggtitle("Excluding Temperatures Above 84, Readings are Closer to Real Value")
-```
-
-![](c02-michelson-assignment_files/figure-gfm/visualization-temp-lower-1.png)<!-- -->
-
-**Observations**:
-
-  - Excluding observations above a temperature of 84, the readings seem
-    much closer to the real value.
+  - Above a temperature of 71, all readings are above the real value.
 
 <!-- end list -->
 
@@ -345,21 +325,50 @@ df_q2 %>%
 
 ``` r
 df_q2 %>%
-  filter(Temp < 84) %>%
+  filter(Temp < 71) %>%
   summarise(Michelson_Estimate_Excluding_High_Temps = mean(VelocityVacuum))
 ```
 
     ## # A tibble: 1 x 1
     ##   Michelson_Estimate_Excluding_High_Temps
     ##                                     <dbl>
-    ## 1                                 299940.
+    ## 1                                 299910.
 
 **Observations**:
 
-  - Excluding observations above a temperature of 84, the average only
-    changes by 4 km/s, so excluding the highest temperature readings is
-    not enough to estimate the speed of light with much less
-    uncertainty.
+  - Excluding observations above a temperature of 71, the average gets
+    closer to the real value, but only decreases by 34.9 km/s, likely
+    because there are only 2 data points that were below the real value.
+
+<!-- end list -->
+
+``` r
+df_q2 %>%
+  summarise(Count = n())
+```
+
+    ## # A tibble: 1 x 1
+    ##   Count
+    ##   <int>
+    ## 1   100
+
+``` r
+df_q2 %>%
+  filter(Temp < 71) %>%
+  summarise(Count_Below_71 = n())
+```
+
+    ## # A tibble: 1 x 1
+    ##   Count_Below_71
+    ##            <int>
+    ## 1             20
+
+**Observations**:
+
+  - Of the observations taken, only 20 of the 100 observations were
+    taken below a temperature of 71. Doing more observations at a lower
+    temperature may have helped get more accurate data. Doing a more
+    rigorous temperature correction may have helped as well.
 
 <!-- end list -->
 
@@ -367,60 +376,25 @@ df_q2 %>%
 library(viridis)
 df_q2 %>%
   ggplot() +
-  geom_point(mapping = aes(x = Date, y = Velocity, color = Distinctness)) +
+  geom_point(mapping = aes(x = Date, y = VelocityVacuum, color = Distinctness)) +
   geom_line(mapping = aes(x = Date, y = 299792.5)) +
-  ggtitle("Most Observations Below the Real Value Had Better Distinctness")
+  ggtitle("No Clear Trend for Distinctness")
 ```
 
 ![](c02-michelson-assignment_files/figure-gfm/visualization-distinct-1.png)<!-- -->
 
 **Observations**:
 
-  - Most of the observations below the real value had better
-    distinctness.
-
-<!-- end list -->
-
-``` r
-library(viridis)
-df_q2 %>%
-  filter(Distinctness == 3) %>%
-  ggplot() +
-  geom_point(mapping = aes(x = Date, y = Velocity, color = Distinctness)) +
-  geom_line(mapping = aes(x = Date, y = 299792.5)) +
-  ggtitle("Limiting Distinctness to 3, Most Observations Still Above Real Value")
-```
-
-![](c02-michelson-assignment_files/figure-gfm/visualization-distinct-high-1.png)<!-- -->
-
-**Observations**:
-
-  - Even with distinctness limited to 3, most observations are above the
-    real value.
-
-<!-- end list -->
-
-``` r
-df_q2 %>%
-  filter(Distinctness == 3) %>%
-  summarise(Michelson_Estimate_High_Distinctness = mean(VelocityVacuum))
-```
-
-    ## # A tibble: 1 x 1
-    ##   Michelson_Estimate_High_Distinctness
-    ##                                  <dbl>
-    ## 1                              299954.
-
-**Observations**:
-
-  - Limiting results to ones with high distinctness actually increases
-    the mean, away from the real value.
+  - There doesn’t seem to be a clear trend between distinctness and
+    proximity to the real value.
 
 **Summary of Observations**:
 
-  - High temperature does seem to skew the average up, but only by 4.
-    The increased uncertainty seems to have come from some variable
-    other than temperature, distinctness, or date.
+  - High temperature does seem to skew the average up. Perhaps using a
+    correction of temperature by point, rather than correcting all
+    values by adding +94 km/s based on the average temperature, would
+    have helped. Taking more readings at lower temperatures, below 71,
+    may also have helped.
 
 ## Bibliography
 
