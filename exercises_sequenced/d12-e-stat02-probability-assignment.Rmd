@@ -56,6 +56,7 @@ df_z <- tibble(z = rnorm(100))
 df_z %>%
   mutate(in_A = (-1.96 <= z) & (z <= +1.96)) %>%
   summarize(count_total = n(), count_A = sum(in_A), fr = mean(in_A))
+df_z
 ```
 
 Now it's your turn!
@@ -65,14 +66,17 @@ __q1__ Let $A = {z | z <= 0}$. Complete the following code to compute `count_tot
 ```{r q1-task}
 ## NOTE: No need to change this!
 df_z <- tibble(z = rnorm(100))
-
 ## TODO: Compute `count_total`, `count_A`, and `fr`
+df_z %>% 
+  mutate(in_A = z <= 0) %>%
+  summarize(count_total = n(), count_A = sum(in_A), fr = mean(in_A))
+  
 ```
 
 **Observations**:
 
-- What value of `fr` did you predict?
-- Did your prediction match your calculation?
+- What value of `fr` did you predict? I guessed half, 0.5.
+- Did your prediction match your calculation? Not quite. It's 0.57.
 
 The following graph visualizes the set $A = {z | z <= 0}$ against a standard normal distribution.
 
@@ -119,14 +123,14 @@ __q2__: Modify the code below to consider the set $A = {z | -1.96 <= z <= +1.96}
 
 ```{r q2-task}
 ## TASK: Modify the code below
-      summarize(count_total = n(), count_A = sum(in_A), fr = mean(in_A))
-  }
-)
+df_z %>%
+  mutate(in_A = (-1.96 <= z) & (z <= +1.96)) %>%
+  summarize(count_total = n(), count_A = sum(in_A), fr = mean(in_A))
 ```
 
 **Observations**:
 
-- What value does `fr` appear to be limiting towards?
+- What value does `fr` appear to be limiting towards? 0.96 would make sense
 
 Now that we know what probability is; let's connect the idea to distributions.
 
@@ -154,14 +158,14 @@ __q3__ Modify the code below to consider the set $A = {z | z = 2}$.
 
 ```{r q3-task}
 ## TASK: Modify the code below
-      summarize(count_total = n(), count_A = sum(in_A), fr = mean(in_A))
-  }
-)
+df_z %>%
+  mutate(in_A = (z == 2)) %>%
+  summarize(count_total = n(), count_A = sum(in_A), fr = mean(in_A))
 ```
 
 **Observations**:
 
-- What value is `fr` approaching?
+- What value is `fr` approaching? Zero.
 
 We can also understand this phenomenon in terms of areas; the following graph visualizes the set $A = {z | z = 2}$ against a standard normal.
 
@@ -225,7 +229,8 @@ __q4__ Use `pnorm` to compute the probability that `Z ~ norm(mean = 0, sd = 1)` 
 
 ```{r q4-task}
 ## TASK: Compute the probability that Z <= 0, assign to p0
-p0 <- NA_real_
+p0 <- 
+  pnorm(q = 0)
 p0
 ```
 
@@ -240,6 +245,7 @@ print("Nice!")
 **Observations**:
 
 - What was your `fr` prediction in __q1__? How does `p0` compare?
+P is a probability, not frequency.
 
 Note that when our set $A$ is an *interval*, we can use the CDF to express the associated probability. Note that
 
@@ -249,7 +255,8 @@ __q5__ Using the identity above, use `pnorm` to compute the probability that $-1
 
 ```{r p5-task}
 ## TASK: Compute the probability that -1.96 <= Z <= +1.96, assign to pI
-pI <- NA_real_
+pI <- 
+    pnorm(q = +1.96) - pnorm(q = -1.96)
 pI
 ```
 
