@@ -400,9 +400,7 @@ __q6__ Using a single pivot on `df_base` create your own *challenge* dataframe. 
 ```{r q6-task}
 ## NOTE: No need to edit; this is setup for the exercise
 df_q6 <-
-  df_base %>%
-## NOTE: Add your pivot here!
-
+  df_base
 df_q6
 ```
 
