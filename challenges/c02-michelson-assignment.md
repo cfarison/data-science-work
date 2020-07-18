@@ -282,8 +282,9 @@ library(viridis)
 df_q2 %>%
   ggplot() +
   geom_point(mapping = aes(x = Date, y = VelocityVacuum, color = Distinctness)) +
-  geom_line(mapping = aes(x = Date, y = 299792.5)) +
-  ggtitle("No Clear Trend for Distinctness in (Corrected) Readings")
+  geom_hline(yintercept = LIGHTSPEED_MICHELSON, linetype = "dashed") +
+  geom_hline(yintercept = LIGHTSPEED_VACUUM) +
+  ggtitle("Most Readings With Low Distinctness Taken on the Same Day")
 ```
 
 ![](c02-michelson-assignment_files/figure-gfm/visualization-distinct-1.png)<!-- -->
@@ -291,8 +292,8 @@ df_q2 %>%
 **Observations**:
 
   - There doesn’t seem to be a clear trend between distinctness and
-    proximity to the real value, though as we noted before, readings
-    with lower distinctness do seem to have a lower mean.
+    proximity to the real value (solid line), though as we noted before,
+    readings with lower distinctness do seem to have a lower mean.
   - Most of the readings with low distinctness were taken on the same
     day.
 
