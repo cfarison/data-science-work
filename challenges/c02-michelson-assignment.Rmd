@@ -205,7 +205,8 @@ library(viridis)
 df_q2 %>%
   ggplot() +
   geom_point(mapping = aes(x = Date, y = VelocityVacuum, color = Temp)) +
-  geom_line(mapping = aes(x = Date, y = 299792.5)) +
+  geom_hline(yintercept = LIGHTSPEED_MICHELSON, linetype = "dashed") +
+  geom_hline(yintercept = LIGHTSPEED_VACUUM) +
   scale_color_viridis() + 
   ggtitle("Most (Corrected) Readings Are Above the True Value")
 ```
@@ -219,7 +220,8 @@ df_q2 %>%
   filter(Temp > 71) %>%
   ggplot() +
   geom_point(mapping = aes(x = Date, y = VelocityVacuum, color = Temp)) +
-  geom_line(mapping = aes(x = Date, y = 299792.5)) +
+  geom_hline(yintercept = LIGHTSPEED_MICHELSON, linetype = "dashed") +
+  geom_hline(yintercept = LIGHTSPEED_VACUUM) +
   scale_color_viridis() +
   ggtitle("Above Temperature 71, All (Corrected) Readings Are Above the Real Value")
 ```
@@ -260,7 +262,7 @@ df_q2 %>%
 df_q2 %>%
   ggplot() +
   geom_point(mapping = aes(x = Date, y = Velocity, color = Temp)) +
-  geom_line(mapping = aes(x = Date, y = 299792.5)) +
+  geom_hline(yintercept = LIGHTSPEED_VACUUM) +
   scale_color_viridis() +
   ggtitle("Even Before Correction, Most Readings Are Above the Real Value")
 ```
