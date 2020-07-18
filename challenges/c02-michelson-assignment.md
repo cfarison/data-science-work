@@ -281,6 +281,27 @@ between Michelson’s estimate and `LIGHTSPEED_VACUUM`?
 library(viridis)
 df_q2 %>%
   ggplot() +
+  geom_point(mapping = aes(x = Date, y = VelocityVacuum, color = Distinctness)) +
+  geom_line(mapping = aes(x = Date, y = 299792.5)) +
+  ggtitle("No Clear Trend for Distinctness")
+```
+
+![](c02-michelson-assignment_files/figure-gfm/visualization-distinct-1.png)<!-- -->
+
+**Observations**:
+
+  - There doesn’t seem to be a clear trend between distinctness and
+    proximity to the real value, though as we noted before, readings
+    with lower distinctness do seem to have a lower mean.
+  - Most of the readings with low distinctness were taken on the same
+    day.
+
+<!-- end list -->
+
+``` r
+library(viridis)
+df_q2 %>%
+  ggplot() +
   geom_point(mapping = aes(x = Date, y = VelocityVacuum, color = Temp)) +
   geom_line(mapping = aes(x = Date, y = 299792.5)) +
   scale_color_viridis() + 
@@ -337,8 +358,9 @@ df_q2 %>%
 **Observations**:
 
   - Excluding observations above a temperature of 71, the average gets
-    closer to the real value, but only decreases by 34.9 km/s, likely
-    because there are only 2 data points that were below the real value.
+    closer to the real value, but only decreases by about 34 km/s,
+    likely because there are only 2 data points that were below the real
+    value.
 
 <!-- end list -->
 
@@ -369,24 +391,6 @@ df_q2 %>%
     taken below a temperature of 71. Doing more observations at a lower
     temperature may have helped get more accurate data. Doing a more
     rigorous temperature correction may have helped as well.
-
-<!-- end list -->
-
-``` r
-library(viridis)
-df_q2 %>%
-  ggplot() +
-  geom_point(mapping = aes(x = Date, y = VelocityVacuum, color = Distinctness)) +
-  geom_line(mapping = aes(x = Date, y = 299792.5)) +
-  ggtitle("No Clear Trend for Distinctness")
-```
-
-![](c02-michelson-assignment_files/figure-gfm/visualization-distinct-1.png)<!-- -->
-
-**Observations**:
-
-  - There doesn’t seem to be a clear trend between distinctness and
-    proximity to the real value.
 
 **Summary of Observations**:
 

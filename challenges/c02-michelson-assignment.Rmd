@@ -186,6 +186,20 @@ data that might help explain the difference between Michelson's estimate and
 library(viridis)
 ```
 
+```{r visualization-distinct}
+library(viridis)
+df_q2 %>%
+  ggplot() +
+  geom_point(mapping = aes(x = Date, y = VelocityVacuum, color = Distinctness)) +
+  geom_line(mapping = aes(x = Date, y = 299792.5)) +
+  ggtitle("No Clear Trend for Distinctness")
+```
+
+**Observations**:
+
+* There doesn't seem to be a clear trend between distinctness and proximity to the real value, though as we noted before, readings with lower distinctness do seem to have a lower mean.
+* Most of the readings with low distinctness were taken on the same day.
+
 ```{r visualization-temp}
 library(viridis)
 df_q2 %>%
@@ -228,7 +242,7 @@ df_q2 %>%
 
 **Observations**:
 
-* Excluding observations above a temperature of 71, the average gets closer to the real value, but only decreases by 34.9 km/s, likely because there are only 2 data points that were below the real value.
+* Excluding observations above a temperature of 71, the average gets closer to the real value, but only decreases by about 34 km/s, likely because there are only 2 data points that were below the real value.
 
 ```{r relative-counts}
 df_q2 %>%
@@ -241,20 +255,6 @@ df_q2 %>%
 **Observations**:
 
 * Of the observations taken, only 20 of the 100 observations were taken below a temperature of 71. Doing more observations at a lower temperature may have helped get more accurate data. Doing a more rigorous temperature correction may have helped as well.
-
-
-```{r visualization-distinct}
-library(viridis)
-df_q2 %>%
-  ggplot() +
-  geom_point(mapping = aes(x = Date, y = VelocityVacuum, color = Distinctness)) +
-  geom_line(mapping = aes(x = Date, y = 299792.5)) +
-  ggtitle("No Clear Trend for Distinctness")
-```
-
-**Observations**:
-
-* There doesn't seem to be a clear trend between distinctness and proximity to the real value.
 
 
 **Summary of Observations**:
