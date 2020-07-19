@@ -71,8 +71,15 @@ __q1__ Tidy `df_stang` to produce `df_stang_long`. You should have column names 
 ```{r q1-task}
 ## TASK: Tidy `df_stang`
 df_stang_long <-
-  df_stang
-
+  df_stang %>%
+  pivot_longer(
+    names_to = c(".value", "angle"),
+    names_sep = "_",
+    values_to = "val",
+    starts_with("E") | starts_with("mu"),
+    values_drop_na = TRUE
+  ) %>%
+  mutate(angle = as.numeric(angle))
 df_stang_long
 ```
 
