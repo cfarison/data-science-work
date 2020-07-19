@@ -79,7 +79,7 @@ df_stang_long <- df_stang %>%
     values_drop_na = TRUE
   ) %>%
   mutate(angle = as.integer(angle)) %>%
-  filter(E > 0 & mu > 0)
+  filter(E >= 0 & mu >= 0)
 df_stang_long
 ```
 
