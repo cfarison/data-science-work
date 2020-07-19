@@ -113,21 +113,22 @@ print("Very good!")
 __q2__ Perform a basic EDA on the aluminum data *without visualization*. Use your analysis to answer the questions under *observations* below. In addition, add your own question that you'd like to answer about the data.
 
 ```{r q2-task}
-##
+glimpse(df_stang_long)
+summary(df_stang_long)
+df_stang_long %>%
+  summarize(alloy, angle, thick)
 ```
 
 **Observations**:
 
-- Is there "one true value" for the material properties of Aluminum?
-- How many aluminum alloys were tested? How do you know?
-- What angles were tested?
-- What thicknesses were tested?
-- (Write your own question here)
-- No; we see a variety of values for `E` and `mu`.
-- Just one alloy: al_24st
-- Angles: 0, 45, 90 (degrees)
-- Thicknesses: 0.022, 0.032, 0.064, 0.081 (in)
-- I'm curious if the properties `E, mu` vary with thickness
+Background from my resident Materials Science expert:
+- Young's modulus (E) is like a spring constant, where you pull the material up and down at once. - Shear modulus (mu), is like when you pull parallel to the surface in opposite direction.
+
+- Is there "one true value" for the material properties of Aluminum? No, we see  several different values for E and mu.
+- How many aluminum alloys were tested? Just one: al_24st.
+- What angles were tested? 0, 45, and 90 (degrees).
+- What thicknesses were tested? 0.022, 0.032, 0.064, 0.081
+- I'm curious if the material properties vary with thickness, and if they vary with angle. Which has a greater impact on them? And are the two of them linked?
 
 ## Visualize
 <!-- ------------------------- -->
@@ -136,11 +137,14 @@ __q3__ Create a visualization to investigate your question from q1 above. Can yo
 
 ```{r q3-task}
 ## TASK: Investigate your question from q1 here
+df_stang_long %>%
+  ggplot() +
+  geom_point(mapping = aes(thick, E, color = angle))
 ```
 
 **Observations**:
 
-- (Address your question from q1 here)
+- Young's modulus (E) does not seem to have a clear relationship with thickness. It doesn't seem to have a clear relationship with angle either.
 
 __q4__ Consider the following statement:
 
@@ -159,7 +163,7 @@ df_stang_long %>%
 
 **Observations**:
 
-- Does this graph support or contradict the claim above?
+- This graph does not seem to provide conclusive evidence to support the claim that Young's Modulus (E) is an intensive property.
 
 # References
 <!-- -------------------------------------------------- -->
