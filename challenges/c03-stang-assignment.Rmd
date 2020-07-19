@@ -163,7 +163,7 @@ df_stang_long %>%
 
 **Observations**:
 
-- This graph does not seem to provide conclusive evidence to support the claim that Young's Modulus (E) is an intensive property.
+- This graph does not seem to provide conclusive evidence to support the claim that Young's Modulus (E) is an intensive property. The points with lower thickness seem to have lower Young's modulus (E), and also lower shear modulus (mu).
 
 # References
 <!-- -------------------------------------------------- -->
