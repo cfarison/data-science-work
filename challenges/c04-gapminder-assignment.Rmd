@@ -57,18 +57,30 @@ dataset?
 
 ```{r q0-task}
 ## TASK: Do your "first checks" here!
+glimpse(gapminder)
+summary(gapminder)
 ```
 
 **Observations**:
 
-- Write the variable names here
+This dataset has the following variables:
+- country (fct)
+- continent (fct)
+- year (int)
+- lifeExp (dbl): life expectancy in years
+- pop (int): population
+- gdpPercap (dbl): GDP per capita (US dollars)
 
 __q1__ Determine the most and least recent years in the `gapminder` dataset.
 
 ```{r q1-task}
 ## TASK: Find the largest and smallest values of `year` in `gapminder`
-year_max <- NA_real_
-year_min <- NA_real_
+year_max <- gapminder %>%
+  summarise(year_max = max(year))
+year_max
+year_min <- gapminder %>%
+  summarise(year_min = min(year))
+year_min
 ```
 
 Use the following test to check your work.
@@ -86,17 +98,50 @@ __q2__ Filter on years matching `year_min`, and make a plot of the GDE per capit
 
 You may encounter difficulties in visualizing these data; if so document your challenges and attempt to produce the most informative visual you can.
 
+```{r convert-data}
+#I found that using the result from above as min_year did not actually succeed in filtering by min_year, so I converted it to an integer rather than a data frame.
+year_min_list = as.list(year_min)
+year_min = year_min_list[1]
+year_max_list = as.list(year_max)
+year_max = year_max_list[1]
+year_min
+year_max
+```
+
+
 ```{r q2-task}
 ## TASK: Create a visual of gdpPercap vs continent
+gapminder %>%
+  filter(year == year_min) %>%
+  filter(gdpPercap < 90000) %>% #removing 1 outlier that made it hard to visualize
+  ggplot() +
+  geom_boxplot(mapping = aes(continent, gdpPercap))
+```
+```{r determine-outlier}
+#Determining which country the outlier is
+gapminder %>%
+  filter(year == year_min) %>%
+  filter(gdpPercap > 90000)
+```
+
+```{r country-count}
+#Determining # of countries per continent in this dataset in 1952
+gapminder %>%
+  filter(year == year_min) %>%
+  summary()
 ```
 
 **Observations**:
 
-- Write your observations here
+- Kuwait's GDP per capita is so high that including it makes it hard to visualize the rest of the data, so I removed it. Kuwait's GDP per capita is 108,382.4.
+- Oceania has a high median GDP per capita, but also has a small sample size. In 1952, Oceania only had 2 countries, while the other continents had between 25 and 52 countries.
+- Africa and Asia have similar medians, but Asia has a higher 3rd quartile and maximum.
+- Europe has the widest range of all the continents by far.
 
 **Difficulties & Approaches**:
 
-- Write your challenges and your approach to solving them
+- Kuwait's GDP per capita is so high that including it makes it hard to visualize the rest of the data, so I removed it. Kuwait's GDP per capita is 108,382.4. I removed Kuwait from the data set in order to be able to make effective boxplots.
+- Overall there are several outliers, but the boxplot by continent makes it easy to visualize this without impacting the observations from the data.
 
 __q3__ You should have found at least three outliers in q2. Identify those outliers (figure out which countries they are).
 
