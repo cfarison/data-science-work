@@ -110,7 +110,9 @@ __q2__ Use a combination of `separate` and pivoting to tidy `alloys_mod`.
 df_q2 <-
   alloys_mod %>%
 ## TODO: pivot and separate here!
-
+  pivot_longer(cols = -c(thick, rep), names_to = "code", values_to = "value") %>%
+  separate(code, c("variable", "angle"), sep = -2) %>%
+  pivot_wider(names_from = "variable", values_from = value)
 df_q2
 ```
 
