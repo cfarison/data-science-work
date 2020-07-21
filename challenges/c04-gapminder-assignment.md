@@ -1,7 +1,7 @@
 Gapminder
 ================
-(Your name here)
-2020-
+Charlie Farison
+2020-7-25
 
   - [Grading Rubric](#grading-rubric)
       - [Individual](#individual)
