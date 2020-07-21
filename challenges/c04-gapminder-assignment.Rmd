@@ -149,11 +149,23 @@ __q3__ You should have found at least three outliers in q2. Identify those outli
 
 ```{r q3-task}
 ## TASK: Identify the outliers from q2
+gapminder %>%
+  filter(year == year_min, continent == "Africa", gdpPercap > 3000)
+gapminder %>%
+  filter(year == year_min, continent == "Americas", gdpPercap > 7500)
+gapminder %>%
+  filter(year == year_min, continent == "Asia", gdpPercap > 5000)
+gapminder %>%
+  filter(year == year_min, continent == "Europe", gdpPercap > 13000)
 ```
 
 **Observations**:
 
-- Identify the outlier countries from q2
+- Africa: Angola (3520), Gabon (4293), South Africa (4725)
+- Americas: Canada (11367), United States (13990), Venezuela (7689)
+- Asia: Bahrain (9867), Kuwait (108382), Saudi Arabia (6459)
+- Europe: Switzerland (14734)
+
 
 __q4__ Create a plot similar to yours from q2 studying both `year_min` and `year_max`. Find a way to highlight the outliers from q3 on your plot. Compare the patterns between `year_min` and `year_max`.
 
@@ -161,11 +173,17 @@ __q4__ Create a plot similar to yours from q2 studying both `year_min` and `year
 
 ```{r q4-task}
 ## TASK: Create a visual of gdpPercap vs continent
+gapminder %>%
+  filter(year == year_min | year == year_max) %>%
+  ggplot() +
+  geom_boxplot(mapping = aes(continent, gdpPercap), outlier.colour = "red") +
+  facet_wrap(~year)
 ```
+
 
 **Observations**:
 
-- Write your observations here
+- Most of the medians have increased, with Europe and Oceania as the highest increases.
 
 # Your Own EDA
 <!-- -------------------------------------------------- -->
@@ -176,15 +194,55 @@ __q5__ Create *at least* three new figures below. With each figure, try to pose 
 
 ```{r q5-task1}
 ## TASK: Your first graph
+#Were the outliers always outliers?
+gapminder %>%
+  filter(
+    country %in% c("Kuwait", "United States", "Angola", "Gabon", 
+                   "South Africa", "Canada", "Venezuela", "Bahrain",
+                   "Saudi Arabia", "Switzerland")) %>%
+  ggplot() +
+  geom_line(mapping = aes(x = year, y = gdpPercap, color = country))
 ```
+
+**Observations**
+
+- Question: Do we see anything weird if we look at outliers from 1952 and how their GDP per capita changed over time?
+- Kuwait actually dropped a lot, maybe because this number is per capita and their population grew.
 
 
 ```{r q5-task2}
 ## TASK: Your second graph
+gapminder %>%
+  filter(country == "Kuwait") %>%
+  mutate(gdp = gdpPercap * pop) %>%
+  ggplot() +
+  geom_line(mapping = aes(x = year, y = gdp)) +
+  geom_vline(xintercept = 1972, color = "red")
 ```
+
+**Observations**
+
+- Question: Did Kuwait's GDP per capita drop so much because its population changed a lot?
+- After multiplying GDP by population to show the total GDP, there is still a sharp drop in GDP around 1972.
+- I found an article that said "The main shocks that have affected the Kuwaiti economy since
+1970 have been due to developments in the international oil markets (the oil shock of 1973/74,
+see Mohaddes (2013) for more details), the Iran-Iraq war (1980-1988), the domestic stock
+market crisis (Souk Al-Manakh, 1983), Iraqi invasion of Kuwait (August 1990), oil price
+crash (early 1990s), and global Önancial crisis (2007)."
+- Article: http://www.econ.cam.ac.uk/people-files/faculty/km418/Macroeconometric_Model_for_Kuwait.pdf
+- However, this data primarily shows a drop that starts in 1972 and lasts through 1982, so it doesn't quite line up.
 
 
 ```{r q5-task3}
 ## TASK: Your third graph
+gapminder %>%
+  filter(continent == "Asia") %>%
+  ggplot() +
+  geom_line(mapping = aes(x = year, y = pop, color = country))
+
 ```
 
+**Observations**
+
+- Question: In which Asian countries did population grow the most from 1952 to 2007?
+- If we're looking at number of people increase, the answer is China and India.
