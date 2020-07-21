@@ -1,0 +1,41 @@
+---
+title: "Traumatic Brain Injury Trends"
+author: "Charlie Farison"
+date: 2020-08-08
+output:
+  github_document:
+    toc: true
+---
+
+*Purpose*: We'd like to understand trends in causes of traumatic brain injury.
+
+# Background
+<!-- -------------------------------------------------- -->
+
+Blah Blah
+
+# Initial Data Exploration
+<!-- -------------------------------------------------- -->
+
+```{r setup}
+library(tidyverse)
+```
+
+Getting the data, from Tidy Tuesday's TBI data set from the CDC
+```{r}
+tbi_age <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-24/tbi_age.csv')
+tbi_year <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-24/tbi_year.csv')
+tbi_military <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-24/tbi_military.csv')
+```
+
+Initial checks
+
+```{r}
+glimpse(tbi_age)
+summary(tbi_age)
+glimpse(tbi_year)
+summary(tbi_year)
+glimpse(tbi_military)
+summary(tbi_military)
+```
+
