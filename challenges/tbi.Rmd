@@ -27,6 +27,19 @@ Blah Blah
 | number_est | double | Estimated observed cases in 2014 |
 | rate_est | double | Rate/100,000 in 2014 |
 
+**tbi_year**
+
+| Variable | Class | Description |
+|----------|----------------|--------------|
+| injury_mechanism | character | Injury mechanism |
+| type | character | Type of measure |
+| year | character | Year |
+| rate_est | double | Rate/100,000 in 2014 |
+| number_est | integer | Estimated observed cases in each year |
+
+
+
+
 # Initial Data Exploration
 <!-- -------------------------------------------------- -->
 
