@@ -4,6 +4,7 @@ Charlie Farison
 2020-08-08
 
   - [Background](#background)
+  - [Data Dictionaries](#data-dictionaries)
   - [Initial Data Exploration](#initial-data-exploration)
 
 *Purpose*: We’d like to understand trends in causes of traumatic brain
@@ -14,6 +15,20 @@ injury.
 <!-- -------------------------------------------------- -->
 
 Blah Blah
+
+# Data Dictionaries
+
+<!-- -------------------------------------------------- -->
+
+**tbi\_age**
+
+| Variable          | Class     | Description                      |
+| ----------------- | --------- | -------------------------------- |
+| age\_group        | character | Age group                        |
+| type              | character | Type of measure                  |
+| injury\_mechanism | character | Injury mechanism                 |
+| number\_est       | double    | Estimated observed cases in 2014 |
+| rate\_est         | double    | Rate/100,000 in 2014             |
 
 # Initial Data Exploration
 

@@ -14,6 +14,19 @@ output:
 
 Blah Blah
 
+# Data Dictionaries
+<!-- -------------------------------------------------- -->
+
+**tbi_age**
+
+| Variable | Class | Description |
+|----------|----------------|--------------|
+| age_group | character | Age group |
+| type | character | Type of measure |
+| injury_mechanism | character | Injury mechanism |
+| number_est | double | Estimated observed cases in 2014 |
+| rate_est | double | Rate/100,000 in 2014 |
+
 # Initial Data Exploration
 <!-- -------------------------------------------------- -->
 
