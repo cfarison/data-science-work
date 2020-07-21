@@ -287,14 +287,13 @@ Background from my resident Materials Science expert, Amos Meeks:
 
 Answering the questions provided:
 
-  - Is there “one true value” for the material properties of Aluminum?
+  - *Is there “one true value” for the material properties of Aluminum?*
     No, we see several different values for E and mu.
-  - How many aluminum alloys were tested? Just one: al\_24st.
-  - What angles were tested? 0, 45, and 90 (degrees).
-  - What thicknesses were tested? 0.022, 0.032, 0.064, 0.081
-  - I’m curious if the material properties vary with thickness, and if
-    they vary with angle. Which has a greater impact on them? And are
-    the two of them linked?
+  - *How many aluminum alloys were tested?* Just one: al\_24st.
+  - *What angles were tested?* 0, 45, and 90 (degrees).
+  - *What thicknesses were tested?* 0.022, 0.032, 0.064, 0.081
+  - *What question am I curious about?* I’m curious if the material
+    properties vary with thickness, and if they vary with angle.
 
 ## Visualize
 
@@ -308,7 +307,7 @@ you need additional information to answer your question?
 ## TASK: Investigate your question from q1 here
 df_stang_long %>%
   ggplot() +
-  geom_point(mapping = aes(thick, E, color = angle))
+  geom_point(mapping = aes(thick, E, color = angle), size = 3)
 ```
 
 ![](c03-stang-assignment_files/figure-gfm/q3-task-1.png)<!-- -->
@@ -318,6 +317,40 @@ df_stang_long %>%
   - Young’s modulus (E) does not seem to have a clear relationship with
     thickness. It doesn’t seem to have a clear relationship with angle
     either.
+  - Measurements for each thickness seem to be clustered together a bit,
+    with similar values for Young’s modulus (E).
+
+<!-- end list -->
+
+``` r
+## TASK: Investigate your question from q1 here
+df_stang_long %>%
+  ggplot() +
+  geom_point(mapping = aes(thick, mu, color = angle), size = 3)
+```
+
+![](c03-stang-assignment_files/figure-gfm/q3-task-mu-1.png)<!-- -->
+
+**Observations**:
+
+  - Per thickness, the values for shear modulus (mu) seem less clustered
+    together for each thickness than they were for Young’s modulus (E).
+  - Just as in the data for Young’s modulus (E), the sample with
+    thickness of 0.081 seems to have markedly lower values than the
+    others.
+
+**Summary**:
+
+  - I was able to somewhat answer the question of whether thickness and
+    angle affect the material properties E and mu. The sample with
+    thickness 0.81 seems to have lower values for both E and mu, but
+    otherwise the relationship is unclear. There is no clear
+    relationship between angle and material values.
+  - In general, the number of samples for this data set is very small,
+    and based on only one alloy, so it is hard to draw confident
+    conclusions. It’s hard to tell the difference between a true
+    correlation between variables and random correlation or flaws in an
+    experimental setup, especially with a small sample size.
 
 **q4** Consider the following statement:
 
@@ -333,7 +366,6 @@ Is this evidence *conclusive* one way or another? Why or why not?
 ``` r
 ## NOTE: No need to change; run this chunk
 df_stang_long %>%
-
   ggplot(aes(mu, E, color = as_factor(thick))) +
   geom_point(size = 3) +
   theme_minimal()
@@ -344,9 +376,13 @@ df_stang_long %>%
 **Observations**:
 
   - This graph does not seem to provide conclusive evidence to support
-    the claim that Young’s Modulus (E) is an intensive property. The
-    points with lower thickness seem to have lower Young’s modulus (E),
-    and also lower shear modulus (mu).
+    the claim that Young’s Modulus (E) is an intensive property - in
+    fact it even appears to contradict it. The points for the highest
+    thickness seem to have lower Young’s modulus (E), and also lower
+    shear modulus (mu). The points for the lowest thickness seem to have
+    highest Young’s modulus (E), and also highest shear modulus (mu) for
+    most of the points. The 2 middle samples for thickness don’t have as
+    clear a correlation.
 
 # References
 
