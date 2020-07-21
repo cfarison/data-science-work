@@ -64,6 +64,7 @@ summary(gapminder)
 **Observations**:
 
 This dataset has the following variables:
+
 - country (fct)
 - continent (fct)
 - year (int)
