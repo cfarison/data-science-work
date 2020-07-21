@@ -1,7 +1,7 @@
 Aluminum Data
 ================
-(Your name here)
-2020-
+Charlie Farison
+2020-07-23
 
   - [Grading Rubric](#grading-rubric)
       - [Individual](#individual)
@@ -279,10 +279,13 @@ df_stang_long %>%
 
 **Observations**:
 
-Background from my resident Materials Science expert: - Young’s modulus
-(E) is like a spring constant, where you pull the material up and down
-at once. - Shear modulus (mu), is like when you pull parallel to the
-surface in opposite direction.
+Background from my resident Materials Science expert, Amos Meeks:
+
+  - Young’s modulus (E) is like a spring constant, where you pull the
+    material up and down at once. - Shear modulus (mu), is like when you
+    pull parallel to the surface in opposite direction.
+
+Answering the questions provided:
 
   - Is there “one true value” for the material properties of Aluminum?
     No, we see several different values for E and mu.

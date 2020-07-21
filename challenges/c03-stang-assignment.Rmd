@@ -1,7 +1,7 @@
 ---
 title: "Aluminum Data"
-author: "(Your name here)"
-date: 2020-
+author: "Charlie Farison"
+date: 2020-07-23
 output:
   github_document:
     toc: true
@@ -121,8 +121,11 @@ df_stang_long %>%
 
 **Observations**:
 
-Background from my resident Materials Science expert:
+Background from my resident Materials Science expert, Amos Meeks:
+
 - Young's modulus (E) is like a spring constant, where you pull the material up and down at once. - Shear modulus (mu), is like when you pull parallel to the surface in opposite direction.
+
+Answering the questions provided:
 
 - Is there "one true value" for the material properties of Aluminum? No, we see  several different values for E and mu.
 - How many aluminum alloys were tested? Just one: al_24st.
