@@ -361,6 +361,7 @@ variables; think about using different aesthetics or facets.
 ## TASK: Create a visual of gdpPercap vs continent
 gapminder %>%
   filter(year == year_min | year == year_max) %>%
+  filter(gdpPercap < 90000) %>% #removing 1 outlier that made it hard to visualize
   ggplot() +
   geom_boxplot(mapping = aes(continent, gdpPercap), outlier.colour = "red") +
   facet_wrap(~year)
@@ -456,3 +457,28 @@ gapminder %>%
     1952 to 2007?
   - If we’re looking at number of people increase, the answer is China
     and India.
+
+<!-- end list -->
+
+``` r
+## TASK: Create a visual of gdpPercap vs continent
+library(ggrepel)
+gapminder %>%
+  filter(year == year_min | year == year_max) %>%
+  filter(country %in% c("United States", "Angola", "Gabon", 
+                   "South Africa", "Canada", "Venezuela", "Bahrain",
+                   "Saudi Arabia", "Switzerland")) %>%
+  ggplot() +
+  geom_label_repel(mapping = aes(continent, gdpPercap, label = country)) +
+  facet_wrap(~year)
+```
+
+![](c04-gapminder-assignment_files/figure-gfm/q4-task-labels-1.png)<!-- -->
+
+**Observations**
+
+  - Question: How did the outliers from 1952 change relative to one
+    another over time?
+  - The US and Switzerland were on top in 1952, and in 2007 tne United
+    States is still on top, but Canada has surpassed Switzerland.
+  - Saudi Arabia grew to surpass South Africa and Gabon.
