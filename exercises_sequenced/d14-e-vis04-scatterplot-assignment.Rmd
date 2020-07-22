@@ -90,11 +90,13 @@ looks.
 ## TODO: Add a "gam" and "lm" smooth to the following plot
 diamonds %>%
   ggplot(aes(carat, price)) +
-  geom_point()
+  geom_point() +
+  geom_smooth(aes(color = "lm"), method = "lm") +
+  geom_smooth(aes(color = "gam"), method = "gam")
 ```
 
 **Observations**:
-- Does the "gam" trend look linear?
+- Does the "gam" trend look linear? Kind of linear for the first bit, then not.
 
 __q2__ Add non-overlapping labels to the following scattterplot using the
 provided `df_annotate`.
@@ -106,6 +108,7 @@ it, and adhere to best-practices!
 
 ```{r q2-task}
 ## TODO: Use df_annotate below to add text labels to the scatterplot
+library(ggrepel)
 df_annotate <-
   mpg %>%
   group_by(class) %>%
@@ -116,7 +119,8 @@ df_annotate <-
 
 mpg %>%
   ggplot(aes(displ, hwy)) +
-  geom_point(aes(color = class))
+  geom_point(aes(color = class)) +
+  geom_label_repel(data = df_annotate, aes(label = class, fill = class))
 ```
 
 __q3__ Study the following scatterplot: Note whether city (`cty`) or highway
@@ -141,8 +145,8 @@ mpg %>%
 ```
 
 **Observations**:
-- Which tends to be larger? `cty` or `hwy` mileage?
-- What is the trend of mileage with `displ`?
+- Which tends to be larger? `cty` or `hwy` mileage? hwy mpg tends to be higher
+- What is the trend of mileage with `displ`? For lower engine displacement, mpg tends to be higher, and the trend is somewhat linear until about 5 liters.
 
 # Aside: Scatterplot vs bar chart
 <!-- -------------------------------------------------- -->
