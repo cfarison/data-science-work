@@ -134,7 +134,8 @@ This dataset has the following variables:
   - year (int)
   - lifeExp (dbl): life expectancy in years
   - pop (int): population
-  - gdpPercap (dbl): GDP per capita (US dollars)
+  - gdpPercap (dbl): GDP per capita (2010 US dollars, inflation
+    adjusted)
 
 **q1** Determine the most and least recent years in the `gapminder`
 dataset.
@@ -273,7 +274,7 @@ gapminder %>%
 
   - Kuwait’s GDP per capita is so high that including it makes it hard
     to visualize the rest of the data, so I removed it. Kuwait’s GDP per
-    capita is 108,382.4.
+    capita is $108,382.40.
   - Oceania has a high median GDP per capita, but also has a small
     sample size. In 1952, Oceania only had 2 countries, while the other
     continents had between 25 and 52 countries.
@@ -285,8 +286,8 @@ gapminder %>%
 
   - Kuwait’s GDP per capita is so high that including it makes it hard
     to visualize the rest of the data, so I removed it. Kuwait’s GDP per
-    capita is 108,382.4. I removed Kuwait from the data set in order to
-    be able to make effective boxplots.
+    capita is $108,382.40. I removed Kuwait from the data set in order
+    to be able to make effective boxplots.
   - Overall there are several outliers, but the boxplot by continent
     makes it easy to visualize this without impacting the observations
     from the data.
@@ -364,15 +365,23 @@ gapminder %>%
   filter(gdpPercap < 90000) %>% #removing 1 outlier that made it hard to visualize
   ggplot() +
   geom_boxplot(mapping = aes(continent, gdpPercap), outlier.colour = "red") +
-  facet_wrap(~year)
+  facet_wrap(~year) +
+  labs(
+  title = "Comparing GDP per capita across continents, 1952 to 2007",
+  x = "Continent",
+  y = "GDP Per Capita (2010 USD)"
+  )
 ```
 
 ![](c04-gapminder-assignment_files/figure-gfm/q4-task-1.png)<!-- -->
 
 **Observations**:
 
-  - Most of the medians have increased, with Europe and Oceania as the
-    highest increases.
+  - Most of the medians for each continent have increased, with Europe
+    and Oceania as the highest increases.
+  - The minimum GDP per capita for the world seems to have increased.
+  - Many countries have much higher GDP per capita, though none in 2007
+    reach the level Kuwait had in 1952 ($108382).
 
 # Your Own EDA
 
@@ -389,13 +398,22 @@ to pose new questions about the data.
 ``` r
 ## TASK: Your first graph
 #Were the outliers always outliers?
+library(ggrepel)
+kuwait <- gapminder %>% filter(country == "Kuwait", year == 1972)
+
 gapminder %>%
   filter(
     country %in% c("Kuwait", "United States", "Angola", "Gabon", 
                    "South Africa", "Canada", "Venezuela", "Bahrain",
                    "Saudi Arabia", "Switzerland")) %>%
-  ggplot() +
-  geom_line(mapping = aes(x = year, y = gdpPercap, color = country))
+  ggplot(mapping = aes(x = year, y = gdpPercap)) +
+  geom_line(mapping = aes(color = country)) +
+  geom_label_repel(data = kuwait, aes(label = country)) +
+  labs(
+  title = "Exploring How 1952 GDP Per Capita Outliers Changed Over Time",
+  x = "Continent",
+  y = "GDP Per Capita (2010 USD)"
+  )
 ```
 
 ![](c04-gapminder-assignment_files/figure-gfm/q5-task1-1.png)<!-- -->
@@ -404,19 +422,50 @@ gapminder %>%
 
   - Question: Do we see anything weird if we look at outliers from 1952
     and how their GDP per capita changed over time?
-  - Kuwait actually dropped a lot, maybe because this number is per
-    capita and their population grew.
+  - Kuwait started out extremely high then dropped a lot, maybe because
+    this number is per capita and their population grew.
 
 <!-- end list -->
 
 ``` r
 ## TASK: Your second graph
-gapminder %>%
+library(gridExtra)
+```
+
+    ## 
+    ## Attaching package: 'gridExtra'
+
+    ## The following object is masked from 'package:dplyr':
+    ## 
+    ##     combine
+
+``` r
+gdpcapplot <- gapminder %>%
   filter(country == "Kuwait") %>%
-  mutate(gdp = gdpPercap * pop) %>%
   ggplot() +
-  geom_line(mapping = aes(x = year, y = gdp)) +
-  geom_vline(xintercept = 1972, color = "red")
+  geom_line(mapping = aes(x = year, y = gdpPercap)) +
+  labs(
+  title = "Is Kuwait's Falling GDP Per Capita Linked to Increased Population?",
+  x = "Year",
+  y = "GDP Per Capita"
+  )
+popplot <- gapminder %>%
+  filter(country == "Kuwait") %>%
+  ggplot() +
+  geom_line(mapping = aes(x = year, y = pop)) +
+  labs(
+  x = "Year",
+  y = "Population"
+  )
+gdpplot <- gapminder %>%
+  filter(country == "Kuwait") %>%
+  ggplot() +
+  geom_line(mapping = aes(x = year, y = gdpPercap * pop)) +
+  labs(
+  x = "Year",
+  y = "Total GDP (2010 USD)"
+  )
+grid.arrange(gdpcapplot, popplot, gdpplot)
 ```
 
 ![](c04-gapminder-assignment_files/figure-gfm/q5-task2-1.png)<!-- -->
@@ -426,7 +475,8 @@ gapminder %>%
   - Question: Did Kuwait’s GDP per capita drop so much because its
     population changed a lot?
   - After multiplying GDP by population to show the total GDP, there is
-    still a sharp drop in GDP around 1972.
+    still a sharp drop in GDP around 1972, matching the spike and sharp
+    drop in GDP per capita.
   - I found an article that said “The main shocks that have affected the
     Kuwaiti economy since 1970 have been due to developments in the
     international oil markets (the oil shock of 1973/74, see Mohaddes
@@ -443,25 +493,6 @@ gapminder %>%
 
 ``` r
 ## TASK: Your third graph
-gapminder %>%
-  filter(continent == "Asia") %>%
-  ggplot() +
-  geom_line(mapping = aes(x = year, y = pop, color = country))
-```
-
-![](c04-gapminder-assignment_files/figure-gfm/q5-task3-1.png)<!-- -->
-
-**Observations**
-
-  - Question: In which Asian countries did population grow the most from
-    1952 to 2007?
-  - If we’re looking at number of people increase, the answer is China
-    and India.
-
-<!-- end list -->
-
-``` r
-## TASK: Create a visual of gdpPercap vs continent
 library(ggrepel)
 gapminder %>%
   filter(year == year_min | year == year_max) %>%
@@ -469,16 +500,24 @@ gapminder %>%
                    "South Africa", "Canada", "Venezuela", "Bahrain",
                    "Saudi Arabia", "Switzerland")) %>%
   ggplot() +
-  geom_label_repel(mapping = aes(continent, gdpPercap, label = country)) +
-  facet_wrap(~year)
+  geom_label(mapping = aes(continent, gdpPercap, label = country, fill = country)) +
+  facet_wrap(~year) +
+  labs(
+  title = "Exploring How 1952 GDP Outliers Shifted from 1952 to 2007",
+  x = "Continent",
+  y = "Total GDP (2010 USD)"
+  )
 ```
 
-![](c04-gapminder-assignment_files/figure-gfm/q4-task-labels-1.png)<!-- -->
+![](c04-gapminder-assignment_files/figure-gfm/q5-task3-1.png)<!-- -->
 
 **Observations**
 
   - Question: How did the outliers from 1952 change relative to one
-    another over time?
-  - The US and Switzerland were on top in 1952, and in 2007 tne United
-    States is still on top, but Canada has surpassed Switzerland.
-  - Saudi Arabia grew to surpass South Africa and Gabon.
+    another over time (not including Kuwait)?
+  - The US and Switzerland were on top in 1952, closely followed by
+    Canada and Bahrain. In 2007, the US and Switzerland were still on
+    top (with switched order), and Canada was close behind but Bahrain
+    was a little farther behind.
+  - In general the spread grew, with only a small increase in the
+    minimum (Angola). This mimics what we see in the larger dataset.
