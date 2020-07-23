@@ -70,7 +70,7 @@ This dataset has the following variables:
 - year (int)
 - lifeExp (dbl): life expectancy in years
 - pop (int): population
-- gdpPercap (dbl): GDP per capita (US dollars)
+- gdpPercap (dbl): GDP per capita (2010 US dollars, inflation adjusted)
 
 __q1__ Determine the most and least recent years in the `gapminder` dataset.
 
@@ -134,14 +134,14 @@ gapminder %>%
 
 **Observations**:
 
-- Kuwait's GDP per capita is so high that including it makes it hard to visualize the rest of the data, so I removed it. Kuwait's GDP per capita is 108,382.4.
+- Kuwait's GDP per capita is so high that including it makes it hard to visualize the rest of the data, so I removed it. Kuwait's GDP per capita is $108,382.40.
 - Oceania has a high median GDP per capita, but also has a small sample size. In 1952, Oceania only had 2 countries, while the other continents had between 25 and 52 countries.
 - Africa and Asia have similar medians, but Asia has a higher 3rd quartile and maximum.
 - Europe has the widest range of all the continents by far.
 
 **Difficulties & Approaches**:
 
-- Kuwait's GDP per capita is so high that including it makes it hard to visualize the rest of the data, so I removed it. Kuwait's GDP per capita is 108,382.4. I removed Kuwait from the data set in order to be able to make effective boxplots.
+- Kuwait's GDP per capita is so high that including it makes it hard to visualize the rest of the data, so I removed it. Kuwait's GDP per capita is $108,382.40. I removed Kuwait from the data set in order to be able to make effective boxplots.
 - Overall there are several outliers, but the boxplot by continent makes it easy to visualize this without impacting the observations from the data.
 
 __q3__ You should have found at least three outliers in q2. Identify those outliers (figure out which countries they are).
@@ -179,12 +179,19 @@ gapminder %>%
   filter(gdpPercap < 90000) %>% #removing 1 outlier that made it hard to visualize
   ggplot() +
   geom_boxplot(mapping = aes(continent, gdpPercap), outlier.colour = "red") +
-  facet_wrap(~year)
+  facet_wrap(~year) +
+  labs(
+  title = "Comparing GDP per capita across continents, 1952 to 2007",
+  x = "Continent",
+  y = "GDP Per Capita (2010 USD)"
+  )
 ```
 
 **Observations**:
 
-- Most of the medians have increased, with Europe and Oceania as the highest increases.
+- Most of the medians for each continent have increased, with Europe and Oceania as the highest increases.
+- The minimum GDP per capita for the world seems to have increased.
+- Many countries have much higher GDP per capita, though none in 2007 reach the level Kuwait had in 1952 ($108382).
 
 # Your Own EDA
 <!-- -------------------------------------------------- -->
@@ -202,13 +209,18 @@ gapminder %>%
                    "South Africa", "Canada", "Venezuela", "Bahrain",
                    "Saudi Arabia", "Switzerland")) %>%
   ggplot() +
-  geom_line(mapping = aes(x = year, y = gdpPercap, color = country))
+  geom_line(mapping = aes(x = year, y = gdpPercap, color = country)) +
+  labs(
+  title = "Exploring How 1952 GDP Per Capita Outliers Changed Over Time",
+  x = "Continent",
+  y = "GDP Per Capita (2010 USD)"
+  )
 ```
 
 **Observations**
 
 - Question: Do we see anything weird if we look at outliers from 1952 and how their GDP per capita changed over time?
-- Kuwait actually dropped a lot, maybe because this number is per capita and their population grew.
+- Kuwait started out extremely high then dropped a lot, maybe because this number is per capita and their population grew.
 
 
 ```{r q5-task2}
