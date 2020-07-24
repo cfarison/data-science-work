@@ -4,7 +4,7 @@ author: Zachary del Rosario
 date: 2020-06-05
 output: github_document
 time: 30
-reading: 30
+reading: 30 (34 min)
 ---
 
 *Purpose*: Often our data are scattered across multiple sets. In this case, we
