@@ -49,13 +49,14 @@ beatles2 <-
         "Starr",     "drums",
        "Lennon",    "guitar"
   )
-
+beatles1
+beatles2
 bind_cols(beatles1, beatles2)
 ```
 
 __q1__ Describe what is wrong with the result of `bind_cols` above and how it happened.
 
-- Write your answer here
+- The rows were not in the same order, so the names do not match up right.
 
 We'll use the following `beatles3` to *correctly* join the data.
 
@@ -83,9 +84,11 @@ beatles_joined <-
 __q2__ Use the following `beatles3` to *correctly* join `beatles1`
 
 ```{r qY-task}
-df_q2 <-
 ## TODO: Join beatles1 and beatles2 using beatles3 to match rows
-
+df_q2 <-
+  beatles1 %>%
+  left_join(beatles3, by = "name") %>%
+  left_join(beatles2, by = "surname")
 df_q2
 ```
 
@@ -123,7 +126,7 @@ filter the `airports` dataset, or use Google!
 ```{r q3-task}
 criteria <-
 ## TODO: Use expand_grid to create a criteria dataframe
-
+expand_grid(month = 8:9, dest = c("SFO", "SJC", "OAK"))
 criteria
 ```
 
@@ -167,7 +170,7 @@ dataset we built above!
 df_q4 <-
   flights %>%
 ## TODO: Use expand_grid to create a criteria dataframe
-
+semi_join(criteria)
 df_q4
 ```
 
