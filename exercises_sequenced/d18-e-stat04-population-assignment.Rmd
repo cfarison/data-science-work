@@ -4,7 +4,7 @@ author: Zach del Rosario
 date: 2020-06-23
 output: github_document
 time: 40
-reading: 8
+reading: 8 (7)
 ---
 
 *Purpose*: Often, our data do not include all the facts that are relevant to the decision we are trying to make. Statistics is the science of determining the conclusions we can confidently make, based on our available data. To make sense of this science, we need to understand the distinction between a *sample* and a *population*, and how this distinction leads to *estimation*.
@@ -180,7 +180,7 @@ df_samp_unif <-
     1:n_samples,
     function(id) {
       tibble(
-        Z = rnorm(n_observations),
+        Z = runif(n_observations),
         id = id
       )
     }
@@ -225,8 +225,10 @@ __q2__ Compute the standard error for the sample mean under the following settin
 
 ```{r q2-task}
 ## TASK: Compute the standard error
-se_q2.1 <- NA_real_ # Population: norm(mean = 2, sd = 4), samples: n = 16
-se_q2.2 <- NA_real_ # Population: norm(mean =-2, sd = 8), samples: n = 32
+se_q2.1 <- 4/sqrt(16) # Population: norm(mean = 2, sd = 4), samples: n = 16
+se_q2.1
+se_q2.2 <- 8/sqrt(32) # Population: norm(mean =-2, sd = 8), samples: n = 32
+se_q2.2
 ```
 
 Use the following tests to check your work.
@@ -241,6 +243,7 @@ print("Nice!")
 **Observations**:
 
 - Which setting---q2.1 or q2.2---will tend to produce more accurate estimates? Why?
+q2.1 has a lower standard error. Doubled sample size does not make up for doubled standard deviation.
 
 Two notes:
 
@@ -260,7 +263,11 @@ set.seed(101)
 n_sample <- 20
 z_sample <- rnorm(n = n_sample, mean = 2, sd = 4)
 ## TASK: Compute the sample standard error for `z_sample`
-se_sample <- NA_real_
+se_sample <- 
+  sd(z_sample) / sqrt(n_sample)
+n_sample
+sd(z_sample)
+se_sample
 ```
 
 Use the following tests to check your work.
@@ -278,8 +285,8 @@ print("Well done!")
 
 **Observations**:
 
-- How close is your estimate `se_sample` to the true `se_q2.1`?
-- What accounts for the difference between these values?
+- How close is your estimate `se_sample` to the true `se_q2.1`? 0.77 is fairly close to 1.
+- What accounts for the difference between these values? The sample size is smaller, and the standard deviation is different.
 
 # Fast Summary
 <!-- -------------------------------------------------- -->
