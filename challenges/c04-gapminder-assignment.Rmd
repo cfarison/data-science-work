@@ -116,7 +116,12 @@ gapminder %>%
   filter(year == year_min) %>%
   filter(gdpPercap < 90000) %>% #removing 1 outlier that made it hard to visualize
   ggplot() +
-  geom_boxplot(mapping = aes(continent, gdpPercap))
+  geom_boxplot(mapping = aes(continent, gdpPercap)) +
+  labs(
+  title = "Comparing GDP per capita across continents, 1952",
+  x = "Continent",
+  y = "GDP Per Capita (2010 USD)"
+  )
 ```
 ```{r determine-outlier}
 #Determining which country the outlier is
@@ -145,8 +150,6 @@ gapminder %>%
 - Overall there are several outliers, but the boxplot by continent makes it easy to visualize this without impacting the observations from the data.
 
 __q3__ You should have found at least three outliers in q2. Identify those outliers (figure out which countries they are).
-
-*Note*: I realize the reasons for
 
 ```{r q3-task}
 ## TASK: Identify the outliers from q2
@@ -223,7 +226,8 @@ gapminder %>%
 
 **Observations**
 
-- Question: Do we see anything weird if we look at outliers from 1952 and how their GDP per capita changed over time?
+*Question:* Do we see anything weird if we look at outliers from 1952 and how their GDP per capita changed over time?
+
 - Kuwait started out extremely high then dropped a lot, maybe because this number is per capita and their population grew.
 
 
@@ -259,8 +263,8 @@ grid.arrange(gdpcapplot, popplot, gdpplot)
 ```
 
 **Observations**
+*Question*: Did Kuwait's GDP per capita drop so much because its population changed a lot?
 
-- Question: Did Kuwait's GDP per capita drop so much because its population changed a lot?
 - After multiplying GDP by population to show the total GDP, there is still a sharp drop in GDP around 1972, matching the spike and sharp drop in GDP per capita.
 - I found an article that said "The main shocks that have affected the Kuwaiti economy since
 1970 have been due to developments in the international oil markets (the oil shock of 1973/74,
@@ -290,6 +294,37 @@ gapminder %>%
 
 **Observations**
 
-- Question: How did the outliers from 1952 change relative to one another over time (not including Kuwait)?
+*Question:* How did the outliers from 1952 change relative to one another over time (not including Kuwait)?
+
 - The US and Switzerland were on top in 1952, closely followed by Canada and Bahrain. In 2007, the US and Switzerland were still on top (with switched order), and Canada was close behind but Bahrain was a little farther behind.
 - In general the spread grew, with only a small increase in the minimum (Angola). This mimics what we see in the larger dataset.
+
+```{r q5-task4}
+gapminder %>%
+  filter(year == year_max, continent %in% c("Americas")) %>%
+  filter(gdpPercap > 30000)
+gapminder %>%
+  filter(year == year_max, continent %in% c("Africa")) %>%
+  filter(gdpPercap > 9000)
+```
+
+**Observations**
+
+*Question:* Who were the outliers in 2007? How different is that set from the outliers in 1952?
+
+*1952 outliers:*
+
+- Africa: Angola (3,520), Gabon (4,293), South Africa (4,725)
+- Americas: Canada (11,367), United States (13,990), Venezuela (7,689)
+- Asia: Bahrain (9,867), Kuwait (108,382), Saudi Arabia (6,459)
+- Europe: Switzerland (14,734)
+
+*2007 outliers:*
+
+- Africa: Botswana (12,570), Equatorial Guinea (12,154), Gabon (13,206), Libya (12,057), Mauritius (10,957), South Africa (9,269)
+- Americas: Canada (36,319), United States (42,952)
+
+*Observations:*
+
+- The following countries were outliers both in 1952 and 2007: United States, Canada, Gabon, South Africa
+- In general, there were many fewer outliers in 2007 - instead the maximum and minimum of the boxplots encompassed more countries.

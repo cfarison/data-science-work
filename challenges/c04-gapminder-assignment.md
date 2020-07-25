@@ -229,7 +229,12 @@ gapminder %>%
   filter(year == year_min) %>%
   filter(gdpPercap < 90000) %>% #removing 1 outlier that made it hard to visualize
   ggplot() +
-  geom_boxplot(mapping = aes(continent, gdpPercap))
+  geom_boxplot(mapping = aes(continent, gdpPercap)) +
+  labs(
+  title = "Comparing GDP per capita across continents, 1952",
+  x = "Continent",
+  y = "GDP Per Capita (2010 USD)"
+  )
 ```
 
 ![](c04-gapminder-assignment_files/figure-gfm/q2-task-1.png)<!-- -->
@@ -294,8 +299,6 @@ gapminder %>%
 
 **q3** You should have found at least three outliers in q2. Identify
 those outliers (figure out which countries they are).
-
-*Note*: I realize the reasons for
 
 ``` r
 ## TASK: Identify the outliers from q2
@@ -420,8 +423,9 @@ gapminder %>%
 
 **Observations**
 
-  - Question: Do we see anything weird if we look at outliers from 1952
-    and how their GDP per capita changed over time?
+*Question:* Do we see anything weird if we look at outliers from 1952
+and how their GDP per capita changed over time?
+
   - Kuwait started out extremely high then dropped a lot, maybe because
     this number is per capita and their population grew.
 
@@ -470,10 +474,9 @@ grid.arrange(gdpcapplot, popplot, gdpplot)
 
 ![](c04-gapminder-assignment_files/figure-gfm/q5-task2-1.png)<!-- -->
 
-**Observations**
+**Observations** *Question*: Did Kuwait’s GDP per capita drop so much
+because its population changed a lot?
 
-  - Question: Did Kuwait’s GDP per capita drop so much because its
-    population changed a lot?
   - After multiplying GDP by population to show the total GDP, there is
     still a sharp drop in GDP around 1972, matching the spike and sharp
     drop in GDP per capita.
@@ -513,11 +516,67 @@ gapminder %>%
 
 **Observations**
 
-  - Question: How did the outliers from 1952 change relative to one
-    another over time (not including Kuwait)?
+*Question:* How did the outliers from 1952 change relative to one
+another over time (not including Kuwait)?
+
   - The US and Switzerland were on top in 1952, closely followed by
     Canada and Bahrain. In 2007, the US and Switzerland were still on
     top (with switched order), and Canada was close behind but Bahrain
     was a little farther behind.
   - In general the spread grew, with only a small increase in the
     minimum (Angola). This mimics what we see in the larger dataset.
+
+<!-- end list -->
+
+``` r
+gapminder %>%
+  filter(year == year_max, continent %in% c("Americas")) %>%
+  filter(gdpPercap > 30000)
+```
+
+    ## # A tibble: 2 x 6
+    ##   country       continent  year lifeExp       pop gdpPercap
+    ##   <fct>         <fct>     <int>   <dbl>     <int>     <dbl>
+    ## 1 Canada        Americas   2007    80.7  33390141    36319.
+    ## 2 United States Americas   2007    78.2 301139947    42952.
+
+``` r
+gapminder %>%
+  filter(year == year_max, continent %in% c("Africa")) %>%
+  filter(gdpPercap > 9000)
+```
+
+    ## # A tibble: 6 x 6
+    ##   country           continent  year lifeExp      pop gdpPercap
+    ##   <fct>             <fct>     <int>   <dbl>    <int>     <dbl>
+    ## 1 Botswana          Africa     2007    50.7  1639131    12570.
+    ## 2 Equatorial Guinea Africa     2007    51.6   551201    12154.
+    ## 3 Gabon             Africa     2007    56.7  1454867    13206.
+    ## 4 Libya             Africa     2007    74.0  6036914    12057.
+    ## 5 Mauritius         Africa     2007    72.8  1250882    10957.
+    ## 6 South Africa      Africa     2007    49.3 43997828     9270.
+
+**Observations**
+
+*Question:* Who were the outliers in 2007? How different is that set
+from the outliers in 1952?
+
+*1952 outliers:*
+
+  - Africa: Angola (3,520), Gabon (4,293), South Africa (4,725)
+  - Americas: Canada (11,367), United States (13,990), Venezuela (7,689)
+  - Asia: Bahrain (9,867), Kuwait (108,382), Saudi Arabia (6,459)
+  - Europe: Switzerland (14,734)
+
+*2007 outliers:*
+
+  - Africa: Botswana (12,570), Equatorial Guinea (12,154), Gabon
+    (13,206), Libya (12,057), Mauritius (10,957), South Africa (9,269)
+  - Americas: Canada (36,319), United States (42,952)
+
+*Observations:*
+
+  - The following countries were outliers both in 1952 and 2007: United
+    States, Canada, Gabon, South Africa
+  - In general, there were many fewer outliers in 2007 - instead the
+    maximum and minimum of the boxplots encompassed more countries.
