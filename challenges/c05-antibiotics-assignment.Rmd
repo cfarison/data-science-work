@@ -1,7 +1,7 @@
 ---
 title: "Antibiotics"
-author: "(Your name here)"
-date: 2020-
+author: "Charlie Farison"
+date: 2020-7-30
 output:
   github_document:
     toc: true
@@ -53,6 +53,8 @@ library(ggrepel)
 
 These data report MIC values for three antibiotics---penicillin, streptomycin, and neomycin---on 16 bacteria. Bacteria are categorized into a genus based on a number of features, including their resistance to antibiotics.
 
+Gram: Gram-positive bacteria retain the color of the crystal violet stain in the Gram stain. This is characteristic of bacteria that have a cell wall composed of a thick layer of a particular substance (called peptidologlycan). (Source: https://www.medicinenet.com/script/main/art.asp?articlekey=9585)
+
 ```{r load}
 ## NOTE: If you extracted all challenges to the same location,
 ## you shouldn't have to change this filename
@@ -73,12 +75,29 @@ __q1__ Create a visualization of `df_antibiotics` that helps you to compare the 
 
 ```{r q1-task}
 ## TASK: Create your visualization
+df_antibiotics %>%
+  ggplot() +
+  geom_point(mapping = aes(x = bacteria, y = penicillin, color = "penicillin")) +
+  geom_point(mapping = aes(x = bacteria, y = streptomycin, color = "streptomycin")) +
+  geom_point(mapping = aes(x = bacteria, y = neomycin, color = "neomycin")) +
+  geom_hline(yintercept = 0.1) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  scale_y_log10() +
+  coord_flip() +
+  labs(
+    title = "MIC for Each Antibiotic Across Several Bacteria",
+    x = "Bacteria",
+    y = "Minimum Inhibitory Concentration (MIC)"
+  )
 ```
 
 **Observations**:
+- Effective antibiotics are shown to the left of the cutoff line of a MIC of 0.1. Antibiotics with lower MIC are more effective. Several points are right on that threshold. Notably, 4 bacteria shown have neomycin barely at that cutoff, with none of the other antibiotics being better. These bacteria are strep, salmonella, E.coli, and proteus vulgaris.
+- Neomycin is the most effective of the 3 antibiotics for 2 types of staph and salmonella typhosa.
+- Penicillin is the most effective of the 3 antibiotics for streptococcus viridans, streptococcus hemolyticus, diplococcus pneumonia, and bacillus anthracis.
+- Streptomycin is not the most effective of the 3 antibiotics for any of the bacteria in this dataset.
+- All 3 of these antibiotics are not effective enough for human use for several bacteria shown here: pseudomonas aeruginosa, mycobacterium tuberculosis, klebsiella penumoniae, and aerobacter aerogenes.
 
-- Record your observations here
-- Can you make any broad statements about antibiotic effectiveness?
 
 ## Purpose: Categorize Bacteria
 <!-- ------------------------- -->
