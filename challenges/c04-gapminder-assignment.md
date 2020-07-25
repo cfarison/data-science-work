@@ -486,11 +486,13 @@ because its population changed a lot?
     (2013) for more details), the Iran-Iraq war (1980-1988), the
     domestic stock market crisis (Souk Al-Manakh, 1983), Iraqi invasion
     of Kuwait (August 1990), oil price crash (early 1990s), and global
-    Önancial crisis (2007).”
+    Financial crisis (2007).”
   - Article:
     <http://www.econ.cam.ac.uk/people-files/faculty/km418/Macroeconometric_Model_for_Kuwait.pdf>
   - However, this data primarily shows a drop that starts in 1972 and
     lasts through 1982, so it doesn’t quite line up.
+  - Kuwait also had a big population drop starting around 1986. A quick
+    google search did not illuminate why.
 
 <!-- end list -->
 

@@ -270,9 +270,10 @@ grid.arrange(gdpcapplot, popplot, gdpplot)
 1970 have been due to developments in the international oil markets (the oil shock of 1973/74,
 see Mohaddes (2013) for more details), the Iran-Iraq war (1980-1988), the domestic stock
 market crisis (Souk Al-Manakh, 1983), Iraqi invasion of Kuwait (August 1990), oil price
-crash (early 1990s), and global Önancial crisis (2007)."
+crash (early 1990s), and global Financial crisis (2007)."
 - Article: http://www.econ.cam.ac.uk/people-files/faculty/km418/Macroeconometric_Model_for_Kuwait.pdf
 - However, this data primarily shows a drop that starts in 1972 and lasts through 1982, so it doesn't quite line up.
+- Kuwait also had a big population drop starting around 1986. A quick google search did not illuminate why.
 
 ```{r q5-task3}
 ## TASK: Your third graph
