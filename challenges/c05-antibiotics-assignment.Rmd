@@ -81,7 +81,8 @@ df_antibiotics %>%
   geom_point(mapping = aes(x = bacteria, y = streptomycin, color = "streptomycin")) +
   geom_point(mapping = aes(x = bacteria, y = neomycin, color = "neomycin")) +
   geom_hline(yintercept = 0.1) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1)) +
   scale_y_log10() +
   coord_flip() +
   labs(
@@ -108,6 +109,11 @@ __q2__ Create a visualization of `df_antibiotics` that helps you to categorize b
 
 ```{r q2-task}
 ## TASK: Create your visualization
+df_antibiotics %>%
+  mutate(
+    bacteria_new = ifelse(
+      bacteria == "Salmonella (Eberthella) typhosa", "Salmonella typhosa", bacteria)) %>%
+  separate(col = bacteria_new, into = c("genus","species"), sep = " ")
 ```
 
 **Observations**:
