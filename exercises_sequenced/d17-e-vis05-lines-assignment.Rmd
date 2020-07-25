@@ -4,7 +4,7 @@ author: Zach del Rosario
 date: 2020-06-04
 output: github_document
 time: 15
-reading: 30
+reading: 30 (14)
 ---
 
 *Purpose*: *Line plots* are a key tool for EDA. In contrast with a scatterplot,
@@ -34,7 +34,7 @@ learned in the reading, fix the following code.
 ## TODO: Fix the following code
 gapminder %>%
   filter(continent == "Asia") %>%
-  ggplot(aes(year, lifeExp)) +
+  ggplot(aes(year, lifeExp, group = country, color = country)) +
   geom_line()
 ```
 
@@ -51,8 +51,8 @@ mpg %>%
 ```
 
 **Observations**:
-- What does a line plot assume about the data?
-- How does the `mpg` dataset violate this assumption?
+- What does a line plot assume about the data? A functional relationship
+- How does the `mpg` dataset violate this assumption? These two variables don't seem to have a functional relationship.
 
 __q3__ The following graph shows both the raw data and a smoothed version.
 Describe the trends that you can see in the different curves.
@@ -67,8 +67,8 @@ economics %>%
 ```
 
 **Observations**:
-- What can you tell based on the `Raw` data?
-- What can you tell based on the `Smoothed` data?
+- What can you tell based on the `Raw` data? There are spikes in unemployment about every 10 years.
+- What can you tell based on the `Smoothed` data? Unemployment dipped in the late 1990's, then has risen a lot since then.
 
 <!-- include-exit-ticket -->
 # Exit Ticket
