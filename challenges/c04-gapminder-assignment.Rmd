@@ -165,10 +165,10 @@ gapminder %>%
 
 **Observations**:
 
-- Africa: Angola (3520), Gabon (4293), South Africa (4725)
-- Americas: Canada (11367), United States (13990), Venezuela (7689)
-- Asia: Bahrain (9867), Kuwait (108382), Saudi Arabia (6459)
-- Europe: Switzerland (14734)
+- Africa: Angola (3,520), Gabon (4,293), South Africa (4,725)
+- Americas: Canada (11,367), United States (13,990), Venezuela (7,689)
+- Asia: Bahrain (9,867), Kuwait (108,382), Saudi Arabia (6,459)
+- Europe: Switzerland (14,734)
 
 
 __q4__ Create a plot similar to yours from q2 studying both `year_min` and `year_max`. Find a way to highlight the outliers from q3 on your plot. Compare the patterns between `year_min` and `year_max`.
@@ -194,7 +194,7 @@ gapminder %>%
 
 - Most of the medians for each continent have increased, with Europe and Oceania as the highest increases.
 - The minimum GDP per capita for the world seems to have increased.
-- Many countries have much higher GDP per capita, though none in 2007 reach the level Kuwait had in 1952 ($108382).
+- Many countries have much higher GDP per capita, though none in 2007 reach the level Kuwait had in 1952 ($108,382).
 
 # Your Own EDA
 <!-- -------------------------------------------------- -->
@@ -321,10 +321,10 @@ gapminder %>%
 
 *2007 outliers:*
 
-- Africa: Botswana (12,570), Equatorial Guinea (12,154), Gabon (13,206), Libya (12,057), Mauritius (10,957), South Africa (9,269)
+- Africa: Botswana (12,570), Equatorial Guinea (12,154), Gabon (13,206), Libya (12,057), Mauritius (10,957), South Africa (9,270)
 - Americas: Canada (36,319), United States (42,952)
 
 *Observations:*
 
 - The following countries were outliers both in 1952 and 2007: United States, Canada, Gabon, South Africa
-- In general, there were many fewer outliers in 2007 - instead the maximum and minimum of the boxplots encompassed more countries.
+- In general, there were many fewer outliers in 2007 - instead the maximum and minimum of the boxplots encompassed more countries. This means more countries fell within 1.5 of the IQR on either side of the 1st and 3rd quartile. I'm not sure how to summarize this finding in non-stats language.
