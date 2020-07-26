@@ -342,7 +342,32 @@ ggplot(us) +
   geom_polygon(mapping = aes(x = long, y = lat, group = group, fill = group)) +
   coord_map(projection = "mercator")
 ```
+```{r}
+# Determine mean for each state on a given day
+df_states <-
+  df_normalized %>%
+  filter(date == "2020-07-25") %>%
+  mutate(region = tolower(state)) %>%
+  group_by(region) %>%
+  summarize(mean_casesperk = mean(cases_perk, na.rm = TRUE), mean_deathsperk = mean(deaths_perk, na.rm = TRUE))
+df_states
+```
 
+```{r}
+# Sample plot with another data set, from the tutorial
+ggplot(USArrests2) +
+  geom_map(aes(map_id = region, fill = UrbanPop), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map()
+```
+
+```{r}
+df_states %>%
+  ggplot() +
+  geom_map(aes(map_id = region, fill = mean_casesperk), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map()
+```
 
 # Notes
 <!-- -------------------------------------------------- -->
