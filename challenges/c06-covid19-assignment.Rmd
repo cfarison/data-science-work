@@ -87,9 +87,11 @@ __q1__ Load Table `B01003` into the following tibble. Make sure the column names
 #My table was not called B01003, is that fine? It was not fine. I found B01003 by plugging it into the URL, not sure why mine was different.
 #I got something, but I can't tell if it's right. The data looks weird.
 #You never said to use 5 year, but  I could see from the filename.
+#Help us put data in right column name?
 filename_census = "./data/ACSDT5Y2018.B01003_data_with_overlays_2020-07-24T214459.csv"
 df_pop <- 
-  read_csv(filename_census)
+  read_csv(filename_census, col_names = c("id", "GeographicAreaName", "Estimate", "MarginofError")) %>%
+  .[-c(1:2),]
 ```
 
 *Note*: You can find information on 1-year, 3-year, and 5-year estimates [here](https://www.census.gov/programs-surveys/acs/guidance/estimates.html). The punchline is that 5-year estimates are more reliable but less current.
@@ -149,7 +151,9 @@ __q3__ Process the `id` column of `df_pop` to create a `fips` column.
 
 ```{r q3-task}
 ## TASK: Create a `fips` column by extracting the county code
-df_q3 <- NA
+df_q3 <- 
+  df_pop %>%
+  
 ```
 
 Use the following test to check your answer.
