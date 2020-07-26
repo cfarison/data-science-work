@@ -189,7 +189,8 @@ df_data <-
     cases,
     deaths,
     population = `Estimate!!Total`
-  )
+  ) %>%
+  mutate(population = as.double(population))
 df_data
 ```
 
@@ -208,7 +209,6 @@ __q5__ Use the `population` estimates in `df_data` to normalize `cases` and `dea
 df_normalized <-
   df_data %>%
   mutate(
-    population = as.double(population),
     cases_perk = cases/(population/100000),
     deaths_perk = deaths/(population/100000))
 df_normalized
@@ -335,16 +335,18 @@ Questions:
 - Which states have similar curves to one another over time?
 - How do the means and standard deviations vary by state? Can I show state means on a map, by color? And show the map for a few different dates to show changes over time? Like maybe 3 months? (Take total number of cases in state, divide by state population.)
 
-```{r mean_per_state}
-# Determine mean for each state on a given day
+```{r per_state_7_25}
+# Determine % of population that comes down with COVID or dies on 7/25/20
 df_states_2020_07_25 <-
-  df_normalized %>%
+  df_data %>%
   filter(date == "2020-07-25") %>%
   mutate(region = tolower(state)) %>%
   group_by(region) %>%
-  summarize(mean_casesperk = mean(cases_perk, na.rm = TRUE), mean_deathsperk = mean(deaths_perk, na.rm = TRUE))
+  summarize(cases = sum(cases, na.rm = TRUE), deaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE)) %>%
+  mutate(Cases = cases/pop*100000, Deaths = deaths/pop*100000)
 df_states_2020_07_25
 ```
+
 
 ```{r map_setup}
 library(maps)
@@ -356,11 +358,11 @@ us <- map_data("state")
 library(viridis)
 df_states_2020_07_25 %>%
   ggplot() +
-  geom_map(aes(map_id = region, fill = mean_casesperk), map = us) +
+  geom_map(aes(map_id = region, fill = Cases), map = us) +
   expand_limits(x = us$long, y = us$lat) +
   coord_map() +
   labs(
-    title = "July 25, 2020 Normalized COVID-19 Cases by State",
+    title = "July 25, 2020 Normalized COVID-19 Cases per 100,000 by State",
     x = "Latitude",
     y = "Longitude"
   ) +
@@ -370,11 +372,11 @@ df_states_2020_07_25 %>%
 ```{r death_map_7_25}
 df_states_2020_07_25 %>%
   ggplot() +
-  geom_map(aes(map_id = region, fill = mean_deathsperk), map = us) +
+  geom_map(aes(map_id = region, fill = Deaths), map = us) +
   expand_limits(x = us$long, y = us$lat) +
   coord_map() +
   labs(
-    title = "July 25, 2020 Normalized COVID-19 Deaths by State",
+    title = "July 25, 2020 Normalized COVID-19 Deaths per 100,000 by State",
     x = "Latitude",
     y = "Longitude"
   ) +

@@ -356,7 +356,8 @@ df_data <-
     cases,
     deaths,
     population = `Estimate!!Total`
-  )
+  ) %>%
+  mutate(population = as.double(population))
 df_data
 ```
 
@@ -397,7 +398,6 @@ the columns `cases_perk` and `deaths_perk`.
 df_normalized <-
   df_data %>%
   mutate(
-    population = as.double(population),
     cases_perk = cases/(population/100000),
     deaths_perk = deaths/(population/100000))
 df_normalized
@@ -623,18 +623,20 @@ Questions:
   - Which states have similar curves to one another over time?
   - How do the means and standard deviations vary by state? Can I show
     state means on a map, by color? And show the map for a few different
-    dates to show changes over time?
+    dates to show changes over time? Like maybe 3 months? (Take total
+    number of cases in state, divide by state population.)
 
 <!-- end list -->
 
 ``` r
-# Determine mean for each state on a given day
+# Determine % of population that comes down with COVID or dies on 7/25/20
 df_states_2020_07_25 <-
-  df_normalized %>%
+  df_data %>%
   filter(date == "2020-07-25") %>%
   mutate(region = tolower(state)) %>%
   group_by(region) %>%
-  summarize(mean_casesperk = mean(cases_perk, na.rm = TRUE), mean_deathsperk = mean(deaths_perk, na.rm = TRUE))
+  summarize(cases = sum(cases, na.rm = TRUE), deaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE)) %>%
+  mutate(CasePercentage = cases/pop*100, DeathPercentage = deaths/pop*100)
 ```
 
     ## `summarise()` ungrouping output (override with `.groups` argument)
@@ -643,19 +645,19 @@ df_states_2020_07_25 <-
 df_states_2020_07_25
 ```
 
-    ## # A tibble: 55 x 3
-    ##    region               mean_casesperk mean_deathsperk
-    ##    <chr>                         <dbl>           <dbl>
-    ##  1 alabama                       1834.          44.3  
-    ##  2 alaska                         608.           0.650
-    ##  3 arizona                       2312.          65.9  
-    ##  4 arkansas                      1207.          14.5  
-    ##  5 california                     819.          10.1  
-    ##  6 colorado                       659.          16.9  
-    ##  7 connecticut                   1015.          89.7  
-    ##  8 delaware                      1617.          65.9  
-    ##  9 district of columbia          1712.          84.9  
-    ## 10 florida                       1729.          21.9  
+    ## # A tibble: 55 x 6
+    ##    region                cases deaths      pop CasePercentage DeathPercentage
+    ##    <chr>                 <dbl>  <dbl>    <dbl>          <dbl>           <dbl>
+    ##  1 alabama               78130   1456  4864680          1.61          0.0299 
+    ##  2 alaska                 2866     18   734634          0.390         0.00245
+    ##  3 arizona              160055   3288  6946685          2.30          0.0473 
+    ##  4 arkansas              37981    399  2990671          1.27          0.0133 
+    ##  5 california           453327   8428 39139822          1.16          0.0215 
+    ##  6 colorado              43847   1795  5529692          0.793         0.0325 
+    ##  7 connecticut           48776   4413  3581504          1.36          0.123  
+    ##  8 delaware              14175    579   949495          1.49          0.0610 
+    ##  9 district of columbia  11717    581   684498          1.71          0.0849 
+    ## 10 florida              414503   5776 20598139          2.01          0.0280 
     ## # … with 45 more rows
 
 ``` r
@@ -675,16 +677,23 @@ us <- map_data("state")
 ```
 
 ``` r
+library(viridis)
+```
+
+    ## Loading required package: viridisLite
+
+``` r
 df_states_2020_07_25 %>%
   ggplot() +
-  geom_map(aes(map_id = region, fill = mean_casesperk), map = us) +
+  geom_map(aes(map_id = region, fill = CasePercentage), map = us) +
   expand_limits(x = us$long, y = us$lat) +
   coord_map() +
   labs(
     title = "July 25, 2020 Normalized COVID-19 Cases by State",
     x = "Latitude",
     y = "Longitude"
-  )
+  ) +
+  scale_fill_viridis()
 ```
 
 ![](c06-covid19-assignment_files/figure-gfm/case_map_7_25-1.png)<!-- -->
@@ -692,14 +701,15 @@ df_states_2020_07_25 %>%
 ``` r
 df_states_2020_07_25 %>%
   ggplot() +
-  geom_map(aes(map_id = region, fill = mean_deathsperk), map = us) +
+  geom_map(aes(map_id = region, fill = DeathPercentage), map = us) +
   expand_limits(x = us$long, y = us$lat) +
   coord_map() +
   labs(
     title = "July 25, 2020 Normalized COVID-19 Deaths by State",
     x = "Latitude",
     y = "Longitude"
-  ) 
+  ) +
+  scale_fill_viridis()
 ```
 
 ![](c06-covid19-assignment_files/figure-gfm/death_map_7_25-1.png)<!-- -->
