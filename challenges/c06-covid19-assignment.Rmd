@@ -1,7 +1,7 @@
 ---
 title: "COVID-19"
-author: "(Your name here)"
-date: 2020-
+author: "Charlie Farison"
+date: 2020-08-01
 output:
   github_document:
     toc: true
@@ -83,7 +83,13 @@ __q1__ Load Table `B01003` into the following tibble. Make sure the column names
 
 ```{r q1-task}
 ## TASK: Load the census bureau data with the following tibble name.
-df_pop <- NA
+#Where did we learn how to load .csv's?
+#My table was not called B01003, is that fine? It was not fine. I found B01003 by plugging it into the URL, not sure why mine was different.
+#I got something, but I can't tell if it's right. The data looks weird.
+#You never said to use 5 year, but  I could see from the filename.
+filename_census = "./data/ACSDT5Y2018.B01003_data_with_overlays_2020-07-24T214459.csv"
+df_pop <- 
+  read_csv(filename_census)
 ```
 
 *Note*: You can find information on 1-year, 3-year, and 5-year estimates [here](https://www.census.gov/programs-surveys/acs/guidance/estimates.html). The punchline is that 5-year estimates are more reliable but less current.
@@ -99,14 +105,15 @@ __q2__ Visit the NYT [GitHub](https://github.com/nytimes/covid-19-data) repo and
 
 ```{r q2-task}
 ## TASK: Find the URL for the NYT covid-19 county-level data
-url_counties <- NA_character_
+# Maybe tell them to read the readme? That has the link.
+url_counties <- "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv"
 ```
 
 Once you have the url, the following code will download a local copy of the data, then load the data into R.
 
 ```{r download}
 ## NOTE: No need to change this; just execute
-## Set the filename of the data to download
+#Looks like my .csv is not the data
 filename_nyt <- "./data/nyt_counties.csv"
 
 ## Download the data locally
