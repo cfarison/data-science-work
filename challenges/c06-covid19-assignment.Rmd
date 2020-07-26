@@ -330,7 +330,7 @@ The NYT repo documents some [geographic exceptions](https://github.com/nytimes/c
 
 ### EDA
 Questions:
-- In a map of the United States, which states have the highest case count per capita and death count per capita? Has that changed substantially in the past month?
+- In a map of the United States, which states have the highest case counts and death counts per 100,000 people? Has the highest states changed substantially in the past month?
 
 ```{r per_state_7_25}
 # Determine % of population that comes down with COVID or dies on 7/25/20
@@ -343,7 +343,17 @@ df_states_2020_07_25 <-
   mutate(Cases = cases/pop*100000, Deaths = deaths/pop*100000)
 df_states_2020_07_25
 ```
-
+```{r per_state_6_25}
+# Determine % of population that comes down with COVID or dies on 7/25/20
+df_states_2020_06_25 <-
+  df_data %>%
+  filter(date == "2020-06-25") %>%
+  mutate(region = tolower(state)) %>%
+  group_by(region) %>%
+  summarize(cases = sum(cases, na.rm = TRUE), deaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE)) %>%
+  mutate(Cases = cases/pop*100000, Deaths = deaths/pop*100000)
+df_states_2020_06_25
+```
 
 ```{r map_setup}
 library(maps)
@@ -353,13 +363,14 @@ us <- map_data("state")
 
 ```{r case_map_7_25}
 library(viridis)
-df_states_2020_07_25 %>%
+state_cases_07_25 <-
+  df_states_2020_07_25 %>%
   ggplot() +
   geom_map(aes(map_id = region, fill = Cases), map = us) +
   expand_limits(x = us$long, y = us$lat) +
   coord_map() +
   labs(
-    title = "July 25, 2020 Normalized COVID-19 Cases per 100,000 by State",
+    title = "July 25, 2020 Normalized COVID-19 Cases per 100,000",
     x = "Latitude",
     y = "Longitude"
   ) +
@@ -367,17 +378,54 @@ df_states_2020_07_25 %>%
 ```
 
 ```{r death_map_7_25}
-df_states_2020_07_25 %>%
+state_deaths_07_25 <-
+  df_states_2020_07_25 %>%
   ggplot() +
   geom_map(aes(map_id = region, fill = Deaths), map = us) +
   expand_limits(x = us$long, y = us$lat) +
   coord_map() +
   labs(
-    title = "July 25, 2020 Normalized COVID-19 Deaths per 100,000 by State",
+    title = "July 25, 2020 Normalized COVID-19 Deaths per 100,000",
     x = "Latitude",
     y = "Longitude"
   ) +
   scale_fill_viridis()
+```
+
+```{r case_map_6_25}
+library(viridis)
+state_cases_06_25 <-
+  df_states_2020_06_25 %>%
+  ggplot() +
+  geom_map(aes(map_id = region, fill = Cases), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map() +
+  labs(
+    title = "June 25, 2020 Normalized COVID-19 Cases per 100,000",
+    x = "Latitude",
+    y = "Longitude"
+  ) +
+  scale_fill_viridis()
+```
+
+```{r death_map_6_25}
+state_deaths_06_25 <-
+  df_states_2020_06_25 %>%
+  ggplot() +
+  geom_map(aes(map_id = region, fill = Deaths), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map() +
+  labs(
+    title = "June 25, 2020 Normalized COVID-19 Deaths per 100,000",
+    x = "Latitude",
+    y = "Longitude"
+  ) +
+  scale_fill_viridis()
+```
+
+```{r compare_july_cases_deaths}
+library(gridExtra)
+grid.arrange(state_cases_07_25, state_deaths_07_25)
 ```
 
 **Observations**:
@@ -385,9 +433,22 @@ df_states_2020_07_25 %>%
 - New York has the highest case and death counts per 100,000 people. New Jersey and Massachusetts are also higher than most.
 - The states with the highest case counts per 100,000 people are not the same states with the highest death counts per 100,000 people, which indicates to me that they might have higher death counts in the future (as death counts can lag case counts by weeks).
 
-**Possible Future Questions**:
-- How does county size affect normalized cases and deaths?
-- Which states have similar curves to one another over time?
+```{r compare_june_july_cases}
+grid.arrange(state_cases_06_25, state_cases_07_25)
+```
+
+**Observations**:
+
+- Cases per 100,000 people has increased a lot for several states from June 25th to July 25th.
+- Cases per 100,000 people has not increased much if at all for New York, Massachusetts, and New Jersey (the highest case count states in June).
+
+```{r compare_june_july_deaths}
+grid.arrange(state_deaths_06_25, state_deaths_07_25)
+```
+
+**Observations**:
+
+- Deaths have not increased nearly as much. This could be due to higher case counts from expanded testing, rather than only testing people who are showing symptoms. Or it could indicate that the increase in cases over the past month will lead to an increase in deaths in the future, since there's a lag between cases and deaths of multiple weeks.
 
 # Notes
 <!-- -------------------------------------------------- -->

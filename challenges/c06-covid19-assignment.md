@@ -617,16 +617,9 @@ manually normalize the data.
 
 ### EDA
 
-Questions:
-
-  - How does county size affect normalized cases and deaths?
-  - Which states have similar curves to one another over time?
-  - How do the means and standard deviations vary by state? Can I show
-    state means on a map, by color? And show the map for a few different
-    dates to show changes over time? Like maybe 3 months? (Take total
-    number of cases in state, divide by state population.)
-
-<!-- end list -->
+Questions: - In a map of the United States, which states have the
+highest case counts and death counts per 100,000 people? Has the highest
+states changed substantially in the past month?
 
 ``` r
 # Determine % of population that comes down with COVID or dies on 7/25/20
@@ -661,6 +654,38 @@ df_states_2020_07_25
     ## # … with 45 more rows
 
 ``` r
+# Determine % of population that comes down with COVID or dies on 7/25/20
+df_states_2020_06_25 <-
+  df_data %>%
+  filter(date == "2020-06-25") %>%
+  mutate(region = tolower(state)) %>%
+  group_by(region) %>%
+  summarize(cases = sum(cases, na.rm = TRUE), deaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE)) %>%
+  mutate(Cases = cases/pop*100000, Deaths = deaths/pop*100000)
+```
+
+    ## `summarise()` ungrouping output (override with `.groups` argument)
+
+``` r
+df_states_2020_06_25
+```
+
+    ## # A tibble: 55 x 6
+    ##    region                cases deaths      pop Cases Deaths
+    ##    <chr>                 <dbl>  <dbl>    <dbl> <dbl>  <dbl>
+    ##  1 alabama               33206    896  4864680  683.  18.4 
+    ##  2 alaska                  971     10   726436  134.   1.38
+    ##  3 arizona               63297   1495  6946685  911.  21.5 
+    ##  4 arkansas              18062    240  2985469  605.   8.04
+    ##  5 california           201413   5810 39139822  515.  14.8 
+    ##  6 colorado              31463   1669  5525501  569.  30.2 
+    ##  7 connecticut           45994   4298  3581504 1284. 120.  
+    ##  8 delaware              10980    507   949495 1156.  53.4 
+    ##  9 district of columbia  10159    543   684498 1484.  79.3 
+    ## 10 florida              114010   3326 20598139  553.  16.1 
+    ## # … with 45 more rows
+
+``` r
 library(maps)
 ```
 
@@ -683,36 +708,82 @@ library(viridis)
     ## Loading required package: viridisLite
 
 ``` r
-df_states_2020_07_25 %>%
+state_cases_07_25 <-
+  df_states_2020_07_25 %>%
   ggplot() +
   geom_map(aes(map_id = region, fill = Cases), map = us) +
   expand_limits(x = us$long, y = us$lat) +
   coord_map() +
   labs(
-    title = "July 25, 2020 Normalized COVID-19 Cases per 100,000 by State",
+    title = "July 25, 2020 Normalized COVID-19 Cases per 100,000",
     x = "Latitude",
     y = "Longitude"
   ) +
   scale_fill_viridis()
 ```
 
-![](c06-covid19-assignment_files/figure-gfm/case_map_7_25-1.png)<!-- -->
-
 ``` r
-df_states_2020_07_25 %>%
+state_deaths_07_25 <-
+  df_states_2020_07_25 %>%
   ggplot() +
   geom_map(aes(map_id = region, fill = Deaths), map = us) +
   expand_limits(x = us$long, y = us$lat) +
   coord_map() +
   labs(
-    title = "July 25, 2020 Normalized COVID-19 Deaths per 100,000 by State",
+    title = "July 25, 2020 Normalized COVID-19 Deaths per 100,000",
     x = "Latitude",
     y = "Longitude"
   ) +
   scale_fill_viridis()
 ```
 
-![](c06-covid19-assignment_files/figure-gfm/death_map_7_25-1.png)<!-- -->
+``` r
+library(viridis)
+state_cases_06_25 <-
+  df_states_2020_06_25 %>%
+  ggplot() +
+  geom_map(aes(map_id = region, fill = Cases), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map() +
+  labs(
+    title = "June 25, 2020 Normalized COVID-19 Cases per 100,000",
+    x = "Latitude",
+    y = "Longitude"
+  ) +
+  scale_fill_viridis()
+```
+
+``` r
+state_deaths_06_25 <-
+  df_states_2020_06_25 %>%
+  ggplot() +
+  geom_map(aes(map_id = region, fill = Deaths), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map() +
+  labs(
+    title = "June 25, 2020 Normalized COVID-19 Deaths per 100,000",
+    x = "Latitude",
+    y = "Longitude"
+  ) +
+  scale_fill_viridis()
+```
+
+``` r
+library(gridExtra)
+```
+
+    ## 
+    ## Attaching package: 'gridExtra'
+
+    ## The following object is masked from 'package:dplyr':
+    ## 
+    ##     combine
+
+``` r
+grid.arrange(state_cases_07_25, state_deaths_07_25)
+```
+
+![](c06-covid19-assignment_files/figure-gfm/compare_july_cases_deaths-1.png)<!-- -->
 
 **Observations**:
 
@@ -722,6 +793,39 @@ df_states_2020_07_25 %>%
     the same states with the highest death counts per 100,000 people,
     which indicates to me that they might have higher death counts in
     the future (as death counts can lag case counts by weeks).
+
+<!-- end list -->
+
+``` r
+grid.arrange(state_cases_06_25, state_cases_07_25)
+```
+
+![](c06-covid19-assignment_files/figure-gfm/compare_june_july_cases-1.png)<!-- -->
+
+**Observations**:
+
+  - Cases per 100,000 people has increased a lot for several states from
+    June 25th to July 25th.
+  - Cases per 100,000 people has not increased much if at all for New
+    York, Massachusetts, and New Jersey (the highest case count states
+    in June).
+
+<!-- end list -->
+
+``` r
+grid.arrange(state_deaths_06_25, state_deaths_07_25)
+```
+
+![](c06-covid19-assignment_files/figure-gfm/compare_june_july_deaths-1.png)<!-- -->
+
+**Observations**:
+
+  - Deaths have not increased nearly as much. This could be due to
+    higher case counts from expanded testing, rather than only testing
+    people who are showing symptoms. Or it could indicate that the
+    increase in cases over the past month will lead to an increase in
+    deaths in the future, since there’s a lag between cases and deaths
+    of multiple weeks.
 
 # Notes
 
