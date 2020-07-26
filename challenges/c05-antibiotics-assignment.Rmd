@@ -75,12 +75,19 @@ __q1__ Create a visualization of `df_antibiotics` that helps you to compare the 
 
 ```{r q1-task}
 ## TASK: Create your visualization
+strep_h <- df_antibiotics %>%
+  filter(bacteria == "Streptococcus hemolyticus")
 df_antibiotics %>%
   ggplot() +
   geom_point(mapping = aes(x = bacteria, y = penicillin, color = "penicillin")) +
   geom_point(mapping = aes(x = bacteria, y = streptomycin, color = "streptomycin")) +
   geom_point(mapping = aes(x = bacteria, y = neomycin, color = "neomycin")) +
+  geom_text(data = strep_h, aes(x = bacteria, y = penicillin + 0.025, label = "Effective")) + 
   geom_hline(yintercept = 0.1) +
+  geom_segment(
+    aes(x = "Streptococcus viridans", y = 0.1, 
+        xend = "Streptococcus viridans", yend = 0.01),
+        arrow = arrow(length = unit(0.5, "cm"))) +
   theme(
     axis.text.x = element_text(angle = 90, hjust = 1)) +
   scale_y_log10() +
@@ -98,6 +105,7 @@ df_antibiotics %>%
 - Penicillin is the most effective of the 3 antibiotics for streptococcus viridans, streptococcus hemolyticus, diplococcus pneumonia, and bacillus anthracis.
 - Streptomycin is not the most effective of the 3 antibiotics for any of the bacteria in this dataset.
 - All 3 of these antibiotics are not effective enough for human use for several bacteria shown here: pseudomonas aeruginosa, mycobacterium tuberculosis, klebsiella penumoniae, and aerobacter aerogenes.
+- With one exception, all bacteria with the same genus have the same set of effective antibiotics (the exception is Streptococcus fecalis).
 
 
 ## Purpose: Categorize Bacteria
@@ -120,7 +128,8 @@ df_antibiotics %>%
   mutate(effective = penicillin_effective + neomycin_effective + streptomycin_effective) %>%
   ggplot() +
   geom_point(mapping = aes(x = bacteria, y = effective, color = genus, shape = gram), size = 5) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  theme(
+    axis.text.x = element_text(angle = 90, hjust = 1)) +
   coord_flip() +
   labs(
     title = "What Characteristics are Shared for a Genus?",
