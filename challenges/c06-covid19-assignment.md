@@ -629,7 +629,7 @@ Questions:
 
 ``` r
 # Determine mean for each state on a given day
-df_states <-
+df_states_2020_07_25 <-
   df_normalized %>%
   filter(date == "2020-07-25") %>%
   mutate(region = tolower(state)) %>%
@@ -640,7 +640,7 @@ df_states <-
     ## `summarise()` ungrouping output (override with `.groups` argument)
 
 ``` r
-df_states
+df_states_2020_07_25
 ```
 
     ## # A tibble: 55 x 3
@@ -675,14 +675,34 @@ us <- map_data("state")
 ```
 
 ``` r
-df_states %>%
+df_states_2020_07_25 %>%
   ggplot() +
   geom_map(aes(map_id = region, fill = mean_casesperk), map = us) +
   expand_limits(x = us$long, y = us$lat) +
-  coord_map()
+  coord_map() +
+  labs(
+    title = "July 25, 2020 Normalized COVID-19 Cases by State",
+    x = "Latitude",
+    y = "Longitude"
+  )
 ```
 
 ![](c06-covid19-assignment_files/figure-gfm/case_map_7_25-1.png)<!-- -->
+
+``` r
+df_states_2020_07_25 %>%
+  ggplot() +
+  geom_map(aes(map_id = region, fill = mean_deathsperk), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map() +
+  labs(
+    title = "July 25, 2020 Normalized COVID-19 Deaths by State",
+    x = "Latitude",
+    y = "Longitude"
+  ) 
+```
+
+![](c06-covid19-assignment_files/figure-gfm/death_map_7_25-1.png)<!-- -->
 
 # Notes
 

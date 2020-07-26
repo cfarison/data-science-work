@@ -337,13 +337,13 @@ Questions:
 
 ```{r mean_per_state}
 # Determine mean for each state on a given day
-df_states <-
+df_states_2020_07_25 <-
   df_normalized %>%
   filter(date == "2020-07-25") %>%
   mutate(region = tolower(state)) %>%
   group_by(region) %>%
   summarize(mean_casesperk = mean(cases_perk, na.rm = TRUE), mean_deathsperk = mean(deaths_perk, na.rm = TRUE))
-df_states
+df_states_2020_07_25
 ```
 
 ```{r map_setup}
@@ -353,11 +353,29 @@ us <- map_data("state")
 ```
 
 ```{r case_map_7_25}
-df_states %>%
+df_states_2020_07_25 %>%
   ggplot() +
   geom_map(aes(map_id = region, fill = mean_casesperk), map = us) +
   expand_limits(x = us$long, y = us$lat) +
-  coord_map()
+  coord_map() +
+  labs(
+    title = "July 25, 2020 Normalized COVID-19 Cases by State",
+    x = "Latitude",
+    y = "Longitude"
+  )
+```
+
+```{r death_map_7_25}
+df_states_2020_07_25 %>%
+  ggplot() +
+  geom_map(aes(map_id = region, fill = mean_deathsperk), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map() +
+  labs(
+    title = "July 25, 2020 Normalized COVID-19 Deaths by State",
+    x = "Latitude",
+    y = "Longitude"
+  ) 
 ```
 
 # Notes
