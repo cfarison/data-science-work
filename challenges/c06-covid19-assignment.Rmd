@@ -90,7 +90,7 @@ __q1__ Load Table `B01003` into the following tibble. Make sure the column names
 #Help us put data in right column name?
 filename_census = "./data/ACSDT5Y2018.B01003_data_with_overlays_2020-07-24T214459.csv"
 df_pop <- 
-  read_csv(filename_census, col_names = c("id", "GeographicAreaName", "Estimate", "MarginofError")) %>%
+  read_csv(filename_census, col_names = c("id", "Geographic Area Name", "Estimate", "Margin of Error")) %>%
   .[-c(1:2),]
 ```
 
@@ -153,7 +153,9 @@ __q3__ Process the `id` column of `df_pop` to create a `fips` column.
 ## TASK: Create a `fips` column by extracting the county code
 df_q3 <- 
   df_pop %>%
-  
+  separate(col = "id", into = c("prefix", "fips"), sep = "US") %>%
+  select(-c("prefix", "Margin of Error"))
+df_q3
 ```
 
 Use the following test to check your answer.
@@ -161,6 +163,7 @@ Use the following test to check your answer.
 ```{r q3-tests}
 ## NOTE: No need to change this
 ## Check known county
+#You didn't specify our column names
 assertthat::assert_that(
               (df_q3 %>%
               filter(str_detect(`Geographic Area Name`, "Autauga County")) %>%
@@ -169,7 +172,6 @@ assertthat::assert_that(
 print("Very good!")
 ```
 
-Once
 
 __q4__ Join `df_covid` with `df_q3` by the `fips` column. Use the proper type of join to preserve all rows in `df_covid`.
 
