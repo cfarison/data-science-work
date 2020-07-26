@@ -21,6 +21,7 @@ Charlie Farison
           - [Aside: Some visualization
             tricks](#aside-some-visualization-tricks)
           - [Geographic exceptions](#geographic-exceptions)
+          - [EDA](#eda)
   - [Notes](#notes)
 
 *Purpose*: We can’t *possibly* do a class on data science and *not* look
@@ -613,6 +614,94 @@ consolidated under “New York City” *without* a fips code. Thus the
 normalized counts in `df_normalized` are `NA`. To fix this, you would
 need to merge the population data from the New York City counties, and
 manually normalize the data.
+
+### EDA
+
+Questions:
+
+  - How does county size affect normalized cases and deaths?
+  - Which states have similar curves to one another over time?
+  - How do the means and standard deviations vary by state? Can I show
+    state means on a map, by color? And show the map for a few different
+    dates to show changes over time?
+
+<!-- end list -->
+
+``` r
+library(maps)
+```
+
+    ## 
+    ## Attaching package: 'maps'
+
+    ## The following object is masked from 'package:purrr':
+    ## 
+    ##     map
+
+``` r
+library(mapproj)
+us <- map_data("state")
+ggplot(us) +
+  geom_polygon(mapping = aes(x = long, y = lat, group = group, fill = group)) +
+  coord_map(projection = "mercator")
+```
+
+![](c06-covid19-assignment_files/figure-gfm/maps_example-1.png)<!-- -->
+
+``` r
+# Determine mean for each state on a given day
+df_states <-
+  df_normalized %>%
+  filter(date == "2020-07-25") %>%
+  mutate(region = tolower(state)) %>%
+  group_by(region) %>%
+  summarize(mean_casesperk = mean(cases_perk, na.rm = TRUE), mean_deathsperk = mean(deaths_perk, na.rm = TRUE))
+```
+
+    ## `summarise()` ungrouping output (override with `.groups` argument)
+
+``` r
+df_states
+```
+
+    ## # A tibble: 55 x 3
+    ##    region               mean_casesperk mean_deathsperk
+    ##    <chr>                         <dbl>           <dbl>
+    ##  1 alabama                       1834.          44.3  
+    ##  2 alaska                         608.           0.650
+    ##  3 arizona                       2312.          65.9  
+    ##  4 arkansas                      1207.          14.5  
+    ##  5 california                     819.          10.1  
+    ##  6 colorado                       659.          16.9  
+    ##  7 connecticut                   1015.          89.7  
+    ##  8 delaware                      1617.          65.9  
+    ##  9 district of columbia          1712.          84.9  
+    ## 10 florida                       1729.          21.9  
+    ## # … with 45 more rows
+
+``` r
+# Sample plot with another data set, from the tutorial
+USArrests2 <- USArrests %>% 
+  rownames_to_column("region") %>% 
+  mutate(region = tolower(region))
+
+ggplot(USArrests2) +
+  geom_map(aes(map_id = region, fill = UrbanPop), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map()
+```
+
+![](c06-covid19-assignment_files/figure-gfm/sample_map_with_data-1.png)<!-- -->
+
+``` r
+df_states %>%
+  ggplot() +
+  geom_map(aes(map_id = region, fill = mean_casesperk), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map()
+```
+
+![](c06-covid19-assignment_files/figure-gfm/case_map_7_25-1.png)<!-- -->
 
 # Notes
 
