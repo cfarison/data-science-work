@@ -450,6 +450,139 @@ grid.arrange(state_deaths_06_25, state_deaths_07_25)
 
 - Cumulative deaths have not increased nearly as much. This could be due to higher case counts from expanded testing, rather than only testing people who are showing symptoms. Or it could indicate that the increase in cases over the past month will lead to an increase in deaths in the future, since there's a lag between cases and deaths of multiple weeks.
 
+```{r state_diffs}
+# Total case differences from end of June to July 25th
+df_states_2020_07_total <-
+  df_data %>%
+  filter(date == "2020-07-25") %>%
+  mutate(region = tolower(state)) %>%
+  group_by(region) %>%
+  summarize(julycases = sum(cases, na.rm = TRUE), julydeaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE))
+
+df_states_2020_06_total <-
+  df_data %>%
+  filter(date == "2020-06-25") %>%
+  mutate(region = tolower(state)) %>%
+  group_by(region) %>%
+  summarize(junecases = sum(cases, na.rm = TRUE), junedeaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE))
+
+df_states_2020_05_total <-
+  df_data %>%
+  filter(date == "2020-05-25") %>%
+  mutate(region = tolower(state)) %>%
+  group_by(region) %>%
+  summarize(maycases = sum(cases, na.rm = TRUE), maydeaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE))
+
+df_states_2020_04_total <-
+  df_data %>%
+  filter(date == "2020-04-25") %>%
+  mutate(region = tolower(state)) %>%
+  group_by(region) %>%
+  summarize(aprilcases = sum(cases, na.rm = TRUE), aprildeaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE))
+
+df_states_2020_03_total <-
+  df_data %>%
+  filter(date == "2020-03-25") %>%
+  mutate(region = tolower(state)) %>%
+  group_by(region) %>%
+  summarize(marchcases = sum(cases, na.rm = TRUE), marchdeaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE))
+
+df_diffs <-
+  df_states_2020_07_total %>%
+  left_join(df_states_2020_06_total, by = "region") %>%
+  left_join(df_states_2020_05_total, by = "region") %>%
+  left_join(df_states_2020_04_total, by = "region") %>%
+  left_join(df_states_2020_03_total, by = "region") %>%
+  mutate(
+    julycasediff = julycases - junecases,
+    junecasediff = junecases - maycases,
+    maycasediff = maycases - aprilcases,
+    aprilcasediff = aprilcases - marchcases
+  )
+df_diffs
+```
+
+```{r july_diffs}
+july_diffs <-  
+  df_diffs %>%
+  select(region, julycasediff) %>%
+  mutate("Cases" = julycasediff) %>%
+  ggplot() +
+  geom_map(aes(map_id = region, fill = Cases), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map() +
+  labs(
+    title = "July 2020 COVID-19 Cases",
+    x = "Latitude",
+    y = "Longitude"
+  ) +
+  scale_fill_viridis()
+```
+
+```{r june_diffs}
+june_diffs <-  
+  df_diffs %>%
+  select(region, junecasediff) %>%
+  mutate("Cases" = junecasediff) %>%
+  ggplot() +
+  geom_map(aes(map_id = region, fill = Cases), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map() +
+  labs(
+    title = "June 2020 COVID-19 Cases",
+    x = "Latitude",
+    y = "Longitude"
+  ) +
+  scale_fill_viridis()
+```
+
+```{r may_diffs}
+may_diffs <-  
+  df_diffs %>%
+  select(region, maycasediff) %>%
+  mutate("Cases" = maycasediff) %>%
+  ggplot() +
+  geom_map(aes(map_id = region, fill = Cases), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map() +
+  labs(
+    title = "May 2020 COVID-19 Cases",
+    x = "Latitude",
+    y = "Longitude"
+  ) +
+  scale_fill_viridis()
+```
+
+```{r april_diffs}
+april_diffs <-  
+  df_diffs %>%
+  select(region, aprilcasediff) %>%
+  mutate("Cases" = aprilcasediff) %>%
+  ggplot() +
+  geom_map(aes(map_id = region, fill = Cases), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map() +
+  labs(
+    title = "April 2020 COVID-19 Cases",
+    x = "Latitude",
+    y = "Longitude"
+  ) +
+  scale_fill_viridis()
+```
+
+```{r compare_months, echo = "FALSE", message = "FALSE"}
+april_diffs
+may_diffs
+june_diffs
+july_diffs
+```
+
+**Observations**:
+
+- Comparing which states had the highest case counts from April through July, we see that New York and New Jersey were highest in April, and several other states joined them with more significant case counts in May, with Illinois and California surpassing New Jersey and Texas coming up to meet it.
+- In June, New York's case counts had falled relative to other states, and the top case counts were in California, Texas, Florida, then Arizona.
+- In July, the states with top case counts stayed approximately the same, but the number of cases increased significantly. Georgia started to become a high-case state.
+
 # Notes
 <!-- -------------------------------------------------- -->
 

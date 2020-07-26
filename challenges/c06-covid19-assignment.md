@@ -829,6 +829,204 @@ grid.arrange(state_deaths_06_25, state_deaths_07_25)
     in deaths in the future, since there’s a lag between cases and
     deaths of multiple weeks.
 
+<!-- end list -->
+
+``` r
+# Total case differences from end of June to July 25th
+df_states_2020_07_total <-
+  df_data %>%
+  filter(date == "2020-07-25") %>%
+  mutate(region = tolower(state)) %>%
+  group_by(region) %>%
+  summarize(julycases = sum(cases, na.rm = TRUE), julydeaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE))
+```
+
+    ## `summarise()` ungrouping output (override with `.groups` argument)
+
+``` r
+df_states_2020_06_total <-
+  df_data %>%
+  filter(date == "2020-06-25") %>%
+  mutate(region = tolower(state)) %>%
+  group_by(region) %>%
+  summarize(junecases = sum(cases, na.rm = TRUE), junedeaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE))
+```
+
+    ## `summarise()` ungrouping output (override with `.groups` argument)
+
+``` r
+df_states_2020_05_total <-
+  df_data %>%
+  filter(date == "2020-05-25") %>%
+  mutate(region = tolower(state)) %>%
+  group_by(region) %>%
+  summarize(maycases = sum(cases, na.rm = TRUE), maydeaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE))
+```
+
+    ## `summarise()` ungrouping output (override with `.groups` argument)
+
+``` r
+df_states_2020_04_total <-
+  df_data %>%
+  filter(date == "2020-04-25") %>%
+  mutate(region = tolower(state)) %>%
+  group_by(region) %>%
+  summarize(aprilcases = sum(cases, na.rm = TRUE), aprildeaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE))
+```
+
+    ## `summarise()` ungrouping output (override with `.groups` argument)
+
+``` r
+df_states_2020_03_total <-
+  df_data %>%
+  filter(date == "2020-03-25") %>%
+  mutate(region = tolower(state)) %>%
+  group_by(region) %>%
+  summarize(marchcases = sum(cases, na.rm = TRUE), marchdeaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE))
+```
+
+    ## `summarise()` ungrouping output (override with `.groups` argument)
+
+``` r
+df_diffs <-
+  df_states_2020_07_total %>%
+  left_join(df_states_2020_06_total, by = "region") %>%
+  left_join(df_states_2020_05_total, by = "region") %>%
+  left_join(df_states_2020_04_total, by = "region") %>%
+  left_join(df_states_2020_03_total, by = "region") %>%
+  mutate(
+    julycasediff = julycases - junecases,
+    junecasediff = junecases - maycases,
+    maycasediff = maycases - aprilcases,
+    aprilcasediff = aprilcases - marchcases
+  )
+df_diffs
+```
+
+    ## # A tibble: 55 x 20
+    ##    region julycases julydeaths  pop.x junecases junedeaths  pop.y maycases
+    ##    <chr>      <dbl>      <dbl>  <dbl>     <dbl>      <dbl>  <dbl>    <dbl>
+    ##  1 alaba…     78130       1456 4.86e6     33206        896 4.86e6    14986
+    ##  2 alaska      2866         18 7.35e5       971         10 7.26e5      412
+    ##  3 arizo…    160055       3288 6.95e6     63297       1495 6.95e6    16561
+    ##  4 arkan…     37981        399 2.99e6     18062        240 2.99e6     6029
+    ##  5 calif…    453327       8428 3.91e7    201413       5810 3.91e7    97017
+    ##  6 color…     43847       1795 5.53e6     31463       1669 5.53e6    24256
+    ##  7 conne…     48776       4413 3.58e6     45994       4298 3.58e6    40873
+    ##  8 delaw…     14175        579 9.49e5     10980        507 9.49e5     8965
+    ##  9 distr…     11717        581 6.84e5     10159        543 6.84e5     8225
+    ## 10 flori…    414503       5776 2.06e7    114010       3326 2.06e7    51738
+    ## # … with 45 more rows, and 12 more variables: maydeaths <dbl>, pop.x.x <dbl>,
+    ## #   aprilcases <dbl>, aprildeaths <dbl>, pop.y.y <dbl>, marchcases <dbl>,
+    ## #   marchdeaths <dbl>, pop <dbl>, julycasediff <dbl>, junecasediff <dbl>,
+    ## #   maycasediff <dbl>, aprilcasediff <dbl>
+
+``` r
+july_diffs <-  
+  df_diffs %>%
+  select(region, julycasediff) %>%
+  mutate("Cases" = julycasediff) %>%
+  ggplot() +
+  geom_map(aes(map_id = region, fill = Cases), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map() +
+  labs(
+    title = "July 2020 COVID-19 Cases",
+    x = "Latitude",
+    y = "Longitude"
+  ) +
+  scale_fill_viridis()
+```
+
+``` r
+june_diffs <-  
+  df_diffs %>%
+  select(region, junecasediff) %>%
+  mutate("Cases" = junecasediff) %>%
+  ggplot() +
+  geom_map(aes(map_id = region, fill = Cases), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map() +
+  labs(
+    title = "June 2020 COVID-19 Cases",
+    x = "Latitude",
+    y = "Longitude"
+  ) +
+  scale_fill_viridis()
+```
+
+``` r
+may_diffs <-  
+  df_diffs %>%
+  select(region, maycasediff) %>%
+  mutate("Cases" = maycasediff) %>%
+  ggplot() +
+  geom_map(aes(map_id = region, fill = Cases), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map() +
+  labs(
+    title = "May 2020 COVID-19 Cases",
+    x = "Latitude",
+    y = "Longitude"
+  ) +
+  scale_fill_viridis()
+```
+
+``` r
+april_diffs <-  
+  df_diffs %>%
+  select(region, aprilcasediff) %>%
+  mutate("Cases" = aprilcasediff) %>%
+  ggplot() +
+  geom_map(aes(map_id = region, fill = Cases), map = us) +
+  expand_limits(x = us$long, y = us$lat) +
+  coord_map() +
+  labs(
+    title = "April 2020 COVID-19 Cases",
+    x = "Latitude",
+    y = "Longitude"
+  ) +
+  scale_fill_viridis()
+```
+
+``` r
+april_diffs
+```
+
+![](c06-covid19-assignment_files/figure-gfm/compare_months-1.png)<!-- -->
+
+``` r
+may_diffs
+```
+
+![](c06-covid19-assignment_files/figure-gfm/compare_months-2.png)<!-- -->
+
+``` r
+june_diffs
+```
+
+![](c06-covid19-assignment_files/figure-gfm/compare_months-3.png)<!-- -->
+
+``` r
+july_diffs
+```
+
+![](c06-covid19-assignment_files/figure-gfm/compare_months-4.png)<!-- -->
+
+**Observations**:
+
+  - Comparing which states had the highest case counts from April
+    through July, we see that New York and New Jersey were highest in
+    April, and several other states joined them with more significant
+    case counts in May, with Illinois and California surpassing New
+    Jersey and Texas coming up to meet it.
+  - In June, New York’s case counts had falled relative to other states,
+    and the top case counts were in California, Texas, Florida, then
+    Arizona.
+  - In July, the states with top case counts stayed approximately the
+    same, but the number of cases increased significantly. Georgia
+    started to become a high-case state.
+
 # Notes
 
 <!-- -------------------------------------------------- -->
