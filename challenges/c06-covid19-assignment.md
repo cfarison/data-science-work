@@ -628,27 +628,6 @@ Questions:
 <!-- end list -->
 
 ``` r
-library(maps)
-```
-
-    ## 
-    ## Attaching package: 'maps'
-
-    ## The following object is masked from 'package:purrr':
-    ## 
-    ##     map
-
-``` r
-library(mapproj)
-us <- map_data("state")
-ggplot(us) +
-  geom_polygon(mapping = aes(x = long, y = lat, group = group, fill = group)) +
-  coord_map(projection = "mercator")
-```
-
-![](c06-covid19-assignment_files/figure-gfm/maps_example-1.png)<!-- -->
-
-``` r
 # Determine mean for each state on a given day
 df_states <-
   df_normalized %>%
@@ -680,18 +659,20 @@ df_states
     ## # … with 45 more rows
 
 ``` r
-# Sample plot with another data set, from the tutorial
-USArrests2 <- USArrests %>% 
-  rownames_to_column("region") %>% 
-  mutate(region = tolower(region))
-
-ggplot(USArrests2) +
-  geom_map(aes(map_id = region, fill = UrbanPop), map = us) +
-  expand_limits(x = us$long, y = us$lat) +
-  coord_map()
+library(maps)
 ```
 
-![](c06-covid19-assignment_files/figure-gfm/sample_map_with_data-1.png)<!-- -->
+    ## 
+    ## Attaching package: 'maps'
+
+    ## The following object is masked from 'package:purrr':
+    ## 
+    ##     map
+
+``` r
+library(mapproj)
+us <- map_data("state")
+```
 
 ``` r
 df_states %>%

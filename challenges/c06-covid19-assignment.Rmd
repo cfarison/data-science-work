@@ -335,16 +335,6 @@ Questions:
 - Which states have similar curves to one another over time?
 - How do the means and standard deviations vary by state? Can I show state means on a map, by color? And show the map for a few different dates to show changes over time?
 
-```{r maps_example}
-library(maps)
-library(mapproj)
-us <- map_data("state")
-ggplot(us) +
-  geom_polygon(mapping = aes(x = long, y = lat, group = group, fill = group)) +
-  coord_map(projection = "mercator")
-```
-
-
 ```{r mean_per_state}
 # Determine mean for each state on a given day
 df_states <-
@@ -356,16 +346,10 @@ df_states <-
 df_states
 ```
 
-```{r sample_map_with_data}
-# Sample plot with another data set, from the tutorial
-USArrests2 <- USArrests %>% 
-  rownames_to_column("region") %>% 
-  mutate(region = tolower(region))
-
-ggplot(USArrests2) +
-  geom_map(aes(map_id = region, fill = UrbanPop), map = us) +
-  expand_limits(x = us$long, y = us$lat) +
-  coord_map()
+```{r map_setup}
+library(maps)
+library(mapproj)
+us <- map_data("state")
 ```
 
 ```{r case_map_7_25}
