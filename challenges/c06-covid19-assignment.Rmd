@@ -333,7 +333,7 @@ Questions:
 
 - How does county size affect normalized cases and deaths?
 - Which states have similar curves to one another over time?
-- How do the means and standard deviations vary by state? Can I show state means on a map, by color? And show the map for a few different dates to show changes over time?
+- How do the means and standard deviations vary by state? Can I show state means on a map, by color? And show the map for a few different dates to show changes over time? Like maybe 3 months? (Take total number of cases in state, divide by state population.)
 
 ```{r mean_per_state}
 # Determine mean for each state on a given day
