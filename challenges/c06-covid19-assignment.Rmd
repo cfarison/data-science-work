@@ -430,8 +430,8 @@ grid.arrange(state_cases_07_25, state_deaths_07_25)
 
 **Observations**:
 
-- New York has the highest case and death counts per 100,000 people. New Jersey and Massachusetts are also higher than most.
-- The states with the highest case counts per 100,000 people are not the same states with the highest death counts per 100,000 people, which indicates to me that they might have higher death counts in the future (as death counts can lag case counts by weeks).
+- New York has the highest cumulative case and death counts per 100,000 people. New Jersey and Massachusetts are also higher than most.
+- The states with the highest cumulative case counts per 100,000 people are not the same states with the highest cumulative death counts per 100,000 people, which indicates to me that they might have higher death counts in the future (as death counts can lag case counts by weeks).
 
 ```{r compare_june_july_cases}
 grid.arrange(state_cases_06_25, state_cases_07_25)
@@ -439,8 +439,8 @@ grid.arrange(state_cases_06_25, state_cases_07_25)
 
 **Observations**:
 
-- Cases per 100,000 people has increased a lot for several states from June 25th to July 25th.
-- Cases per 100,000 people has not increased much if at all for New York, Massachusetts, and New Jersey (the highest case count states in June).
+- Cumulative cases per 100,000 people has increased a lot for several states from June 25th to July 25th.
+- Cumulative cases per 100,000 people has not increased much if at all for New York, Massachusetts, and New Jersey (the highest case count states in June).
 
 ```{r compare_june_july_deaths}
 grid.arrange(state_deaths_06_25, state_deaths_07_25)
@@ -448,7 +448,7 @@ grid.arrange(state_deaths_06_25, state_deaths_07_25)
 
 **Observations**:
 
-- Deaths have not increased nearly as much. This could be due to higher case counts from expanded testing, rather than only testing people who are showing symptoms. Or it could indicate that the increase in cases over the past month will lead to an increase in deaths in the future, since there's a lag between cases and deaths of multiple weeks.
+- Cumulative deaths have not increased nearly as much. This could be due to higher case counts from expanded testing, rather than only testing people who are showing symptoms. Or it could indicate that the increase in cases over the past month will lead to an increase in deaths in the future, since there's a lag between cases and deaths of multiple weeks.
 
 # Notes
 <!-- -------------------------------------------------- -->
