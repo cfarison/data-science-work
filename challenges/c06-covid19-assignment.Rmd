@@ -328,6 +328,11 @@ df_normalized %>%
 
 The NYT repo documents some [geographic exceptions](https://github.com/nytimes/covid-19-data#geographic-exceptions); the data for New York, Kings, Queens, Bronx and Richmond counties are consolidated under "New York City" *without* a fips code. Thus the normalized counts in `df_normalized` are `NA`. To fix this, you would need to merge the population data from the New York City counties, and manually normalize the data.
 
+### EDA
+Questions:
+
+- How does county size affect normalized cases and deaths?
+- Which states have similar curves to one another?
 
 # Notes
 <!-- -------------------------------------------------- -->
