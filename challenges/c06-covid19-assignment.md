@@ -851,7 +851,7 @@ df_states_2020_07_total <-
 ``` r
 df_states_2020_06_total <-
   df_data %>%
-  filter(date == "2020-06-25") %>%
+  filter(date == "2020-06-30") %>%
   mutate(region = tolower(state)) %>%
   group_by(region) %>%
   summarize(junecases = sum(cases, na.rm = TRUE), junedeaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE))
@@ -862,7 +862,7 @@ df_states_2020_06_total <-
 ``` r
 df_states_2020_05_total <-
   df_data %>%
-  filter(date == "2020-05-25") %>%
+  filter(date == "2020-05-31") %>%
   mutate(region = tolower(state)) %>%
   group_by(region) %>%
   summarize(maycases = sum(cases, na.rm = TRUE), maydeaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE))
@@ -873,7 +873,7 @@ df_states_2020_05_total <-
 ``` r
 df_states_2020_04_total <-
   df_data %>%
-  filter(date == "2020-04-25") %>%
+  filter(date == "2020-04-30") %>%
   mutate(region = tolower(state)) %>%
   group_by(region) %>%
   summarize(aprilcases = sum(cases, na.rm = TRUE), aprildeaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE))
@@ -884,7 +884,7 @@ df_states_2020_04_total <-
 ``` r
 df_states_2020_03_total <-
   df_data %>%
-  filter(date == "2020-03-25") %>%
+  filter(date == "2020-03-31") %>%
   mutate(region = tolower(state)) %>%
   group_by(region) %>%
   summarize(marchcases = sum(cases, na.rm = TRUE), marchdeaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE))
@@ -911,16 +911,16 @@ df_diffs
     ## # A tibble: 55 x 20
     ##    region julycases julydeaths  pop.x junecases junedeaths  pop.y maycases
     ##    <chr>      <dbl>      <dbl>  <dbl>     <dbl>      <dbl>  <dbl>    <dbl>
-    ##  1 alaba…     78130       1456 4.86e6     33206        896 4.86e6    14986
-    ##  2 alaska      2866         18 7.35e5       971         10 7.26e5      412
-    ##  3 arizo…    160055       3288 6.95e6     63297       1495 6.95e6    16561
-    ##  4 arkan…     37981        399 2.99e6     18062        240 2.99e6     6029
-    ##  5 calif…    453327       8428 3.91e7    201413       5810 3.91e7    97017
-    ##  6 color…     43847       1795 5.53e6     31463       1669 5.53e6    24256
-    ##  7 conne…     48776       4413 3.58e6     45994       4298 3.58e6    40873
-    ##  8 delaw…     14175        579 9.49e5     10980        507 9.49e5     8965
-    ##  9 distr…     11717        581 6.84e5     10159        543 6.84e5     8225
-    ## 10 flori…    414503       5776 2.06e7    114010       3326 2.06e7    51738
+    ##  1 alaba…     78130       1456 4.86e6     38045        950 4.86e6    17952
+    ##  2 alaska      2866         18 7.35e5      1132         12 7.26e5      469
+    ##  3 arizo…    160055       3288 6.95e6     79399       1645 6.95e6    19936
+    ##  4 arkan…     37981        399 2.99e6     20777        270 2.99e6     7253
+    ##  5 calif…    453327       8428 3.91e7    232153       6083 3.91e7   113114
+    ##  6 color…     43847       1795 5.53e6     32698       1690 5.53e6    26364
+    ##  7 conne…     48776       4413 3.58e6     46514       4322 3.58e6    42201
+    ##  8 delaw…     14175        579 9.49e5     11474        509 9.49e5     9498
+    ##  9 distr…     11717        581 6.84e5     10327        551 6.84e5     8801
+    ## 10 flori…    414503       5776 2.06e7    152426       3504 2.06e7    56155
     ## # … with 45 more rows, and 12 more variables: maydeaths <dbl>, pop.x.x <dbl>,
     ## #   aprilcases <dbl>, aprildeaths <dbl>, pop.y.y <dbl>, marchcases <dbl>,
     ## #   marchdeaths <dbl>, pop <dbl>, julycasediff <dbl>, junecasediff <dbl>,
