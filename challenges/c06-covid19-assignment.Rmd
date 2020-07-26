@@ -215,8 +215,14 @@ __q5__ Use the `population` estimates in `df_data` to normalize `cases` and `dea
 
 ```{r q5-task}
 ## TASK: Normalize cases and deaths
+#Population is a string
 df_normalized <-
-  df_data
+  df_data %>%
+  mutate(
+    population = as.double(population),
+    cases_perk = cases/(population/1000),
+    deaths_perk = deaths/(population/1000))
+df_normalized
 ```
 
 You may use the following test to check your work.
@@ -224,6 +230,7 @@ You may use the following test to check your work.
 ```{r q5-tests}
 ## NOTE: No need to change this
 ## Check known county data
+# I feel pretty confident, but this says it's wrong.
 assertthat::assert_that(
               abs(df_normalized %>%
                filter(
