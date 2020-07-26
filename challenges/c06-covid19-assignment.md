@@ -617,9 +617,14 @@ manually normalize the data.
 
 ### EDA
 
-Questions: - In a map of the United States, which states have the
-highest case counts and death counts per 100,000 people? Has the highest
-states changed substantially in the past month?
+Questions:
+
+  - In a map of the United States, which states have the highest
+    cumulative case counts and death counts per 100,000 people?
+  - Which states have the highest per-month case counts per 100,000
+    people?
+
+<!-- end list -->
 
 ``` r
 # Determine % of population that comes down with COVID or dies on 7/25/20
