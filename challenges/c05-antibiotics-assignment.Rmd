@@ -113,12 +113,28 @@ df_antibiotics %>%
   mutate(
     bacteria_new = ifelse(
       bacteria == "Salmonella (Eberthella) typhosa", "Salmonella typhosa", bacteria)) %>%
-  separate(col = bacteria_new, into = c("genus","species"), sep = " ")
+  separate(col = bacteria_new, into = c("genus","species"), sep = " ")  %>%
+  mutate(penicillin_effective = ifelse(penicillin <=0.1, 1, 0)) %>%
+  mutate(neomycin_effective = ifelse(neomycin <=0.1, 1, 0)) %>%
+  mutate(streptomycin_effective = ifelse(streptomycin <=0.1, 1, 0)) %>%
+  mutate(effective = penicillin_effective + neomycin_effective + streptomycin_effective) %>%
+  ggplot() +
+  geom_point(mapping = aes(x = bacteria, y = effective, color = genus, shape = gram), size = 5) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  coord_flip() +
+  labs(
+    title = "What Characteristics are Shared for a Genus?",
+    x = "Bacteria",
+    y = "Number of Effective Antibiotics"
+  )
 ```
 
 **Observations**:
 
-- Document your observations here!
+- Bacteria with the same genus do seem to share both gram (negative or positive) and number of effective antibiotics. There are no cases in this dataset in which they don't share both.
+- Gram negative bacteria are more likely than gram positive bacteria to have no effective antibiotics of these 3.
+- Only gram positive bacteria have 3 effective antibiotics.
+- Thus, as expected from research, gram negative bacteria are harder to treat in humans.
 
 # References
 <!-- -------------------------------------------------- -->
