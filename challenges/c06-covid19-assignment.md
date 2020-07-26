@@ -636,7 +636,7 @@ df_states_2020_07_25 <-
   mutate(region = tolower(state)) %>%
   group_by(region) %>%
   summarize(cases = sum(cases, na.rm = TRUE), deaths = sum(deaths, na.rm = TRUE), pop = sum(population, na.rm = TRUE)) %>%
-  mutate(CasePercentage = cases/pop*100, DeathPercentage = deaths/pop*100)
+  mutate(Cases = cases/pop*100000, Deaths = deaths/pop*100000)
 ```
 
     ## `summarise()` ungrouping output (override with `.groups` argument)
@@ -646,18 +646,18 @@ df_states_2020_07_25
 ```
 
     ## # A tibble: 55 x 6
-    ##    region                cases deaths      pop CasePercentage DeathPercentage
-    ##    <chr>                 <dbl>  <dbl>    <dbl>          <dbl>           <dbl>
-    ##  1 alabama               78130   1456  4864680          1.61          0.0299 
-    ##  2 alaska                 2866     18   734634          0.390         0.00245
-    ##  3 arizona              160055   3288  6946685          2.30          0.0473 
-    ##  4 arkansas              37981    399  2990671          1.27          0.0133 
-    ##  5 california           453327   8428 39139822          1.16          0.0215 
-    ##  6 colorado              43847   1795  5529692          0.793         0.0325 
-    ##  7 connecticut           48776   4413  3581504          1.36          0.123  
-    ##  8 delaware              14175    579   949495          1.49          0.0610 
-    ##  9 district of columbia  11717    581   684498          1.71          0.0849 
-    ## 10 florida              414503   5776 20598139          2.01          0.0280 
+    ##    region                cases deaths      pop Cases Deaths
+    ##    <chr>                 <dbl>  <dbl>    <dbl> <dbl>  <dbl>
+    ##  1 alabama               78130   1456  4864680 1606.  29.9 
+    ##  2 alaska                 2866     18   734634  390.   2.45
+    ##  3 arizona              160055   3288  6946685 2304.  47.3 
+    ##  4 arkansas              37981    399  2990671 1270.  13.3 
+    ##  5 california           453327   8428 39139822 1158.  21.5 
+    ##  6 colorado              43847   1795  5529692  793.  32.5 
+    ##  7 connecticut           48776   4413  3581504 1362. 123.  
+    ##  8 delaware              14175    579   949495 1493.  61.0 
+    ##  9 district of columbia  11717    581   684498 1712.  84.9 
+    ## 10 florida              414503   5776 20598139 2012.  28.0 
     ## # … with 45 more rows
 
 ``` r
@@ -685,11 +685,11 @@ library(viridis)
 ``` r
 df_states_2020_07_25 %>%
   ggplot() +
-  geom_map(aes(map_id = region, fill = CasePercentage), map = us) +
+  geom_map(aes(map_id = region, fill = Cases), map = us) +
   expand_limits(x = us$long, y = us$lat) +
   coord_map() +
   labs(
-    title = "July 25, 2020 Normalized COVID-19 Cases by State",
+    title = "July 25, 2020 Normalized COVID-19 Cases per 100,000 by State",
     x = "Latitude",
     y = "Longitude"
   ) +
@@ -701,11 +701,11 @@ df_states_2020_07_25 %>%
 ``` r
 df_states_2020_07_25 %>%
   ggplot() +
-  geom_map(aes(map_id = region, fill = DeathPercentage), map = us) +
+  geom_map(aes(map_id = region, fill = Deaths), map = us) +
   expand_limits(x = us$long, y = us$lat) +
   coord_map() +
   labs(
-    title = "July 25, 2020 Normalized COVID-19 Deaths by State",
+    title = "July 25, 2020 Normalized COVID-19 Deaths per 100,000 by State",
     x = "Latitude",
     y = "Longitude"
   ) +
@@ -713,6 +713,15 @@ df_states_2020_07_25 %>%
 ```
 
 ![](c06-covid19-assignment_files/figure-gfm/death_map_7_25-1.png)<!-- -->
+
+**Observations**:
+
+  - New York has the highest case and death counts per 100,000 people.
+    New Jersey and Massachusetts are also higher than most.
+  - The states with the highest case counts per 100,000 people are not
+    the same states with the highest death counts per 100,000 people,
+    which indicates to me that they might have higher death counts in
+    the future (as death counts can lag case counts by weeks).
 
 # Notes
 

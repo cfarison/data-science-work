@@ -330,10 +330,7 @@ The NYT repo documents some [geographic exceptions](https://github.com/nytimes/c
 
 ### EDA
 Questions:
-
-- How does county size affect normalized cases and deaths?
-- Which states have similar curves to one another over time?
-- How do the means and standard deviations vary by state? Can I show state means on a map, by color? And show the map for a few different dates to show changes over time? Like maybe 3 months? (Take total number of cases in state, divide by state population.)
+- In a map of the United States, which states have the highest case count per capita and death count per capita? Has that changed substantially in the past month?
 
 ```{r per_state_7_25}
 # Determine % of population that comes down with COVID or dies on 7/25/20
@@ -382,6 +379,15 @@ df_states_2020_07_25 %>%
   ) +
   scale_fill_viridis()
 ```
+
+**Observations**:
+
+- New York has the highest case and death counts per 100,000 people. New Jersey and Massachusetts are also higher than most.
+- The states with the highest case counts per 100,000 people are not the same states with the highest death counts per 100,000 people, which indicates to me that they might have higher death counts in the future (as death counts can lag case counts by weeks).
+
+**Possible Future Questions**:
+- How does county size affect normalized cases and deaths?
+- Which states have similar curves to one another over time?
 
 # Notes
 <!-- -------------------------------------------------- -->
