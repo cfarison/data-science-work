@@ -353,6 +353,7 @@ us <- map_data("state")
 ```
 
 ```{r case_map_7_25}
+library(viridis)
 df_states_2020_07_25 %>%
   ggplot() +
   geom_map(aes(map_id = region, fill = mean_casesperk), map = us) +
@@ -362,7 +363,8 @@ df_states_2020_07_25 %>%
     title = "July 25, 2020 Normalized COVID-19 Cases by State",
     x = "Latitude",
     y = "Longitude"
-  )
+  ) +
+  scale_fill_viridis()
 ```
 
 ```{r death_map_7_25}
@@ -375,7 +377,8 @@ df_states_2020_07_25 %>%
     title = "July 25, 2020 Normalized COVID-19 Deaths by State",
     x = "Latitude",
     y = "Longitude"
-  ) 
+  ) +
+  scale_fill_viridis()
 ```
 
 # Notes
