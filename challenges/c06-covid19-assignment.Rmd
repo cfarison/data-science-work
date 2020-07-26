@@ -90,7 +90,7 @@ __q1__ Load Table `B01003` into the following tibble. Make sure the column names
 #Help us put data in right column name?
 filename_census = "./data/ACSDT5Y2018.B01003_data_with_overlays_2020-07-24T214459.csv"
 df_pop <- 
-  read_csv(filename_census, col_names = c("id", "Geographic Area Name", "Estimate", "Margin of Error")) %>%
+  read_csv(filename_census, col_names = c("id", "Geographic Area Name", "Estimate!!Total", "Margin of Error")) %>%
   .[-c(1:2),]
 ```
 
@@ -177,7 +177,10 @@ __q4__ Join `df_covid` with `df_q3` by the `fips` column. Use the proper type of
 
 ```{r q4-task}
 ## TASK: Join df_covid and df_q3 by fips.
-df_q4 <- NA
+df_q4 <- 
+  df_covid %>%
+  left_join(df_q3, by = "fips")
+df_q4
 ```
 
 For convenience, I down-select some columns and produce more convenient column
@@ -185,6 +188,7 @@ names.
 
 ```{r rename}
 ## NOTE: No need to change; run this to produce a more convenient tibble
+#Again, didn't specify column names
 df_data <-
   df_q4 %>%
   select(
@@ -196,6 +200,7 @@ df_data <-
     deaths,
     population = `Estimate!!Total`
   )
+df_data
 ```
 
 # Analyze
