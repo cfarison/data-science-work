@@ -332,7 +332,17 @@ The NYT repo documents some [geographic exceptions](https://github.com/nytimes/c
 Questions:
 
 - How does county size affect normalized cases and deaths?
-- Which states have similar curves to one another?
+- Which states have similar curves to one another over time?
+- How do the means and standard deviations vary by state? Can I show state means on a map, by color? And show the map for a few different dates to show changes over time?
+
+```{r}
+library(maps)
+library(mapproj)
+ggplot(us) +
+  geom_polygon(mapping = aes(x = long, y = lat, group = group, fill = group)) +
+  coord_map(projection = "mercator")
+```
+
 
 # Notes
 <!-- -------------------------------------------------- -->
