@@ -83,15 +83,9 @@ __q1__ Load Table `B01003` into the following tibble. Make sure the column names
 
 ```{r q1-task}
 ## TASK: Load the census bureau data with the following tibble name.
-#Where did we learn how to load .csv's?
-#My table was not called B01003, is that fine? It was not fine. I found B01003 by plugging it into the URL, not sure why mine was different.
-#I got something, but I can't tell if it's right. The data looks weird.
-#You never said to use 5 year, but  I could see from the filename.
-#Help us put data in right column name?
 filename_census = "./data/ACSDT5Y2018.B01003_data_with_overlays_2020-07-24T214459.csv"
 df_pop <- 
-  read_csv(filename_census, col_names = c("id", "Geographic Area Name", "Estimate!!Total", "Margin of Error")) %>%
-  .[-c(1:2),]
+  read_csv(filename_census, col_names = c("id", "Geographic Area Name", "Estimate!!Total", "Margin of Error!!Total"), skip = 2)
 ```
 
 *Note*: You can find information on 1-year, 3-year, and 5-year estimates [here](https://www.census.gov/programs-surveys/acs/guidance/estimates.html). The punchline is that 5-year estimates are more reliable but less current.
@@ -107,7 +101,6 @@ __q2__ Visit the NYT [GitHub](https://github.com/nytimes/covid-19-data) repo and
 
 ```{r q2-task}
 ## TASK: Find the URL for the NYT covid-19 county-level data
-# Maybe tell them to read the readme? That has the link.
 url_counties <- "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv"
 ```
 
@@ -115,7 +108,6 @@ Once you have the url, the following code will download a local copy of the data
 
 ```{r download}
 ## NOTE: No need to change this; just execute
-#Looks like my .csv is not the data
 filename_nyt <- "./data/nyt_counties.csv"
 
 ## Download the data locally
@@ -154,7 +146,7 @@ __q3__ Process the `id` column of `df_pop` to create a `fips` column.
 df_q3 <- 
   df_pop %>%
   separate(col = "id", into = c("prefix", "fips"), sep = "US") %>%
-  select(-c("prefix", "Margin of Error"))
+  select(-c("prefix", "Margin of Error!!Total"))
 df_q3
 ```
 
@@ -163,7 +155,6 @@ Use the following test to check your answer.
 ```{r q3-tests}
 ## NOTE: No need to change this
 ## Check known county
-#You didn't specify our column names
 assertthat::assert_that(
               (df_q3 %>%
               filter(str_detect(`Geographic Area Name`, "Autauga County")) %>%
@@ -188,7 +179,6 @@ names.
 
 ```{r rename}
 ## NOTE: No need to change; run this to produce a more convenient tibble
-#Again, didn't specify column names
 df_data <-
   df_q4 %>%
   select(
@@ -215,7 +205,6 @@ __q5__ Use the `population` estimates in `df_data` to normalize `cases` and `dea
 
 ```{r q5-task}
 ## TASK: Normalize cases and deaths
-#Population is a string
 df_normalized <-
   df_data %>%
   mutate(
@@ -229,8 +218,6 @@ You may use the following test to check your work.
 
 ```{r q5-tests}
 ## NOTE: No need to change this
-## Check known county data
-# I feel pretty confident, but this says it's wrong.
 assertthat::assert_that(
               abs(df_normalized %>%
                filter(
@@ -272,7 +259,6 @@ __q7__ Find the top 10 counties in terms of `cases_perk`, and the top 10 in term
 
 ```{r q7-task}
 ## TASK: Find the top 10 max cases_perk counties; report populations as well
-#Pick a date?
 df_normalized %>%
   filter(date == "2020-07-25") %>%
   arrange(desc(cases_perk)) %>%
