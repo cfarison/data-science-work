@@ -220,8 +220,8 @@ df_normalized <-
   df_data %>%
   mutate(
     population = as.double(population),
-    cases_perk = cases/(population/1000),
-    deaths_perk = deaths/(population/1000))
+    cases_perk = cases/(population/100000),
+    deaths_perk = deaths/(population/100000))
 df_normalized
 ```
 
@@ -260,19 +260,37 @@ __q6__ Compute the mean and standard deviation for `cases_perk` and `deaths_perk
 
 ```{r q6-task}
 ## TASK: Compute mean and sd for cases_perk and deaths_perk
+df_normalized %>%
+  summarize(
+    mean_cases_perk = mean(cases_perk, na.rm = TRUE),
+    sd_cases_perk = sd(cases_perk, na.rm = TRUE),
+    mean_deaths_perk = mean(deaths_perk, na.rm = TRUE),
+    sd_deaths_perk = sd(deaths_perk, na.rm = TRUE))
 ```
 
 __q7__ Find the top 10 counties in terms of `cases_perk`, and the top 10 in terms of `deaths_perk`. Report the population of each county along with the per-100,000 counts. Compare the counts against the mean values you found in q6. Note any observations. Does New York City show up in the top? Why or why not?
 
 ```{r q7-task}
 ## TASK: Find the top 10 max cases_perk counties; report populations as well
+#Pick a date?
+df_normalized %>%
+  filter(date == "2020-07-25") %>%
+  arrange(desc(cases_perk)) %>%
+  select(cases_perk, county, state, population)
 
 ## TASK: Find the top 10 deaths_perk counties; report populations as well
+df_normalized %>%
+  filter(date == "2020-07-25") %>%
+  arrange(desc(deaths_perk)) %>%
+  select(deaths_perk, county, state, population)
 ```
 
 **Observations**:
 
-- Note your observations here!
+- Many of the top counties for both cases per k and deaths per k have very small populations, 11,000 or lower. When population is so low, it's easy to come in high when calculating rate per thousand.
+- The values for these top counties is much higher than the mean, likely because they're dividing by a small number (population in thousands).
+- Big cities like New York City are not on this list because their populations are much larger, so cases and deaths per thousand has much less randomness at play.
+
 
 ## Self-directed EDA
 <!-- ------------------------- -->
