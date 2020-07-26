@@ -100,6 +100,7 @@ df_antibiotics %>%
 ```
 
 **Observations**:
+
 - Effective antibiotics are shown to the left of the cutoff line of a MIC of 0.1. Antibiotics with lower MIC are more effective. Several points are right on that threshold. Notably, 4 bacteria shown have neomycin barely at that cutoff, with none of the other antibiotics being better. These bacteria are strep, salmonella, E.coli, and proteus vulgaris.
 - Neomycin is the most effective of the 3 antibiotics for 2 types of staph and salmonella typhosa.
 - Penicillin is the most effective of the 3 antibiotics for streptococcus viridans, streptococcus hemolyticus, diplococcus pneumonia, and bacillus anthracis.
@@ -127,10 +128,10 @@ df_antibiotics %>%
   mutate(streptomycin_effective = ifelse(streptomycin <=0.1, 1, 0)) %>%
   mutate(effective = penicillin_effective + neomycin_effective + streptomycin_effective) %>%
   ggplot() +
-  geom_point(mapping = aes(x = bacteria, y = effective, color = genus, shape = gram), size = 5) +
+  geom_point(mapping = aes(x = bacteria, y = effective, shape = gram, color = genus), size = 5) +
+  coord_flip() +
   theme(
     axis.text.x = element_text(angle = 90, hjust = 1)) +
-  coord_flip() +
   labs(
     title = "What Characteristics are Shared for a Genus?",
     x = "Bacteria",
@@ -140,7 +141,7 @@ df_antibiotics %>%
 
 **Observations**:
 
-- Bacteria with the same genus do seem to share both gram (negative or positive) and number of effective antibiotics. There are no cases in this dataset in which they don't share both.
+- Bacteria with the same genus do seem to share both gram (negative or positive) and number of effective antibiotics. There are no cases in this dataset in which they don't share both. As we saw in the previous graph, with one exception, all bacteria with the same genus have the same set of effective antibiotics (the exception is Streptococcus fecalis).
 - Gram negative bacteria are more likely than gram positive bacteria to have no effective antibiotics of these 3.
 - Only gram positive bacteria have 3 effective antibiotics.
 - Thus, as expected from research, gram negative bacteria are harder to treat in humans.
