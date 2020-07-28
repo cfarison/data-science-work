@@ -144,9 +144,14 @@ diamonds %>%
 
 **Classify**:
 AAA, ABT, or DHY?
+DHY
 
 **Justify**
-Write your justification here!
+
+- It takes me a few seconds to start to get my bearings with this graph, partially because it has no title.
+- I see that Carat is broken into 2 buckets, but those are arbitrary, so I had to look carefully.
+- I see that the median price is higher for the 1-2 carat bucket than the 0-1 carat bucket. But that could be represented without cut.
+- For the 2 buckets, median price seems to vary based on cut, but in opposite ways. This tells me that maybe cut doesn't have much impact on price at all, especially since the ranges for each boxplot are similar. Carat seems to have a much clearer impact on price.
 
 \newpage
 __q2__ Identify the point on the narrative spectrum, and justify your answer.
@@ -170,9 +175,14 @@ diamonds %>%
 
 **Classify**:
 AAA, ABT, or DHY?
+ABT
 
 **Justify**
-Write your justification here!
+
+- I can see the point here much faster than with the previous graph.
+- Carat and price are roughly linear on a log scale.
+- But diamonds with fair cut are generally priced lower than diamonds with other cuts (except at the extremes of the smoothed line).
+- Therefore, carat is most important but cut also affects price to some degree, especially for fair cut.
 
 \newpage
 __q3__ Identify the point on the narrative spectrum, and justify your answer.
@@ -194,9 +204,14 @@ diamonds %>%
 
 **Classify**:
 AAA, ABT, or DHY?
+AAA
 
 **Justify**
-Write your justification here!
+
+- There's a lot going on in this graph, it'll take me a bit to get oriented.
+- The x axis is cut, and the y axis is value, but each graph has a different scale.
+- It's a dotplot, so it just shows all the points and doesn't summarize much.
+- It's hard to draw conclusions from each of the little plots, and there are so many.
 
 \newpage
 __q4__ Turn in all your answers via google forms. [Link](https://forms.gle/kHuT5oufUQA7jRWG8)
