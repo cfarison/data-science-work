@@ -4,7 +4,7 @@ author: Zachary del Rosario
 date: 2020-06-24
 output: github_document
 time: 15
-reading: 30
+reading: 30 (24)
 ---
 
 *Purpose*: Strings show up in data science all the time. Even when all our variables are numeric, our *column names* are generally strings. To strengthen our ability to work with strings, we'll learn how to use *regular expressions* and apply them to wrangling and tidying data.
@@ -59,8 +59,10 @@ __q1__ Filter the `mpg` dataset to include only those observations with a `trans
 
 ```{r q1-task}
 ## TASK: Mutate `trans` to extract
+mpg
 df_q1 <-
-  mpg
+  mpg %>%
+  filter(str_detect(string = trans, pattern = "l[3-6]"))
 df_q1
 ```
 
@@ -120,8 +122,8 @@ __q2__ Note that observations on the `trans` variable in the `mpg` dataset are o
 df_q2 <-
   mpg %>%
   mutate(
-    trans_type = trans, # MODIFY
-    trans_code = trans  # MODIFY
+    trans_type = str_extract(string = trans, pattern = "^\\w+"),
+    trans_code = str_extract(string = trans, pattern = "(?<=\\().*(?=\\))")
   )
 df_q2 %>% glimpse
 ```
@@ -169,7 +171,15 @@ __q3__ Use your knowledge of regular expressions along with the `names_pattern` 
 
 ```{r q3-task}
 ## TASK: Tidy `alloys`
-df_q3 <- alloys
+df_q3 <- 
+  alloys %>%
+  pivot_longer(    
+    names_to = c("property", "angle"),
+    names_pattern = "(\\D+)(\\d+)",
+    values_to = "value",
+    cols = matches("\\d")
+  ) %>%
+  mutate(angle = as.integer(angle))
 df_q3
 ```
 
