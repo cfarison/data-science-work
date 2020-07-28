@@ -3,7 +3,7 @@ title: "Statistics: The Central Limit Theorem and Confidence Intervals"
 author: Zach del Rosario
 date: 2020-06-23
 output: github_document
-time: 45
+time: 45 (12 so far for first read-through)
 reading: 0
 ---
 
