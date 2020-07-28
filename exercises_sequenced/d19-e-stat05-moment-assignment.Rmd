@@ -42,7 +42,8 @@ __q1__ Compute the mean of $2 Z + 3$, where $Z$ is a standard normal.
 
 ```{r q1-task}
 ## TASK: Compute the mean of 2 Z + 3
-E_q1 <- NA_real_
+E_q1 <- 
+  2*0 + 3
 ```
 
 Use the following test to check your answer.
@@ -63,8 +64,9 @@ Variance satisfies the property $$\mathbb{V}[aX + c] = a^2 \mathbb{V}[X].$$
 __q2__ Compute the variance of $2 Z + 3$, where $Z$ is a standard normal.
 
 ```{r q2-task}
-## TASK: Compute the mean of 2 Z + 3
-V_q2 <- NA_real_
+## TASK: Compute the variance of 2 Z + 3
+V_q2 <- 
+  2^2 * 1
 ```
 
 Use the following test to check your answer.
@@ -84,8 +86,9 @@ __q3__ Compute the mean and variance of $(X - 1) / 2$, where $\mathbb{E}[X] = 1$
 
 ```{r q3-task}
 ## TASK: Compute the mean and variance
-E_q3 <- NA_real_
-V_q3 <- NA_real_
+#Mean of x is 1, variance of x is 4
+E_q3 <- (1-1)/2
+V_q3 <- (1/2)^2*4
 ```
 
 Use the following test to check your answer.
@@ -103,8 +106,8 @@ __q4__ Compute the mean and variance of $1 + 2 Z$, where $Z$ is a standard norma
 
 ```{r q4-task}
 ## TASK: Compute the mean and variance
-E_q4 <- NA_real_
-V_q4 <- NA_real_
+E_q4 <- 1 + 2*0
+V_q4 <- 2^2 * 1
 ```
 
 Use the following test to check your answer.
