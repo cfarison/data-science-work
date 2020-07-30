@@ -1,0 +1,17 @@
+```{r setup}
+library(tidyverse)
+
+```
+
+```{r}
+filename_vtrack_prod = "./sdk-api-calls/prod-vtrackserver3.csv"
+vtrack_prod <- 
+  read_csv(filename_vtrack_prod)
+vtrack_prod
+```
+
+```{r}
+vtrack_prod %>%
+  filter(app_id > 0, na.rm = TRUE)
+```
+
