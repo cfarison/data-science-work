@@ -4,11 +4,35 @@ library(tidyverse)
 ```
 
 ```{r}
-filename_vtrack_prod = "./sdk-api-calls/prod-vtrackserver3.csv"
-vtrack_prod <- 
-  read_csv(filename_vtrack_prod)
-vtrack_prod
+vtrack_prod <- read_csv("./sdk-api-calls/prod-vtrackserver3.csv")
+dssf_prod <- read_csv("./sdk-api-calls/dssf-prod-vtrackserver3.csv")
+eu_prod <- read_csv("./sdk-api-calls/eu-prod-vtrackserver3.csv")
+huk_prod <- read_csv("./sdk-api-calls/huk-prod-vtrackserver3.csv")
+api_prod <- read_csv("./sdk-api-calls/prod-apiserver.csv")
 ```
+```{r}
+api_prod_pivoted <-
+  api_prod %>%
+  filter(app_id > 0, na.rm = TRUE) %>%
+  mutate(unity = 1) %>%
+  pivot_wider(
+    names_from = "platform",
+    values_from = "unity",
+    values_fill = 0
+  ) %>%
+  select(-c("NA")) %>%
+  pivot_wider(
+    names_from = "app_id",
+    names_prefix = "app_id_",
+    values_from = "count",
+    values_fill = 0
+  ) %>%
+  arrange(path) %>%
+  filter(android > 0 | iOS > 0)
+write_csv(api_prod_pivoted, "./sdk-api-analysis/prod-apiserver_analysis.csv")
+```
+
+
 
 ```{r}
 vtrack_prod %>%
