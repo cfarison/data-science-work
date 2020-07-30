@@ -12,6 +12,12 @@ vtrack_prod
 
 ```{r}
 vtrack_prod %>%
-  filter(app_id > 0, na.rm = TRUE)
+  filter(app_id > 0, na.rm = TRUE) %>%
+  pivot_wider(
+    names_from = "app_id",
+    names_prefix = "app_id_",
+    values_from = "count",
+    values_fill = 0
+  )
 ```
 
