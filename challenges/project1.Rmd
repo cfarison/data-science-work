@@ -130,7 +130,8 @@ tbi_summary <-
   mutate(year = as.integer(year)) %>%
   group_by(year, injury_mechanism) %>%
   summarize(total = sum(number_est)) %>%
-  filter(total > 0)
+  filter(total > 0) %>%
+  mutate(total = total / 1000)
 tbi_summary %>%
   ggplot(mapping = aes(x = year, y = total, color = injury_mechanism)) +
   geom_point() +
@@ -138,7 +139,10 @@ tbi_summary %>%
   labs(
     title = "Increase in TBIs from Unintentional Falls",
     x = "Year",
-    y = "Total TBIs"
+    y = "Total TBIs (thousands)"
   )
 ```
 
+**Observations**:
+
+- Total traumatic brain injuries (TBIs) reported from unintentional falls nearly doubled from 2006 to 2014, while TBIs from people unintentionally struck by or against an object raised somewhat, and TBIs from other injury mechanisms stayed roughly constant. While population did increase, population did not double in this timeframe, so there is still a significant effect here. It is possible that some factor led to more reporting of TBIs, possibly increased awareness among medical professionals.
