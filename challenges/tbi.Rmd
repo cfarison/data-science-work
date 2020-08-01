@@ -111,5 +111,24 @@ tbi_military <- readr::read_csv('https://raw.githubusercontent.com/rfordatascien
 - Do certain type of measures correlate with certain injury mechanisms?
 - Do certain type of measures correlate with certain ages?
 - Which service in the military has the highest rate of TBI? Has that changed over time?
+- Which component of the military has the highest rate of TBIs? Does it vary by service or over time?
 - Which service in the military has the most severe TBIs? Has that changed over time?
-- Which component of the military has the most TBIs? Does it vary by service or over time?
+
+```{r}
+library(GGally)
+```
+
+
+```{r}
+glimpse(tbi_year)
+```
+
+
+```{r}
+tbi_year %>%
+  select(-c("type", "rate_est")) %>%
+  group_by(year, injury_mechanism) %>%
+  ggplot() +
+  geom_bar(mapping = aes(x = year, y = number_est, fill = injury_mechanism), stat = "identity")
+```
+
