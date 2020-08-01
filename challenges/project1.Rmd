@@ -115,16 +115,6 @@ tbi_military <- readr::read_csv('https://raw.githubusercontent.com/rfordatascien
 - Which service in the military has the most severe TBIs? Has that changed over time?
 
 ```{r}
-library(GGally)
-```
-
-
-```{r}
-glimpse(tbi_year)
-```
-
-
-```{r}
 tbi_summary <-
   tbi_year %>%
   mutate(year = as.integer(year)) %>%
@@ -146,3 +136,23 @@ tbi_summary %>%
 **Observations**:
 
 - Total traumatic brain injuries (TBIs) reported from unintentional falls nearly doubled from 2006 to 2014, while TBIs from people unintentionally struck by or against an object raised somewhat, and TBIs from other injury mechanisms stayed roughly constant. While population did increase, population did not double in this timeframe, so there is still a significant effect here. It is possible that some factor led to more reporting of TBIs, possibly increased awareness among medical professionals.
+
+
+```{r}
+age_summary <-
+  tbi_age %>%
+  group_by(age_group, injury_mechanism) %>%
+  summarize(total = sum(number_est)) %>%
+  filter(total > 0, age_group != "0-17", age_group !="Total")
+age_summary$age_group <- 
+  factor(
+    age_summary$age_group,
+    levels = c("0-4","5-14","15-24","25-34","35-44","45-54","55-64","65-74","75+"))
+age_summary %>%
+  ggplot() +
+  geom_col(mapping = aes(x = age_group, y = total, fill = injury_mechanism), position = "dodge")
+```
+
+**Observations**:
+
+- Diving deeper into 2014 data, the age groups with the highest incidence of unintentional falls are 0-4 and 75+. So maybe the increase in unintentional falls is due to older people living longer and thus there being more older people who may have unintentional falls.
