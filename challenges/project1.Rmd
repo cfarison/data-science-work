@@ -125,12 +125,20 @@ glimpse(tbi_year)
 
 
 ```{r}
-tbi_year %>%
+tbi_summary <-
+  tbi_year %>%
   mutate(year = as.integer(year)) %>%
   group_by(year, injury_mechanism) %>%
   summarize(total = sum(number_est)) %>%
-  filter(total > 0) %>%
-  ggplot() +
-  geom_bar(mapping = aes(x = year, y = total, fill = injury_mechanism), stat = "identity")
+  filter(total > 0)
+tbi_summary %>%
+  ggplot(mapping = aes(x = year, y = total, color = injury_mechanism)) +
+  geom_point() +
+  geom_line() +
+  labs(
+    title = "Increase in TBIs from Unintentional Falls",
+    x = "Year",
+    y = "Total TBIs"
+  )
 ```
 
