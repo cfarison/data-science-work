@@ -126,9 +126,9 @@ glimpse(tbi_year)
 
 ```{r}
 tbi_year %>%
-  select(-c("type", "rate_est")) %>%
   group_by(year, injury_mechanism) %>%
-  ggplot() +
-  geom_bar(mapping = aes(x = year, y = number_est, fill = injury_mechanism), stat = "identity")
+  filter(injury_mechanism == "Motor vehicle crashes")
+  #ggplot() +
+  #geom_bar(mapping = aes(x = year, y = number_est, fill = injury_mechanism), stat = "identity")
 ```
 
