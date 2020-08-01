@@ -149,10 +149,35 @@ age_summary$age_group <-
     age_summary$age_group,
     levels = c("0-4","5-14","15-24","25-34","35-44","45-54","55-64","65-74","75+"))
 age_summary %>%
+  filter(injury_mechanism %in% c("Unintentional Falls")) %>%
+  mutate(total = total/1000) %>%
   ggplot() +
-  geom_col(mapping = aes(x = age_group, y = total, fill = injury_mechanism), position = "dodge")
+  geom_col(
+    mapping = aes(x = age_group, y = total),
+    position = "dodge") +
+  labs(
+    title = "TBIs from Unintentional Falls Most Prevalent for Adults 75+",
+    x = "Age Group",
+    y = "Total TBIs (thousands)"
+  )
 ```
 
 **Observations**:
 
-- Diving deeper into 2014 data, the age groups with the highest incidence of unintentional falls are 0-4 and 75+. So maybe the increase in unintentional falls is due to older people living longer and thus there being more older people who may have unintentional falls.
+- Diving deeper into 2014 data, the age group with the highest incidence of unintentional falls are 75+, followed by 0-4. So maybe the increase in unintentional falls is due to older people living longer and thus there being more older people who may have unintentional falls.
+
+
+```{r}
+age_summary %>%
+  filter(injury_mechanism %in% c("Assault", "Motor Vehicle Crashes")) %>%
+  ggplot() +
+  geom_col(
+    mapping = aes(x = age_group, y = total, fill = injury_mechanism), 
+    position = "dodge") +
+  labs(
+    title = "TBIs from Assault and Car Crashes Most Prevalent for Teens, Young Adults",
+    x = "Age Group",
+    y = "Total TBIs"
+  )
+```
+
