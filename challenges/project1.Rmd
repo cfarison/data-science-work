@@ -147,7 +147,17 @@ age_summary %>%
 - Diving deeper into 2014 data, the age group with the highest incidence of unintentional falls are 75+, followed by 0-4. So maybe the increase in unintentional falls is due to older people living longer and thus there being more older people who may have unintentional falls.
 
 *Why So Many More TBIs Reported?*
-- This dataset cannot answer the question of why so many more truamatic brain injuries for older adults were reported in 2014 than in 2006, but I have some theories. Here I looked into reports by type.
+
+- This dataset cannot directly answer the question of why so many more truamatic brain injuries for older adults were reported in 2014 than in 2006, but I have some theories. Here I looked into reports by type.
+
+```{r}
+tbi_year %>%
+  filter(injury_mechanism != "Total") %>%
+  ggplot(mapping = aes(x = year, y = rate_est, color = injury_mechanism, shape = type)) +
+  geom_point() +
+  geom_line()
+```
+
 
 *TBIs from Unintentional Falls More Fatal for Older Adults*
 - While there are many children ages 0-4 with traumatic brain injuries from falls who have emergency department visits or hospitalizations, deaths from traumatic brain injuries from falls is much more commonly reported for the older adults. While for children age 0-4 traumatic brain injuries are most commonly caused by unintentional falls, deaths for children age 0-4 from traumatic brain injury are much more likely to be from assault or motor vehicle crashes.
