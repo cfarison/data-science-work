@@ -176,25 +176,35 @@ But what about the rate of falls for older people? Is it just population or some
 
 
 ```{r}
+age_summary$injury_mechanism <- 
+  factor(
+    age_summary$injury_mechanism,
+    levels = c(
+      "Unintentional Falls",
+      "Unintentionally struck by or against an object",
+      "Motor Vehicle Crashes",
+      "Assault",
+      "Other unintentional injury, mechanism unspecified",
+      "Other or no mechanism specified",
+      "Intentional self-harm"))
 age_summary %>%
-  #filter(injury_mechanism %in% c("Assault", "Motor Vehicle Crashes")) %>%
   mutate(total = total/1000) %>%
-  mutate(injury_mechanism = ifelse(
-    injury_mechanism == "Unintentionally struck by or against an object", 
-    "Unintentional Strike with Object",
-    injury_mechanism)) %>%
-  mutate(injury_mechanism = ifelse(
-    injury_mechanism == "Other unintentional injury, mechanism unspecified", 
-    "Other Unintentional Injury",
-    injury_mechanism)) %>%
-  mutate(injury_mechanism = ifelse(
-    injury_mechanism == "Other or no mechanism specified", 
-    "Other",
-    injury_mechanism)) %>%
-  mutate(injury_mechanism = ifelse(
-    injury_mechanism == "Intentional self-harm", 
-    "Intentional Self-Harm",
-    injury_mechanism)) %>%
+  #mutate(injury_mechanism = ifelse(
+  #  injury_mechanism == "Unintentionally struck by or against an object", 
+  #  "Unintentional Strike with Object",
+  #  injury_mechanism)) %>%
+  #mutate(injury_mechanism = ifelse(
+  #  injury_mechanism == "Other unintentional injury, mechanism unspecified", 
+  #  "Other Unintentional Injury",
+  #  injury_mechanism)) %>%
+  #mutate(injury_mechanism = ifelse(
+  #  injury_mechanism == "Other or no mechanism specified", 
+  #  "Other",
+  #  injury_mechanism)) %>%
+  #mutate(injury_mechanism = ifelse(
+  #  injury_mechanism == "Intentional self-harm", 
+  #  "Intentional Self-Harm",
+  #  injury_mechanism)) %>%
   ggplot() +
   geom_col(
     mapping = aes(x = age_group, y = total, fill = age_group), 
