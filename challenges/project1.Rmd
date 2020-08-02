@@ -92,6 +92,18 @@ tbi_summary <-
   filter(total > 0) %>%
   mutate(total = total)
 
+tbi_summary$injury_mechanism <- 
+  factor(
+    tbi_summary$injury_mechanism,
+    levels = c(
+      "Unintentional falls",
+      "Unintentionally struck by or against an object",
+      "Motor vehicle crashes",
+      "Assault",
+      "Other or no mechanism specified",
+      "Other unintentional injury, mechanism unspecified",
+      "Intentional self-harm"))
+
 tbi_summary %>%
   ggplot(mapping = aes(x = year, y = total, color = injury_mechanism)) +
   geom_point() +

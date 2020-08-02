@@ -128,6 +128,18 @@ tbi_summary <-
     ## `summarise()` regrouping output by 'year' (override with `.groups` argument)
 
 ``` r
+tbi_summary$injury_mechanism <- 
+  factor(
+    tbi_summary$injury_mechanism,
+    levels = c(
+      "Unintentional falls",
+      "Unintentionally struck by or against an object",
+      "Motor vehicle crashes",
+      "Assault",
+      "Other or no mechanism specified",
+      "Other unintentional injury, mechanism unspecified",
+      "Intentional self-harm"))
+
 tbi_summary %>%
   ggplot(mapping = aes(x = year, y = total, color = injury_mechanism)) +
   geom_point() +
@@ -166,6 +178,48 @@ tbi_summary %>%
 <!-- end list -->
 
 ``` r
+tbi_year %>%
+  distinct(injury_mechanism)
+```
+
+    ## # A tibble: 8 x 1
+    ##   injury_mechanism                                 
+    ##   <chr>                                            
+    ## 1 Motor vehicle crashes                            
+    ## 2 Unintentional falls                              
+    ## 3 Unintentionally struck by or against an object   
+    ## 4 Other unintentional injury, mechanism unspecified
+    ## 5 Intentional self-harm                            
+    ## 6 Assault                                          
+    ## 7 Other or no mechanism specified                  
+    ## 8 Total
+
+``` r
+tbi_year$type <- 
+  factor(
+    tbi_year$type,
+    levels = c(
+      "Emergency Department Visit",
+      "Hospitalizations",
+      "Deaths"
+    ))
+levels(tbi_year$injury_mechanism)
+```
+
+    ## NULL
+
+``` r
+tbi_year$injury_mechanism <- 
+  factor(
+    tbi_year$injury_mechanism,
+    levels = c(
+      "Unintentional falls",
+      "Unintentionally struck by or against an object",
+      "Motor vehicle crashes",
+      "Assault",
+      "Other or no mechanism specified",
+      "Other unintentional injury, mechanism unspecified",
+      "Intentional self-harm"))
 tbi_year %>%
   filter(injury_mechanism != "Total") %>%
   ggplot(mapping = aes(x = year, y = number_est/1000, color = injury_mechanism, shape = type)) +
