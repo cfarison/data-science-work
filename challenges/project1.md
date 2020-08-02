@@ -92,13 +92,37 @@ injury\_mechanism has 7 possible values:
 
 <!-- -------------------------------------------------- -->
 
+``` r
+tbi_age <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-24/tbi_age.csv')
+```
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   age_group = col_character(),
+    ##   type = col_character(),
+    ##   injury_mechanism = col_character(),
+    ##   number_est = col_double(),
+    ##   rate_est = col_double()
+    ## )
+
+``` r
+tbi_year <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-24/tbi_year.csv')
+```
+
+    ## Parsed with column specification:
+    ## cols(
+    ##   injury_mechanism = col_character(),
+    ##   type = col_character(),
+    ##   year = col_double(),
+    ##   rate_est = col_double(),
+    ##   number_est = col_double()
+    ## )
+
 # Findings
 
 <!-- -------------------------------------------------- -->
 
-*A Marked Increase* - The traumatic brain injuries reported in this
-dataset increased dramatically from 2006 to 2014, primarily due to a
-nearly twofold increase in unintentional falls.
+**Question: How did TBI prevalence change over time?**
 
 ``` r
 library(tidyverse)
@@ -156,6 +180,9 @@ tbi_summary %>%
 
 **Observations**:
 
+  - The traumatic brain injuries reported in this dataset increased
+    dramatically from 2006 to 2014, primarily due to a nearly twofold
+    increase in unintentional falls.
   - Total traumatic brain injuries (TBIs) reported from unintentional
     falls nearly doubled from 2006 to 2014, while TBIs from people
     unintentionally struck by or against an object raised somewhat, and
@@ -168,14 +195,7 @@ tbi_summary %>%
   - It is possible that some factor led to more reporting of TBIs,
     possibly increased awareness among medical professionals.
 
-*Why So Many More TBIs Reported?*
-
-  - This dataset cannot directly answer the question of why so many more
-    truamatic brain injuries for older adults were reported in 2014 than
-    in 2006, but I have some theories. Here I looked into reports by
-    type.
-
-<!-- end list -->
+**Question: Why were so many more TBIs reported in 2014 than 2006?**
 
 ``` r
 tbi_year %>%
@@ -238,6 +258,10 @@ tbi_year %>%
 
 **Observations**:
 
+  - This dataset cannot directly answer the question of why so many more
+    truamatic brain injuries for older adults were reported in 2014 than
+    in 2006, but I had a theory that reports from one type were
+    especially increased.
   - This graph shows that the increase in total TBIs from unintentional
     falls in this dataset was primarily from Emergency Department
     visits. So the increase could be due to more Emergency Departments
@@ -246,9 +270,8 @@ tbi_year %>%
     could also be due to an actual increase in unintentional falls, but
     it is unclear what would cause such an increase.
 
-*Older Adults Most Affected* - Based on 2014 age group data, traumatic
-brain injuries from unintentional falls primarily affect adults 75+,
-with children age 0-4 as the next most impacted group.
+**Question: Which age group is affected most by TBIs from unintentional
+falls?**
 
 ``` r
 age_summary <-
@@ -291,9 +314,8 @@ age_summary %>%
     many more older adults there were in 2014 than 2006, but it can’t
     possibly be an almost twofold increase.
 
-*TBIs from Unintentional Falls More Fatal for Older Adults* Deaths from
-TBIs also primarily impacts older adults, and unintentional falls is a
-leading cause.
+**Question: Are deaths from TBIs also primarily older adults from
+unintentional falls?**
 
 ``` r
 age_summary_deaths <-
@@ -319,6 +341,8 @@ age_summary_deaths %>%
 
 **Observations**:
 
+  - Death from TBI also primarily impacts older adults, and
+    unintentional falls is a leading cause.
   - While there are many children ages 0-4 with traumatic brain injuries
     from falls who have emergency department visits or hospitalizations,
     deaths from traumatic brain injuries from falls is much more
@@ -327,7 +351,7 @@ age_summary_deaths %>%
     falls, deaths for children age 0-4 from traumatic brain injury are
     much more likely to be from assault or motor vehicle crashes.
 
-*Summary*
+**Summary**
 
 Reported TBIs in this dataset increased by nearly a factor of 2 from
 2006 to 2014. The increase was primarily due to emergency department
