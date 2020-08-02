@@ -237,9 +237,9 @@ age_summary_deaths %>%
   geom_col(mapping = aes(x = age_group, y = number_est, fill = injury_mechanism), position = "dodge") +
   scale_fill_discrete(name = "Injury Mechanism") +
   labs(
-    title = "Total Deaths",
-    x = "Age",
-    y = "Deaths from TBIs"
+    title = "Older Adult Deaths from TBIs Primarily from Falls",
+    x = "Age Group",
+    y = "Deaths from TBIs in 2014"
   )
 ```
 
