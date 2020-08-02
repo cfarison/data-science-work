@@ -117,9 +117,16 @@ tbi_summary %>%
 ```{r type}
 tbi_year %>%
   filter(injury_mechanism != "Total") %>%
-  ggplot(mapping = aes(x = year, y = number_est, color = injury_mechanism, shape = type)) +
+  ggplot(mapping = aes(x = year, y = number_est/1000, color = injury_mechanism, shape = type)) +
   geom_point() +
-  geom_line()
+  geom_line() +
+  scale_color_discrete(name = "Injury Mechanism") +
+  scale_shape_discrete(name = "Type") +
+  labs(
+    title = "Increased ED Visits for Unintentional Falls",
+    x = "Year",
+    y = "Total TBIs (thousands)"
+  )
 ```
 
 **Observations**:
