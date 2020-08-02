@@ -116,6 +116,28 @@ tbi_summary %>%
 
 ```{r type}
 tbi_year %>%
+  distinct(injury_mechanism)
+tbi_year$type <- 
+  factor(
+    tbi_year$type,
+    levels = c(
+      "Emergency Department Visit",
+      "Hospitalizations",
+      "Deaths"
+    ))
+levels(tbi_year$injury_mechanism)
+tbi_year$injury_mechanism <- 
+  factor(
+    tbi_year$injury_mechanism,
+    levels = c(
+      "Unintentional falls",
+      "Unintentionally struck by or against an object",
+      "Motor vehicle crashes",
+      "Assault",
+      "Other or no mechanism specified",
+      "Other unintentional injury, mechanism unspecified",
+      "Intentional self-harm"))
+tbi_year %>%
   filter(injury_mechanism != "Total") %>%
   ggplot(mapping = aes(x = year, y = number_est/1000, color = injury_mechanism, shape = type)) +
   geom_point() +
