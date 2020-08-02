@@ -177,9 +177,11 @@ age_summary %>%
   geom_col(
     mapping = aes(x = age_group, y = total, fill = age_group), 
     position = "dodge") +
-  theme(axis.title.x=element_blank(),
-      axis.text.x=element_blank(),
-      axis.ticks.x=element_blank()) +
+  theme(
+    axis.title.x =  element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+    ) +
   facet_wrap(~injury_mechanism) +
   labs(
     title = "TBIs from Assault and Car Crashes Most Prevalent for Teens, Young Adults",
