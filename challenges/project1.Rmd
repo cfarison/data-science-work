@@ -224,16 +224,46 @@ age_summary_renamed %>%
 - While unintentional falls are most common for the age group of 75+ and the second most common age group is 0-4, with the age groups in the middle having the fewest, none of the other causes of TBIs share this pattern. In fact, Motor Vehicle Crashes and Assault share a general pattern of being most common for the age group of 15-24 and the total decreases for each ascending age group.
 
 ```{r}
+age_summary_deaths <-
+  tbi_age %>%
+  filter(type == "Deaths") %>%
+  filter(number_est > 0, age_group != "0-17", age_group !="Total")
+age_summary_deaths$age_group <- 
+  factor(
+    age_summary_deaths$age_group,
+    levels = c("0-4","5-14","15-24","25-34","35-44","45-54","55-64","65-74","75+"))
+age_summary_deaths %>%
+  ggplot(mapping = aes(x = age_group, y = number_est, color = injury_mechanism)) +
+  geom_point() +
+  geom_line() +
+  scale_color_discrete(name = "Injury Mechanism") +
+  labs(
+    title = "Total Deaths",
+    x = "Year",
+    y = "Total Deaths from TBIs"
+  )
+```
+
+
+
+
+```{r}
+tbi_age
+
 age_summary_type <-
   tbi_age %>%
   group_by(age_group, type) %>%
-  summarize(total = sum(number_est)/1000) %>%
-  filter(total > 0, age_group != "0-17", age_group !="Total") %>%
-  filter(type %in% c("Hospitalizations", "Deaths"))
+  summarize(total = sum(number_est)/1000) #%>%
+  #filter(total > 0, age_group != "0-17", age_group !="Total")# %>%
+  #filter(type %in% c("Hospitalizations", "Deaths"))
+
+age_summary_type
+
 age_summary_type$type <- 
   factor(
     age_summary_type$type,
     levels = c("Emergency Department Visit", "Hospitalizations", "Deaths"))
+
 age_summary_type %>%
   ggplot() +
   geom_col(
