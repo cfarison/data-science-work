@@ -106,7 +106,7 @@ tbi_military <- readr::read_csv('https://raw.githubusercontent.com/rfordatascien
 
 ```{r}
 tbi_age %>%
-  distinct(injury_mechanism)
+  filter(age_group == "75+")
 ```
 
 
@@ -148,7 +148,7 @@ tbi_summary %>%
 age_summary <-
   tbi_age %>%
   group_by(age_group, injury_mechanism) %>%
-  summarize(total = sum(number_est)) %>%
+  summarize(total = sum(number_est), total_rate = sum(rate_est)) %>%
   filter(total > 0, age_group != "0-17", age_group !="Total")
 age_summary$age_group <- 
   factor(
@@ -171,8 +171,6 @@ age_summary %>%
 **Observations**:
 
 - Diving deeper into 2014 data, the age group with the highest incidence of unintentional falls are 75+, followed by 0-4. So maybe the increase in unintentional falls is due to older people living longer and thus there being more older people who may have unintentional falls.
-
-But what about the rate of falls for older people? Is it just population or something more?
 
 
 ```{r}
