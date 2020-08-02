@@ -172,15 +172,19 @@ But what about the rate of falls for older people? Is it just population or some
 ```{r}
 age_summary %>%
   #filter(injury_mechanism %in% c("Assault", "Motor Vehicle Crashes")) %>%
+  mutate(total = total/1000) %>%
   ggplot() +
   geom_col(
     mapping = aes(x = age_group, y = total, fill = age_group), 
     position = "dodge") +
+  theme(axis.title.x=element_blank(),
+      axis.text.x=element_blank(),
+      axis.ticks.x=element_blank()) +
   facet_wrap(~injury_mechanism) +
   labs(
     title = "TBIs from Assault and Car Crashes Most Prevalent for Teens, Young Adults",
     x = "Age Group",
-    y = "Total TBIs"
-  )
+    y = "Total TBIs (thousands)"
+  ) 
 ```
 
