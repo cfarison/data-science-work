@@ -5,7 +5,9 @@ Charlie Farison
 
   - [Background](#background)
   - [Data Dictionaries](#data-dictionaries)
-  - [Initial Data Exploration](#initial-data-exploration)
+  - [Data Background](#data-background)
+  - [Data Ingestion](#data-ingestion)
+  - [Findings](#findings)
 
 *Purpose*: We’d like to understand trends in causes of traumatic brain
 injury.
@@ -72,57 +74,45 @@ injury\_mechanism has 7 possible values:
   - Assault  
   - Other or no mechanism specified
 
-**tbi\_military**
+# Data Background
 
-| Variable  | Class     | Description                                 |
-| --------- | --------- | ------------------------------------------- |
-| service   | character | Military branch                             |
-| component | character | Military component (active, guard, reserve) |
-| severity  | character | Severity/type of TBI                        |
-| diagnosed | double    | Number diagnosed                            |
-| year      | integer   | Year for observation (2006 - 2014)          |
+  - This data set comes from the CDC.
+  - Because all of the TBIs in this dataset are recorded with type of
+    either Emergency Department Visit, Hospitalization, or Deaths, I
+    assume that only TBIs that result in one of these 3 outcomes are
+    present in this data set.
+  - Less severe TBIs that do not require Emergency Department Visit or
+    Hospitalization and do not result in death are not reported.
+  - This data is likely aggregated from many different hospitals, so its
+    completeness is uncertain.
 
-service has 4 possible values:
-
-  - Army  
-  - Navy  
-  - Air Force  
-  - Marines
-
-component has 3 possible values:
-
-  - Active  
-  - Guard  
-  - Reserve
-
-severity has 5 possible values:
-
-  - Penetrating  
-  - Severe  
-  - Moderate  
-  - Mild  
-  - Not Classifiable
-
-# Initial Data Exploration
+# Data Ingestion
 
 <!-- -------------------------------------------------- -->
 
-*Questions to explore:*
+# Findings
 
-  - What is the most common injury mechanism? Has that changed over
-    time?
-  - Does the most common injury mechanism vary by age group?
-  - Do certain type of measures correlate with certain injury
-    mechanisms?
-  - Do certain type of measures correlate with certain ages?
-  - Which service in the military has the highest rate of TBI? Has that
-    changed over time?
-  - Which component of the military has the highest rate of TBIs? Does
-    it vary by service or over time?
-  - Which service in the military has the most severe TBIs? Has that
-    changed over time?
+<!-- -------------------------------------------------- -->
 
-<!-- end list -->
+*A Marked Increase* - The traumatic brain injuries reported in this
+dataset increased dramatically from 2006 to 2014, primarily due to a
+nearly twofold increase in unintentional falls. (The dramatic increase
+came primarily from the following type…)
+
+``` r
+library(tidyverse)
+```
+
+    ## ── Attaching packages ────────────────────────────────────────────────────────── tidyverse 1.3.0 ──
+
+    ## ✓ ggplot2 3.3.2     ✓ purrr   0.3.4
+    ## ✓ tibble  3.0.1     ✓ dplyr   1.0.0
+    ## ✓ tidyr   1.1.0     ✓ stringr 1.4.0
+    ## ✓ readr   1.3.1     ✓ forcats 0.5.0
+
+    ## ── Conflicts ───────────────────────────────────────────────────────────── tidyverse_conflicts() ──
+    ## x dplyr::filter() masks stats::filter()
+    ## x dplyr::lag()    masks stats::lag()
 
 ``` r
 tbi_summary <-
@@ -149,7 +139,7 @@ tbi_summary %>%
   )
 ```
 
-![](project1_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
+![](project1_files/figure-gfm/tbis_by_year-1.png)<!-- -->
 
 **Observations**:
 
@@ -162,7 +152,9 @@ tbi_summary %>%
     possible that some factor led to more reporting of TBIs, possibly
     increased awareness among medical professionals.
 
-<!-- end list -->
+*Older Adults Most Affected* - Based on 2014 age group data, traumatic
+brain injuries from unintentional falls primarily affect adults 75+,
+with children age 0-4 as the next most impacted group.
 
 ``` r
 age_summary <-
@@ -193,7 +185,7 @@ age_summary %>%
   )
 ```
 
-![](project1_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](project1_files/figure-gfm/falls-1.png)<!-- -->
 
 **Observations**:
 
@@ -202,6 +194,116 @@ age_summary %>%
     the increase in unintentional falls is due to older people living
     longer and thus there being more older people who may have
     unintentional falls.
+
+*Why So Many More TBIs Reported?*
+
+  - This dataset cannot directly answer the question of why so many more
+    truamatic brain injuries for older adults were reported in 2014 than
+    in 2006, but I have some theories. Here I looked into reports by
+    type.
+
+<!-- end list -->
+
+``` r
+tbi_year %>%
+  filter(injury_mechanism != "Total") %>%
+  ggplot(mapping = aes(x = year, y = rate_est, color = injury_mechanism, shape = type)) +
+  geom_point() +
+  geom_line()
+```
+
+![](project1_files/figure-gfm/type-1.png)<!-- -->
+
+*TBIs from Unintentional Falls More Fatal for Older Adults* - While
+there are many children ages 0-4 with traumatic brain injuries from
+falls who have emergency department visits or hospitalizations, deaths
+from traumatic brain injuries from falls is much more commonly reported
+for the older adults. While for children age 0-4 traumatic brain
+injuries are most commonly caused by unintentional falls, deaths for
+children age 0-4 from traumatic brain injury are much more likely to be
+from assault or motor vehicle crashes.
+
+``` r
+age_summary_deaths <-
+  tbi_age %>%
+  filter(type == "Deaths") %>%
+  filter(number_est > 0, age_group != "0-17", age_group !="Total")
+age_summary_deaths$age_group <- 
+  factor(
+    age_summary_deaths$age_group,
+    levels = c("0-4","5-14","15-24","25-34","35-44","45-54","55-64","65-74","75+"))
+age_summary_deaths %>%
+  ggplot() +
+  geom_col(mapping = aes(x = age_group, y = number_est, fill = injury_mechanism), position = "dodge") +
+  scale_fill_discrete(name = "Injury Mechanism") +
+  labs(
+    title = "Older Adult Deaths from TBIs Primarily from Falls",
+    x = "Age Group",
+    y = "Deaths from TBIs in 2014"
+  )
+```
+
+![](project1_files/figure-gfm/deaths-1.png)<!-- -->
+
+**Observations**:
+
+  - Unintentional falls for the 75+ age group was also the leading cause
+    of TBI-related deaths in 2014. Intentional self-harm was a distant
+    second for most common cause of deaths, and was significant for all
+    age groups upward of 15 years old. TBIs from Motor Vehicle Crashes
+    was the third most significant cause of death.
+  - While looking at number of TBIs from unintentional falls, the 0-4
+    age group was the second highest age group, deaths from TBIs from
+    unintentional falls was minimal, dwarfed by deaths by assault.
+    Overall deaths from TBIs for the 0-4 age group were very low.
+
+<!-- end list -->
+
+``` r
+age_summary_ed <-
+  tbi_age %>%
+  filter(type == "Emergency Department Visit") %>%
+  filter(number_est > 0, age_group != "0-17", age_group !="Total") %>%
+  mutate(thousands = number_est/1000)
+age_summary_ed
+```
+
+    ## # A tibble: 59 x 6
+    ##    age_group type        injury_mechanism          number_est rate_est thousands
+    ##    <chr>     <chr>       <chr>                          <dbl>    <dbl>     <dbl>
+    ##  1 0-4       Emergency … Motor Vehicle Crashes           5464     27.5     5.46 
+    ##  2 0-4       Emergency … Unintentional Falls           230776   1161     231.   
+    ##  3 0-4       Emergency … Unintentionally struck b…      53436    269.     53.4  
+    ##  4 0-4       Emergency … Other unintentional inju…      12007     60.4    12.0  
+    ##  5 0-4       Emergency … Assault                          674      3.4     0.674
+    ##  6 0-4       Emergency … Other or no mechanism sp…      19360     97.4    19.4  
+    ##  7 5-14      Emergency … Motor Vehicle Crashes          19785     48      19.8  
+    ##  8 5-14      Emergency … Unintentional Falls           133084    323.    133.   
+    ##  9 5-14      Emergency … Unintentionally struck b…     120839    293.    121.   
+    ## 10 5-14      Emergency … Other unintentional inju…      30656     74.4    30.7  
+    ## # … with 49 more rows
+
+``` r
+age_summary_ed$age_group <- 
+  factor(
+    age_summary_ed$age_group,
+    levels = c("0-4","5-14","15-24","25-34","35-44","45-54","55-64","65-74","75+"))
+age_summary_ed %>%
+  ggplot() +
+  geom_col(mapping = aes(x = age_group, y = thousands, fill = injury_mechanism), position = "dodge") +
+  scale_fill_discrete(name = "Injury Mechanism") +
+  labs(
+    title = "Emergency Room Visits Map to the Total",
+    x = "Age Group",
+    y = "Emergency Room Visits from TBIs in 2014 (thousands)"
+  )
+```
+
+![](project1_files/figure-gfm/unnamed-chunk-1-1.png)<!-- -->
+
+**Observations**:
+
+  - Emergency Room Visits map to the total.
 
 <!-- end list -->
 
@@ -275,7 +377,7 @@ age_summary_renamed %>%
   ) 
 ```
 
-![](project1_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](project1_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 **Observations**:
 
@@ -285,127 +387,3 @@ age_summary_renamed %>%
     this pattern. In fact, Motor Vehicle Crashes and Assault share a
     general pattern of being most common for the age group of 15-24 and
     the total decreases for each ascending age group.
-
-<!-- end list -->
-
-``` r
-age_summary_deaths <-
-  tbi_age %>%
-  filter(type == "Deaths") %>%
-  filter(number_est > 0, age_group != "0-17", age_group !="Total")
-age_summary_deaths$age_group <- 
-  factor(
-    age_summary_deaths$age_group,
-    levels = c("0-4","5-14","15-24","25-34","35-44","45-54","55-64","65-74","75+"))
-age_summary_deaths %>%
-  ggplot() +
-  geom_col(mapping = aes(x = age_group, y = number_est, fill = injury_mechanism), position = "dodge") +
-  scale_fill_discrete(name = "Injury Mechanism") +
-  labs(
-    title = "Total Deaths",
-    x = "Age",
-    y = "Deaths from TBIs"
-  )
-```
-
-![](project1_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
-
-**Observations**:
-
-  - Unintentional falls for the 75+ age group was also the leading cause
-    of TBI-related deaths in 2014. Intentional self-harm was a distant
-    second for most common cause of deaths, and was significant for all
-    age groups upward of 15 years old. TBIs from Motor Vehicle Crashes
-    was the third most signifi cant cause of death.
-  - While looking at number of TBIs from unintentional falls, the 0-4
-    age group was the second highest age group, deaths from TBIs from
-    unintentional falls was minimal, dwarfed by deaths by assault.
-    Overall deaths from TBIs for the 0-4 age group were very low.
-
-<!-- end list -->
-
-``` r
-tbi_age
-```
-
-    ## # A tibble: 231 x 5
-    ##    age_group type            injury_mechanism                number_est rate_est
-    ##    <chr>     <chr>           <chr>                                <dbl>    <dbl>
-    ##  1 0-17      Emergency Depa… Motor Vehicle Crashes                47138     64.1
-    ##  2 0-17      Emergency Depa… Unintentional Falls                 397190    540. 
-    ##  3 0-17      Emergency Depa… Unintentionally struck by or a…     229236    312. 
-    ##  4 0-17      Emergency Depa… Other unintentional injury, me…      55785     75.8
-    ##  5 0-17      Emergency Depa… Intentional self-harm                   NA     NA  
-    ##  6 0-17      Emergency Depa… Assault                              24360     33.1
-    ##  7 0-17      Emergency Depa… Other or no mechanism specified      57983     78.8
-    ##  8 0-4       Emergency Depa… Motor Vehicle Crashes                 5464     27.5
-    ##  9 0-4       Emergency Depa… Unintentional Falls                 230776   1161  
-    ## 10 0-4       Emergency Depa… Unintentionally struck by or a…      53436    269. 
-    ## # … with 221 more rows
-
-``` r
-age_summary_type <-
-  tbi_age %>%
-  group_by(age_group, type) %>%
-  summarize(total = sum(number_est)/1000) #%>%
-```
-
-    ## `summarise()` regrouping output by 'age_group' (override with `.groups` argument)
-
-``` r
-  #filter(total > 0, age_group != "0-17", age_group !="Total")# %>%
-  #filter(type %in% c("Hospitalizations", "Deaths"))
-
-age_summary_type
-```
-
-    ## # A tibble: 33 x 3
-    ## # Groups:   age_group [11]
-    ##    age_group type                        total
-    ##    <chr>     <chr>                       <dbl>
-    ##  1 0-17      Deaths                      NA   
-    ##  2 0-17      Emergency Department Visit  NA   
-    ##  3 0-17      Hospitalizations            NA   
-    ##  4 0-4       Deaths                      NA   
-    ##  5 0-4       Emergency Department Visit  NA   
-    ##  6 0-4       Hospitalizations            NA   
-    ##  7 15-24     Deaths                       6.31
-    ##  8 15-24     Emergency Department Visit 444.  
-    ##  9 15-24     Hospitalizations            26.4 
-    ## 10 25-34     Deaths                       6.37
-    ## # … with 23 more rows
-
-``` r
-age_summary_type$type <- 
-  factor(
-    age_summary_type$type,
-    levels = c("Emergency Department Visit", "Hospitalizations", "Deaths"))
-
-age_summary_type %>%
-  ggplot() +
-  geom_col(
-    mapping = aes(x = age_group, y = total, fill = age_group), 
-    position = "dodge") +
-  scale_fill_discrete(name = "Age Group") +
-  theme(
-    axis.title.x =  element_blank(),
-    axis.text.x = element_blank(),
-    axis.ticks.x = element_blank()
-    ) +
-  facet_wrap(~type) +
-  labs(
-    title = "75+ Age Group Has Most Hospitalizations and Deaths",
-    x = "Age Group",
-    y = "Total TBIs (thousands)"
-  ) 
-```
-
-    ## Warning: Removed 11 rows containing missing values (geom_col).
-
-![](project1_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
-
-**Observations**:
-
-  - The 75+ age group has the highest hospitalizations and deaths. It
-    was unclear if they also have the most emergency room visits,
-    because 75+ and 65-74 age groups had N/A listed for this dataset.
