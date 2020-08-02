@@ -107,26 +107,6 @@ severity has 5 possible values:
 
 <!-- -------------------------------------------------- -->
 
-``` r
-tbi_age %>%
-  filter(age_group == "75+")
-```
-
-    ## # A tibble: 21 x 5
-    ##    age_group type            injury_mechanism                number_est rate_est
-    ##    <chr>     <chr>           <chr>                                <dbl>    <dbl>
-    ##  1 75+       Emergency Depa… Motor Vehicle Crashes                 8176     41.2
-    ##  2 75+       Emergency Depa… Unintentional Falls                 286031   1442. 
-    ##  3 75+       Emergency Depa… Unintentionally struck by or a…      13270     66.9
-    ##  4 75+       Emergency Depa… Other unintentional injury, me…       7440     37.5
-    ##  5 75+       Emergency Depa… Intentional self-harm                   NA     NA  
-    ##  6 75+       Emergency Depa… Assault                               1260      6.4
-    ##  7 75+       Emergency Depa… Other or no mechanism specified      17318     87.3
-    ##  8 75+       Hospitalizatio… Motor Vehicle Crashes                 3965     20  
-    ##  9 75+       Hospitalizatio… Unintentional Falls                  74005    373. 
-    ## 10 75+       Hospitalizatio… Unintentionally struck by or a…       1045      5.3
-    ## # … with 11 more rows
-
 *Questions to explore:*
 
   - What is the most common injury mechanism? Has that changed over
@@ -169,7 +149,7 @@ tbi_summary %>%
   )
 ```
 
-![](project1_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+![](project1_files/figure-gfm/unnamed-chunk-2-1.png)<!-- -->
 
 **Observations**:
 
@@ -213,7 +193,7 @@ age_summary %>%
   )
 ```
 
-![](project1_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
+![](project1_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
 
 **Observations**:
 
@@ -295,7 +275,7 @@ age_summary_renamed %>%
   ) 
 ```
 
-![](project1_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+![](project1_files/figure-gfm/unnamed-chunk-4-1.png)<!-- -->
 
 **Observations**:
 
@@ -305,3 +285,127 @@ age_summary_renamed %>%
     this pattern. In fact, Motor Vehicle Crashes and Assault share a
     general pattern of being most common for the age group of 15-24 and
     the total decreases for each ascending age group.
+
+<!-- end list -->
+
+``` r
+age_summary_deaths <-
+  tbi_age %>%
+  filter(type == "Deaths") %>%
+  filter(number_est > 0, age_group != "0-17", age_group !="Total")
+age_summary_deaths$age_group <- 
+  factor(
+    age_summary_deaths$age_group,
+    levels = c("0-4","5-14","15-24","25-34","35-44","45-54","55-64","65-74","75+"))
+age_summary_deaths %>%
+  ggplot() +
+  geom_col(mapping = aes(x = age_group, y = number_est, fill = injury_mechanism), position = "dodge") +
+  scale_fill_discrete(name = "Injury Mechanism") +
+  labs(
+    title = "Total Deaths",
+    x = "Age",
+    y = "Deaths from TBIs"
+  )
+```
+
+![](project1_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
+
+**Observations**:
+
+  - Unintentional falls for the 75+ age group was also the leading cause
+    of TBI-related deaths in 2014. Intentional self-harm was a distant
+    second for most common cause of deaths, and was significant for all
+    age groups upward of 15 years old. TBIs from Motor Vehicle Crashes
+    was the third most signifi cant cause of death.
+  - While looking at number of TBIs from unintentional falls, the 0-4
+    age group was the second highest age group, deaths from TBIs from
+    unintentional falls was minimal, dwarfed by deaths by assault.
+    Overall deaths from TBIs for the 0-4 age group were very low.
+
+<!-- end list -->
+
+``` r
+tbi_age
+```
+
+    ## # A tibble: 231 x 5
+    ##    age_group type            injury_mechanism                number_est rate_est
+    ##    <chr>     <chr>           <chr>                                <dbl>    <dbl>
+    ##  1 0-17      Emergency Depa… Motor Vehicle Crashes                47138     64.1
+    ##  2 0-17      Emergency Depa… Unintentional Falls                 397190    540. 
+    ##  3 0-17      Emergency Depa… Unintentionally struck by or a…     229236    312. 
+    ##  4 0-17      Emergency Depa… Other unintentional injury, me…      55785     75.8
+    ##  5 0-17      Emergency Depa… Intentional self-harm                   NA     NA  
+    ##  6 0-17      Emergency Depa… Assault                              24360     33.1
+    ##  7 0-17      Emergency Depa… Other or no mechanism specified      57983     78.8
+    ##  8 0-4       Emergency Depa… Motor Vehicle Crashes                 5464     27.5
+    ##  9 0-4       Emergency Depa… Unintentional Falls                 230776   1161  
+    ## 10 0-4       Emergency Depa… Unintentionally struck by or a…      53436    269. 
+    ## # … with 221 more rows
+
+``` r
+age_summary_type <-
+  tbi_age %>%
+  group_by(age_group, type) %>%
+  summarize(total = sum(number_est)/1000) #%>%
+```
+
+    ## `summarise()` regrouping output by 'age_group' (override with `.groups` argument)
+
+``` r
+  #filter(total > 0, age_group != "0-17", age_group !="Total")# %>%
+  #filter(type %in% c("Hospitalizations", "Deaths"))
+
+age_summary_type
+```
+
+    ## # A tibble: 33 x 3
+    ## # Groups:   age_group [11]
+    ##    age_group type                        total
+    ##    <chr>     <chr>                       <dbl>
+    ##  1 0-17      Deaths                      NA   
+    ##  2 0-17      Emergency Department Visit  NA   
+    ##  3 0-17      Hospitalizations            NA   
+    ##  4 0-4       Deaths                      NA   
+    ##  5 0-4       Emergency Department Visit  NA   
+    ##  6 0-4       Hospitalizations            NA   
+    ##  7 15-24     Deaths                       6.31
+    ##  8 15-24     Emergency Department Visit 444.  
+    ##  9 15-24     Hospitalizations            26.4 
+    ## 10 25-34     Deaths                       6.37
+    ## # … with 23 more rows
+
+``` r
+age_summary_type$type <- 
+  factor(
+    age_summary_type$type,
+    levels = c("Emergency Department Visit", "Hospitalizations", "Deaths"))
+
+age_summary_type %>%
+  ggplot() +
+  geom_col(
+    mapping = aes(x = age_group, y = total, fill = age_group), 
+    position = "dodge") +
+  scale_fill_discrete(name = "Age Group") +
+  theme(
+    axis.title.x =  element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+    ) +
+  facet_wrap(~type) +
+  labs(
+    title = "75+ Age Group Has Most Hospitalizations and Deaths",
+    x = "Age Group",
+    y = "Total TBIs (thousands)"
+  ) 
+```
+
+    ## Warning: Removed 11 rows containing missing values (geom_col).
+
+![](project1_files/figure-gfm/unnamed-chunk-6-1.png)<!-- -->
+
+**Observations**:
+
+  - The 75+ age group has the highest hospitalizations and deaths. It
+    was unclear if they also have the most emergency room visits,
+    because 75+ and 65-74 age groups had N/A listed for this dataset.

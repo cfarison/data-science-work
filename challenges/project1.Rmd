@@ -233,18 +233,20 @@ age_summary_deaths$age_group <-
     age_summary_deaths$age_group,
     levels = c("0-4","5-14","15-24","25-34","35-44","45-54","55-64","65-74","75+"))
 age_summary_deaths %>%
-  ggplot(mapping = aes(x = age_group, y = number_est, color = injury_mechanism)) +
-  geom_point() +
-  geom_line() +
-  scale_color_discrete(name = "Injury Mechanism") +
+  ggplot() +
+  geom_col(mapping = aes(x = age_group, y = number_est, fill = injury_mechanism), position = "dodge") +
+  scale_fill_discrete(name = "Injury Mechanism") +
   labs(
     title = "Total Deaths",
-    x = "Year",
-    y = "Total Deaths from TBIs"
+    x = "Age",
+    y = "Deaths from TBIs"
   )
 ```
 
+**Observations**:
 
+- Unintentional falls for the  75+ age group was also the leading cause of TBI-related deaths in 2014. Intentional self-harm was a distant second for most common cause of deaths, and was significant for all age groups upward of 15 years  old. TBIs from Motor Vehicle Crashes was the third most signifi cant cause of death.
+- While looking at number of TBIs from unintentional falls, the 0-4 age group was the second highest age group, deaths from TBIs from unintentional falls was minimal, dwarfed by deaths by assault. Overall deaths from TBIs for the 0-4 age group were very low.
 
 
 ```{r}
