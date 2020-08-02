@@ -104,12 +104,6 @@ tbi_year <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/t
 tbi_military <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-03-24/tbi_military.csv')
 ```
 
-```{r}
-tbi_age %>%
-  filter(age_group == "75+")
-```
-
-
 *Questions to explore:*
 
 - What is the most common injury mechanism? Has that changed over time?
@@ -228,3 +222,37 @@ age_summary_renamed %>%
 **Observations**:
 
 - While unintentional falls are most common for the age group of 75+ and the second most common age group is 0-4, with the age groups in the middle having the fewest, none of the other causes of TBIs share this pattern. In fact, Motor Vehicle Crashes and Assault share a general pattern of being most common for the age group of 15-24 and the total decreases for each ascending age group.
+
+```{r}
+age_summary_type <-
+  tbi_age %>%
+  group_by(age_group, type) %>%
+  summarize(total = sum(number_est)/1000) %>%
+  filter(total > 0, age_group != "0-17", age_group !="Total") %>%
+  filter(type %in% c("Hospitalizations", "Deaths"))
+age_summary_type$type <- 
+  factor(
+    age_summary_type$type,
+    levels = c("Emergency Department Visit", "Hospitalizations", "Deaths"))
+age_summary_type %>%
+  ggplot() +
+  geom_col(
+    mapping = aes(x = age_group, y = total, fill = age_group), 
+    position = "dodge") +
+  scale_fill_discrete(name = "Age Group") +
+  theme(
+    axis.title.x =  element_blank(),
+    axis.text.x = element_blank(),
+    axis.ticks.x = element_blank()
+    ) +
+  facet_wrap(~type) +
+  labs(
+    title = "75+ Age Group Has Most Hospitalizations and Deaths",
+    x = "Age Group",
+    y = "Total TBIs (thousands)"
+  ) 
+```
+
+**Observations**:
+
+- The 75+ age group has the highest hospitalizations and deaths. It was unclear if they also have the most emergency room visits, because 75+ and 65-74 age groups had N/A listed for this dataset.
