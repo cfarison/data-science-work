@@ -132,6 +132,7 @@ tbi_summary %>%
   ggplot(mapping = aes(x = year, y = total, color = injury_mechanism)) +
   geom_point() +
   geom_line() +
+  scale_color_discrete(name = "Injury Mechanism") +
   labs(
     title = "Increase in TBIs from Unintentional Falls",
     x = "Year",
@@ -210,6 +211,7 @@ age_summary_renamed %>%
   geom_col(
     mapping = aes(x = age_group, y = total, fill = age_group), 
     position = "dodge") +
+  scale_fill_discrete(name = "Age Group") +
   theme(
     axis.title.x =  element_blank(),
     axis.text.x = element_blank(),
